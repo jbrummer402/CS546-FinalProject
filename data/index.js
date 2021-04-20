@@ -1,5 +1,7 @@
 const usersData = require('./users');
+const jobsData = require('./jobs');
 
 module.exports = {
-    users: usersData
+    users: usersData,
+    jobs: jobsData
 };
