@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
+router.get("/signin", async (req, res) => {
   res.render("partials/sign-in", { title: "Login" });
 });
 
