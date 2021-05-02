@@ -7,16 +7,16 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use("/public", static);
 
-//IN DEVELOPMENT
-const session = require("express-session");
-app.use(
-  session({
-    name: "AuthCookie",
-    secret: "some secret string!",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+//IN DEVELOPMENT (JOSE)
+// const session = require("express-session");
+// app.use(
+//   session({
+//     name: "AuthCookie",
+//     secret: "some secret string!",
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
 
 // FOR TESTING ONLY. TO BE DELETED LATER
 async function seed() {
