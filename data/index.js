@@ -1,7 +1,7 @@
-const usersData = require('./users');
-const jobsData = require('./jobs');
+const usersData = require("./users");
+const jobsData = require("./jobs");
 
 module.exports = {
-    users: usersData,
-    jobs: jobsData
+  users: usersData,
+  jobs: jobsData,
 };
