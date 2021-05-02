@@ -8,15 +8,24 @@ app.set("view engine", "handlebars");
 app.use("/public", static);
 
 //IN DEVELOPMENT (JOSE)
-// const session = require("express-session");
-// app.use(
-//   session({
-//     name: "AuthCookie",
-//     secret: "some secret string!",
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// );
+const session = require("express-session");
+app.use(
+  session({
+    name: "AuthCookie",
+    secret: "some secret string!",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(async (req, res, next) => {
+  if (req.session.AuthCookie) {
+    console.log(req.session.AuthCookie.username);
+  } else {
+    console.log("Not Authenticated");
+  }
+  next();
+});
 
 // FOR TESTING ONLY. TO BE DELETED LATER
 async function seed() {

@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.users;
 const ObjectId = require("mongodb").ObjectId;
+const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
   let {
@@ -54,12 +55,26 @@ router.get("/signin", async (req, res) => {
   res.render("partials/sign-in", { title: "Login" });
 });
 
+//TODO: Better error checking / Should usernames be case sensitive?
 router.post("/signin", async (req, res) => {
-  username = req.body.username;
+  username = req.body.username.toLowerCase();
+  password = req.body.password;
+  let signedIn = false;
+
   try {
     let user = await usersData.readByUsername(username);
     if (user.username === username) {
-      res.json({ success: true });
+      if (bcrypt.compareSync(password, user.password)) {
+        signedIn = true;
+        req.session.AuthCookie = {
+          username: user.username,
+        };
+        res.json({ success: true });
+      }
+    }
+
+    if (!signedIn) {
+      res.json({ success: false });
     }
   } catch (e) {
     res.json({ success: false });
@@ -67,7 +82,10 @@ router.post("/signin", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  res.render("partials/profile", { title: "Profile Page" });
+  res.render("partials/profile", {
+    title: "Profile Page",
+    username: req.session.AuthCookie.username,
+  });
 });
 
 router.get("/:id", async (req, res) => {
