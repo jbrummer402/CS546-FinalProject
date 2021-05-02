@@ -2,8 +2,10 @@ const express = require("express");
 const app = express();
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
+const static = express.static(__dirname + "/public");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+app.use("/public", static);
 
 //IN DEVELOPMENT
 const session = require("express-session");
@@ -20,11 +22,11 @@ app.use(
 async function seed() {
   // USER SEED
   const userSeed = require("./seeds/userSeed");
-  // await userSeed.seedUsers();
+  await userSeed.seedUsers();
   // try {
-  //     await userSeed.deleteUsers();
+  //   await userSeed.deleteUsers();
   // } catch (e) {
-  //     console.error("Nothing to delete");
+  //   console.error("Nothing to delete");
   // }
 }
 

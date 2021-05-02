@@ -1,11 +1,18 @@
-<h1>Login Page</h1>
-<form action="post" id="loginForm">
-  <label for="username">
-    Enter Username:
-    <input type="text" id="username">
-  </label>
-  <label for="password">
-    Enter Password:
-    <input type="text" id="password">
-  </label>
-</form>
+<h1>Login</h1>
+<div id="error" hidden>Not a valid username password combination</div>
+  <form action="/login" method="POST" id="signinForm">
+    <label for="username">
+      Enter Username
+      <input id="username" name="username" type="text" />
+    </label>
+    <label for="password">
+      Enter Password
+      <input id="password" name="password" type="text" />
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+crossorigin="anonymous"></script>
+<script src="../../public/js/sign-in.js"></script>

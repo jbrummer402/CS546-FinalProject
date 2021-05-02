@@ -54,6 +54,22 @@ router.get("/signin", async (req, res) => {
   res.render("partials/sign-in", { title: "Login" });
 });
 
+router.post("/signin", async (req, res) => {
+  username = req.body.username;
+  try {
+    let user = await usersData.readByUsername(username);
+    if (user.username === username) {
+      res.json({ success: true });
+    }
+  } catch (e) {
+    res.json({ success: false });
+  }
+});
+
+router.get("/profile", async (req, res) => {
+  res.render("partials/profile", { title: "Profile Page" });
+});
+
 router.get("/:id", async (req, res) => {
   // handle inputs
   if (!ObjectId.isValid(req.params.id)) {
