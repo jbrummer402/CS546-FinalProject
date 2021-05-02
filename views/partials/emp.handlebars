@@ -1,0 +1,27 @@
+
+
+<header>
+    <h1>Odjöb</h1>
+    {{!-- this will have different text depending whether user is logged in or not --}}
+    <a href="/users/signin">Sign In/Profile</a>
+</header>
+<div id="user-info">
+    <h2>{{user.firstName}} {{user.lastName}}</h2>
+    <p>{{user.username}}</p>
+    <p>Rating: {{user.averageRating}}</p>
+</div>
+<div id="reviews-of-user">
+    {{!-- populate this area either just with reviews of user, or with reviews separated --}}
+</div>
+<div id="new-review">
+    <h2>Review this User</h2>
+    <form id="review-form">
+        <label><input type="radio" name="reviewing-as" value="Freelancer">Freelancer</label>
+        <label><input type="radio" name="reviewing-as" value="Job Poster">Job Poster</label>
+        <label for="rating">Rating</label>
+        <input type="range" id="rating" name="rating" min="1" max="5">
+        <label for="review-text">Review</label>
+        <input type="text" id="review-text" name="review-text" maxlength="500">
+        <button type="submit">Post Review</button>
+    </form>
+</div>
