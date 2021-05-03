@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const usersData = data.users;
+const jobsData = data.jobs;
 const ObjectId = require("mongodb").ObjectId;
+const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
   let {
@@ -51,15 +53,35 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/signin", async (req, res) => {
-  res.render("partials/sign-in", { title: "Login" });
+  res.render("partials/sign-in", { title: "Sign-In" });
 });
 
+//TODO: Better error checking
 router.post("/signin", async (req, res) => {
-  username = req.body.username;
+  username = req.body.username.toLowerCase();
+  password = req.body.password;
+  let signedIn = false;
+
   try {
     let user = await usersData.readByUsername(username);
     if (user.username === username) {
-      res.json({ success: true });
+      if (bcrypt.compareSync(password, user.password)) {
+        signedIn = true;
+        req.session.AuthCookie = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          username: user.username,
+          email: user.email,
+          address: user.address,
+          id: user._id,
+        };
+        res.json({ success: true });
+      }
+    }
+
+    if (!signedIn) {
+      res.json({ success: false });
     }
   } catch (e) {
     res.json({ success: false });
@@ -67,7 +89,69 @@ router.post("/signin", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  res.render("partials/profile", { title: "Profile Page" });
+  // let jobs;
+  // try {
+  //   jobs = await jobsData.readByID(req.session.AuthCookie.id);
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  res.render("partials/profile", {
+    title: req.session.AuthCookie.username,
+    firstName: req.session.AuthCookie.firstName,
+    lastName: req.session.AuthCookie.lastName,
+    dateOfBirth: req.session.AuthCookie.dateOfBirth,
+    username: req.session.AuthCookie.username,
+    address: req.session.AuthCookie.address,
+    email: req.session.AuthCookie.email,
+    id: req.session.AuthCookie.id,
+    //TODO: Get jobs from jobs database
+    jobs: [
+      {
+        title: "Moveout",
+        description: "Yo come move my stuff",
+        compensation: 100,
+        address: {
+          street: "465 main st",
+          aptNo: "9",
+          zipCode: "33322",
+          state: "NE",
+          town: "Hoboken",
+          country: "USA",
+        },
+      },
+      {
+        title: "Dog Feeder",
+        description: "Someones gotta feed my dog and its not gonna be me",
+        perHour: 15,
+        address: {
+          street: "465 main st",
+          aptNo: "9",
+          zipCode: "33322",
+          state: "NE",
+          town: "Hoboken",
+          country: "USA",
+        },
+      },
+    ],
+    //TODO: get reviews from reviews data base
+    reviews: [
+      {
+        reviewerId: "agentcoop",
+        revieweeId: "someOtherGuy",
+        rating: 5,
+        reviewDescription: "This guy was cool",
+        dateOfReview: "1/2/2023",
+      },
+      {
+        reviewerId: "agentcoop",
+        revieweeId: "ronaldxxx",
+        rating: 1,
+        reviewDescription: "kinda wak",
+        dateOfReview: "1/2/2019",
+      },
+    ],
+  });
 });
 
 router.get("/:id", async (req, res) => {
@@ -117,7 +201,8 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+//Made into a post request because it is imposible to make a patch request from a form
+router.post("/:id", async (req, res) => {
   let {
     firstName,
     lastName,
@@ -145,14 +230,17 @@ router.patch("/:id", async (req, res) => {
   }
 
   // handle inputs
+
+  //TODO: Checking input with the !firstName format wouldwork better for us since
+  //empty strings are going to be passed in but should be ignored
   if (
-    firstName === undefined &&
-    lastName === undefined &&
-    dateOfBirth === undefined &&
-    password === undefined &&
-    address === undefined &&
-    photoLink === undefined &&
-    email === undefined
+    !firstName &&
+    !lastName &&
+    !dateOfBirth &&
+    !password &&
+    !address &&
+    !photoLink &&
+    !email
   ) {
     res.status(400).json({
       error:
@@ -161,6 +249,23 @@ router.patch("/:id", async (req, res) => {
     });
     return;
   }
+
+  // if (
+  //   firstName === undefined &&
+  //   lastName === undefined &&
+  //   dateOfBirth === undefined &&
+  //   password === undefined &&
+  //   address === undefined &&
+  //   photoLink === undefined &&
+  //   email === undefined
+  // ) {
+  //   res.status(400).json({
+  //     error:
+  //       "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
+  //       " 'password', 'address', 'photoLink', 'email'.",
+  //   });
+  //   return;
+  // }
 
   if (email !== undefined) {
     const errorObj = await checkEmail(email);
