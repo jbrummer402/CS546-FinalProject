@@ -127,8 +127,8 @@ async function getReviewById(id){
     const review = await db.findOne({ _id: id });
     if(review === null) throw 'Review not found with given id';
     review._id = review._id.toString();
-    review.reviewerId = reviewerId.toString();
-    review.revieweeId = revieweeId.toString();
+    review.reviewerId = review.reviewerId.toString();
+    review.revieweeId = review.revieweeId.toString();
     return review;
 }
 
@@ -149,8 +149,8 @@ async function getReviewsGivenByUser(userId){
 
     for(let review of reviewsFound){
         review._id = review._id.toString();
-        review.reviewerId = reviewerId.toString();
-        review.revieweeId = revieweeId.toString();
+        review.reviewerId = review.reviewerId.toString();
+        review.revieweeId = review.revieweeId.toString();
     }
 
     return reviewsFound;
@@ -173,8 +173,8 @@ async function getReviewsReceivedForUser(userId){
 
     for(let review of reviewsFound){
         review._id = review._id.toString();
-        review.reviewerId = reviewerId.toString();
-        review.revieweeId = revieweeId.toString();
+        review.reviewerId = review.reviewerId.toString();
+        review.revieweeId = review.revieweeId.toString();
     }
 
     return reviewsFound;
