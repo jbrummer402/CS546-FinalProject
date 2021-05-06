@@ -2,7 +2,7 @@
 <div id="error" hidden>Not a valid username password combination</div>
 <form action="/login" method="POST" id="signinForm">
   <label for="username">
-    Enter Username
+    Enter Username:
     <input id="username" name="username" type="text" />
   </label>
   <label for="password">
@@ -10,6 +10,85 @@
     <input id="password" name="password" type="password" />
   </label>
   <button type="submit">Submit</button>
+</form>
+<br>
+<form action="/users" method="POST" id="signupForm">
+<h1>Sign-Up</h1>
+  <label for="username2">
+    Enter Username:
+    <br>
+    <input id="username2" name="username" type="text" />
+  </label>
+  <br>
+  <label for="password2">
+    Enter Password:
+    <br>
+    <input id="password2" name="password" type="text" />
+  </label>
+  <br>
+  <label for="firstName">
+    First Name
+    <br>
+    <input id="firstName" name="firstName" type="text" />
+  </label>
+  <br>
+  <label for="lastName">
+    Last Name:
+    <br>
+    <input id="lastName" name="lastName" type="text" />
+  </label>
+  <br>
+  <label for="dateOfBirth">
+    Date of Birth:
+    <br>
+    <input id="dateOfBirth" name="dateOfBirth" type="date" />
+  </label>
+  <br>
+  <label for="email">
+    Email:
+    <br>
+    <input id="email" name="email" type="email" />
+  </label>
+  <br>
+  {{!-- add photo link --}}
+  <h3>Address</h3>
+      <label for="street">
+        Street
+        <br>
+        <input type="text" id="street" name="street">
+      </label>
+      <br>
+      <label for="aptNo">
+        Apartment Number
+        <br>
+        <input type="text" id="aptNo" name="aptNo">
+      </label>
+      <br>
+      <label for="zipCode">
+        Zip Code
+        <br>
+        <input type="text" id="zipCode" name="zipCode">
+      </label>
+      <br>
+      <label for="state">
+        State
+        <br>
+        <input type="text" id="state" name="state">
+      </label>
+      <br>
+      <label for="town">
+        Town
+        <br>
+        <input type="text" id="town" name="town">
+      </label>
+      <br>
+      <label for="country">
+        Country
+        <br>
+        <input type="text" id="country" name="country">
+      </label>
+      <br>
+  <button type="submit">Sign-Up</button>
 </form>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
