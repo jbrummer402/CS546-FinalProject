@@ -163,7 +163,12 @@ router.get("/:id", async (req, res) => {
 
   try {
     let user = await usersData.readByID(req.params.id);
-    res.json(user);
+
+    // giving this to make my life slightly easier
+    let loggedIn = req.session.AuthCookie;
+    res.render('partials/emp', 
+        {data: {user: user, logged: {uname: loggedIn.username}}});
+    
   } catch (e) {
     res.status(404).json({ error: "User not found" });
   }
