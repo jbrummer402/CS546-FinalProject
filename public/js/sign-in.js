@@ -27,6 +27,9 @@ jQuery(document).ready(function ($) {
       console.log(responseMessage);
       if (responseMessage.success === true) {
         window.location.href = "/users/profile";
+      } else {
+        error.show();
+        signinForm.trigger("reset");
       }
     });
   });

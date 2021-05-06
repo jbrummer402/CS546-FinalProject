@@ -6,8 +6,8 @@ const static = express.static(__dirname + "/public");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use("/public", static);
+app.use(express.urlencoded({ extended: true }));
 
-//IN DEVELOPMENT
 const session = require("express-session");
 app.use(
   session({
@@ -17,6 +17,16 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(async (req, res, next) => {
+  console.log(req.method);
+  if (req.session.AuthCookie) {
+    console.log(req.session.AuthCookie.username);
+  } else {
+    console.log("Not Authenticated");
+  }
+  next();
+});
 
 // FOR TESTING ONLY. TO BE DELETED LATER
 async function seed() {
