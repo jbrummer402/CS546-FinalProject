@@ -1,0 +1,16 @@
+<header>
+    <h1>Odjöb</h1>
+    {{!-- this will have different text depending whether user is logged in or not --}}
+    <a href="/users/signin">Sign In/Profile</a>
+</header>
+<form id="search-form">
+  <label for="search">Search</label> 
+  <input name="search" type="text" placeholder="Enter search here" />
+  <label><input name="search-type" type="radio" value="Jobs" />Jobs</label> 
+  <label><input name="search-type" type="radio" value="Users" />Users</label> 
+  <button type="submit">Search</button>
+</form>
+<div>
+    {{!-- want to query for jobs here, but uhhhh 
+    that said should only do first ~20 or so jobs i think --}}
+</div>

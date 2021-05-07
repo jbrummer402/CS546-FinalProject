@@ -66,6 +66,7 @@ router.post('/new', async (req, res) =>{
         let reviewee = xss(req.body.reviewee);
         let reviewDescription = xss(req.body.reviewDescription);
         let rating = xss(req.body.rating);
+        
         if(!reviewer || !reviewee || !reviewDescription || !rating) throw 'Missing arguments';
         if(reviewer.trim() == "" || reviewee.trim() == "" || reviewDescription.trim() == "") throw 'Missing arguments';
         if(reviewer == reviewee) throw 'User can not review themself';
@@ -82,12 +83,14 @@ router.post('/new', async (req, res) =>{
             throw 'RevieweeID is not a valid ObjectID';
         }
 
+        rating = parseFloat(rating);
         if( !Number.isInteger(rating) || rating < 1 || rating > 5 ) throw 'Rating must be integer between 1 and 5';
-        rating = parseInt(rating);
+
         const review = await reviewsData.createReview(reviewer, reviewee, rating, reviewDescription);
+        
         res.json({
             "reviewCreated": "true",
-            "review": `${review}`
+            "review": review
         });
     }
     catch (e){

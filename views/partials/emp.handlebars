@@ -1,0 +1,65 @@
+<header>
+    <h1>Odjöb</h1>
+    {{!-- this will have different text depending whether user is logged in or not --}}
+    {{#if data.logged.uname}}
+        <a id="to-profile" href="/users/profile">{{data.logged.uname}}</a>
+    {{else}}
+        <a href="/users/signin">Sign In/Profile</a>
+    {{/if}}
+</header>
+<div id="user-info">
+    <h2>{{data.user.firstName}} {{data.user.lastName}}</h2>
+    <p id="user-to-review">{{data.user.username}}</p>
+    <p>Rating: {{data.average}}</p>
+</div>
+<div id="reviews-of-user">
+    {{!-- populate this area either just with reviews of user, or with reviews separated --}}
+</div>
+<div id="new-review">
+    <h2>Review this User</h2>
+    <p id="blank-error" class="error" hidden>Please make sure both fields are filled out</p>
+    <p id="invalid-rating" class="error" hidden>Please enter a valid rating from 1 to 5</p>
+    <p id="add-error" class="error" hidden>There was an issue adding your review, please try again</p>
+    <p id="own-error" class="error" hidden>You may not review your own profile</p>
+    <form id="review-form">
+        {{!--
+        <label><input type="radio" class="typeBtn" name="reviewing-as" value="Freelancer">Freelancer</label>
+        <label><input type="radio" class="typeBtn" name="reviewing-as" value="JobPoster">Job Poster</label>
+        <br/>
+        <br/>
+        --}}
+        <div id="review-rating">
+            <label for="rate1">1</label>
+            <input type="radio" name="rateBtn" id="rate1" value="1">
+            <label for="rate2">2</label>
+            <input type="radio" name="rateBtn" id="rate2" value="2">
+            <label for="rate3">3</label>
+            <input type="radio" name="rateBtn" id="rate3" value="3">
+            <label for="rate4">4</label>
+            <input type="radio" name="rateBtn" id="rate4" value="4">
+            <label for="rate5">5</label>
+            <input type="radio" name="rateBtn" id="rate5" value="5">
+        </div>
+        <br/>
+        <label for="review-text">Review</label>
+        <input type="text" id="review-text" name="review-text" maxlength="500">
+        <button type="submit">Post Review</button>
+    </form>
+</div>
+<div id="reviews-of-user">
+    <h2>Reviews for this User</h2>
+    <ul id="reviews-of-list">
+        {{#each data.reviews}}
+            <li>
+                <h3 class="review-header">Review By {{this.reviewerName}}</h3>
+                <h4>{{this.dateOfReview}}</h4>
+                <h4>Rating: {{this.rating}}</h4>
+                <h4>Review:</h4>
+                <p>{{this.reviewDescription}}</p>
+            </li>
+        {{/each}}
+    </ul>
+</div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="/public/js/postReview.js"></script>
