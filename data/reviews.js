@@ -7,7 +7,7 @@ async function createReview(reviewer, reviewee, rating, reviewDescription){
     // reviewer and reviewee must be ObjectId or valid string that can convert to ObjectId
     // rating must be number or string of an integer between 1 and 5
     // review description must be non empty/whitespace string
-    if(!reviewer || !reviewee || !rating || !reviewDescription || !date) throw 'Missing arguments to create review';
+    if(!reviewer || !reviewee || !rating || !reviewDescription ) throw 'Missing arguments to create review';
     if( !Number.isInteger(rating) || rating < 1 || rating > 5 ) throw 'Rating must be integer between 1 and 5';
     if(typeof reviewDescription != 'string' || reviewDescription.trim() == '') throw 'Review text must be a non empty string';
 

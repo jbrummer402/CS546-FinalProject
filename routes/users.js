@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const usersData = data.users;
 const jobsData = data.jobs;
+const reviewData = data.reviews;
 const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 
@@ -165,9 +166,28 @@ router.get("/:id", async (req, res) => {
     let user = await usersData.readByID(req.params.id);
 
     // giving this to make my life slightly easier
+    // also need reviews of user so adding that
+    let reviewsOf = await reviewData.getReviewsReceivedForUser(user._id);
     let loggedIn = req.session.AuthCookie;
+    let rateAvg = 0;
+    // get names of users associated with reviews
+    try {
+      for (let i = 0; i < reviewsOf.length; i++){
+        let reviewer = await usersData.readByID(reviewsOf[i].reviewerId);
+        reviewsOf[i].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
+        reviewsOf[i].dateOfReview = reviewsOf[i].dateOfReview.toDateString();
+        rateAvg += reviewsOf[i].rating;
+      }
+    } catch {
+      // do nothing, just dont show reviews ig
+    }
+    if (rateAvg === 0){
+      rateAvg = 'N/A';
+    } else {
+      rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
+    }
     res.render('partials/emp', 
-        {data: {user: user, logged: {uname: loggedIn.username}}});
+      {data: {user: user, logged: {uname: loggedIn.username}, reviews: reviewsOf, average: rateAvg}});
     
   } catch (e) {
     res.status(404).json({ error: "User not found" });

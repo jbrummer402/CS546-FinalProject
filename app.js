@@ -18,6 +18,15 @@ app.use(
   })
 );
 
+// do not let already logged in user go to sign in page
+app.use('/users/signin', (req, res, next) => {
+  if (req.session.AuthCookie){
+    return res.redirect('/users/profile');
+  } else {
+    next();
+  }
+})
+
 app.use(async (req, res, next) => {
   console.log(req.method);
   if (req.session.AuthCookie) {
