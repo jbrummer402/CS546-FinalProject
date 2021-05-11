@@ -7,6 +7,11 @@ const constructorMethod = (app) => {
   app.use("/jobs", jobsRoutes);
   app.use("/reviews", reviewRoutes);
 
+
+  app.use("/$", (req, res) => {
+    res.render('partials/landing');
+  });
+
   app.use("*", (req, res) => {
     res.sendStatus(404);
   });
