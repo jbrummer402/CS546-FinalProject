@@ -226,6 +226,14 @@ router.delete("/:id", async (req, res) => {
     return;
   }
 
+  // remove user's reviews
+  try {
+    await reviewData.removeAllReviewsForUser(userID);
+  } catch (e) {
+    // ignore
+  }
+
+  // remove user
   try {
     await usersData.remove(userID);
     res.json({ userId: req.params.id, deleted: true });
