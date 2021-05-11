@@ -6,18 +6,24 @@ const jobsData = data.jobs;
 const reviewData = data.reviews;
 const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
+const xss = require('xss');
 
 router.post("/", async (req, res) => {
-  let {
-    firstName,
-    lastName,
-    dateOfBirth,
-    username,
-    password,
-    address,
-    photoLink,
-    email,
-  } = req.body;
+  let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
+  let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
+  let dateOfBirth = req.body.dateOfBirth ? xss(req.body.dateOfBirth) : undefined;
+  let username = req.body.username ? xss(req.body.username) : undefined;
+  let password = req.body.password ? xss(req.body.password) : undefined;
+  let address = req.body.address ?
+      {street: req.body.address.street ? xss(req.body.address.street) : undefined,
+        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
+        zipCode: req.body.address.zipCode ? xss(req.body.address.zipCode) : undefined,
+        state: req.body.address.state ? xss(req.body.address.state) : undefined,
+        town: req.body.address.town ? xss(req.body.address.town) : undefined,
+        country: req.body.address.country ? xss(req.body.address.country) : undefined}
+      : undefined;
+  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined
+  let email = req.body.email ? xss(req.body.email) : undefined;
 
   // handle inputs
   const { errorCode, message } = await checkInputs(
@@ -59,8 +65,8 @@ router.get("/signin", async (req, res) => {
 
 //TODO: Better error checking
 router.post("/signin", async (req, res) => {
-  username = req.body.username.toLowerCase();
-  password = req.body.password;
+  let username = xss(req.body.username.toLowerCase());
+  let password = xss(req.body.password);
   let signedIn = false;
 
   try {
@@ -163,7 +169,7 @@ router.get("/:id", async (req, res) => {
   }
 
   try {
-    let user = await usersData.readByID(req.params.id);
+    let user = await usersData.readByID(xss(req.params.id));
 
     // giving this to make my life slightly easier
     // also need reviews of user so adding that
@@ -190,13 +196,14 @@ router.get("/:id", async (req, res) => {
       {data: {user: user, logged: {uname: loggedIn.username}, reviews: reviewsOf, average: rateAvg}});
     
   } catch (e) {
+    console.log(e)
     res.status(404).json({ error: "User not found" });
   }
 });
 
 router.get("/username/:username", async (req, res) => {
   try {
-    let user = await usersData.readByUsername(req.params.username);
+    let user = await usersData.readByUsername(xss(req.params.username));
     res.json(user);
   } catch (e) {
     res.status(404).json({ error: "User not found" });
@@ -205,21 +212,22 @@ router.get("/username/:username", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   // check if id is valid
-  if (!ObjectId.isValid(req.params.id)) {
+  const userID = xss(req.params.id);
+  if (!ObjectId.isValid(userID)) {
     res.status(400).json({ error: "Input id must be a valid ObjectID" });
     return;
   }
 
   // check if id exists
   try {
-    await usersData.readByID(req.params.id);
+    await usersData.readByID(userID);
   } catch (e) {
     res.status(404).json({ error: "User id could not be found" });
     return;
   }
 
   try {
-    await usersData.remove(req.params.id);
+    await usersData.remove(userID);
     res.json({ userId: req.params.id, deleted: true });
   } catch (e) {
     res.sendStatus(500);
@@ -228,27 +236,34 @@ router.delete("/:id", async (req, res) => {
 
 //Made into a post request because it is imposible to make a patch request from a form
 router.post("/:id", async (req, res) => {
-  let {
-    firstName,
-    lastName,
-    dateOfBirth,
-    password,
-    address,
-    photoLink,
-    email,
-  } = req.body;
+  let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
+  let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
+  let dateOfBirth = req.body.dateOfBirth ? xss(req.body.dateOfBirth) : undefined;
+  let password = req.body.password ? xss(req.body.password) : undefined;
+  let address = req.body.address ?
+      {street: req.body.address.street ? xss(req.body.address.street) : undefined,
+        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
+        zipCode: req.body.address.zipCode ? xss(req.body.address.zipCode) : undefined,
+        state: req.body.address.state ? xss(req.body.address.state) : undefined,
+        town: req.body.address.town ? xss(req.body.address.town) : undefined,
+        country: req.body.address.country ? xss(req.body.address.country) : undefined}
+        : undefined;
+  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined
+  let email = req.body.email ? xss(req.body.email) : undefined;
+
+  let userID = xss(req.params.id);
 
   let user = {};
 
   // check if id is valid
-  if (!ObjectId.isValid(req.params.id)) {
+  if (!ObjectId.isValid(userID)) {
     res.status(400).json({ error: "Input id must be a valid ObjectID" });
     return;
   }
 
   // check if id exists
   try {
-    user = await usersData.readByID(req.params.id);
+    user = await usersData.readByID(userID);
   } catch (e) {
     res.status(400).json({ error: "User id could not be found" });
     return;
@@ -274,23 +289,6 @@ router.post("/:id", async (req, res) => {
     });
     return;
   }
-
-  // if (
-  //   firstName === undefined &&
-  //   lastName === undefined &&
-  //   dateOfBirth === undefined &&
-  //   password === undefined &&
-  //   address === undefined &&
-  //   photoLink === undefined &&
-  //   email === undefined
-  // ) {
-  //   res.status(400).json({
-  //     error:
-  //       "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
-  //       " 'password', 'address', 'photoLink', 'email'.",
-  //   });
-  //   return;
-  // }
 
   if (email !== undefined) {
     const errorObj = await checkEmail(email);
