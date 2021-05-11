@@ -42,6 +42,20 @@ async function seed() {
   // USER SEED
   const userSeed = require("./seeds/userSeed");
   await userSeed.seedUsers();
+
+  // DELETE REVIEWS
+  // keep this here so reviews don't get added multiple times
+  try {
+    await reviewSeed.deleteReviews();
+  } catch (e) {
+    console.error("No reviews to delete");
+  }
+
+  // REVIEW SEED
+  const reviewSeed = require("./seeds/reviewSeed");
+  await reviewSeed.seedReviews();
+
+  // DELETE USERS
   // try {
   //   await userSeed.deleteUsers();
   // } catch (e) {
