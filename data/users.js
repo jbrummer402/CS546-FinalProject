@@ -48,6 +48,11 @@ async function create(
     },
     photoLink: photoLink.trim(),
     email: email.trim().toLowerCase(),
+    jobsActive: [],
+    jobsWorked: [],
+    jobsProvided: [],
+    jobsInProgressAsEmployee: [],
+    jobsInProgressAsEmployer: []
   };
 
   const insertInfo = await usersCollection.insertOne(newUser);
@@ -130,6 +135,11 @@ async function update(updateObj) {
     address,
     photoLink,
     email,
+    jobsActive,
+    jobsWorked,
+    jobsProvided,
+    jobsInProgressAsEmployee,
+    jobsInProgressAsEmployer
   } = updateObj;
   let user = {};
 
@@ -155,11 +165,17 @@ async function update(updateObj) {
     password === undefined &&
     address === undefined &&
     photoLink === undefined &&
-    email === undefined
+    email === undefined &&
+    jobsActive === undefined &&
+    jobsWorked === undefined &&
+    jobsProvided === undefined &&
+    jobsInProgressAsEmployee === undefined &&
+    jobsInProgressAsEmployer === undefined
   ) {
     throw (
-      "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
-      " 'password', 'address', 'photoLink', 'email'."
+        "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
+        " 'password', 'address', 'photoLink', 'email', 'jobsActive', 'jobsWorked', 'jobsProvided', 'jobsInProgressAsEmployee', " +
+        "'jobsInProgressAsEmployer'."
     );
   }
 
@@ -167,6 +183,15 @@ async function update(updateObj) {
     const errorObj = await checkEmail(email);
     if (errorObj.error) {
       throw errorObj.message;
+    }
+  }
+
+  for (const jobs of [jobsActive, jobsWorked, jobsProvided, jobsInProgressAsEmployee, jobsInProgressAsEmployer]) {
+    if (jobs !== undefined) {
+      const errorObj = await checkJobs(jobs);
+      if (errorObj.error) {
+        throw errorObj.message;
+      }
     }
   }
 
@@ -213,6 +238,11 @@ async function update(updateObj) {
           },
     photoLink: photoLink === undefined ? user.photoLink : photoLink.trim(),
     email: email === undefined ? user.email : email.trim().toLowerCase(),
+    jobsActive: jobsActive === undefined ? user.jobsActive : jobsActive,
+    jobsWorked: jobsWorked === undefined ? user.jobsWorked : jobsWorked,
+    jobsProvided: jobsProvided === undefined ? user.jobsProvided : jobsProvided,
+    jobsInProgressAsEmployee: jobsInProgressAsEmployee === undefined ? user.jobsInProgressAsEmployee : jobsInProgressAsEmployee,
+    jobsInProgressAsEmployer: jobsInProgressAsEmployer === undefined ? user.jobsInProgressAsEmployer : jobsInProgressAsEmployer,
   };
 
   const updatedInfo = await usersCollection.updateOne(
@@ -414,6 +444,28 @@ async function checkEmail(email) {
     return { error: error, message: message };
   }
 
+  return { error: error, message: message };
+}
+
+async function checkJobs(jobs) {
+  let error = false;
+  let message = "";
+
+  if (!Array.isArray(jobs)) {
+    error = true;
+    message = "Jobs must be in an array";
+    return { error: error, message: message };
+  }
+
+  for (const jobID of jobs) {
+    // check if job id is valid
+    if (!ObjectId.isValid(jobID)) {
+      error = true;
+      message = "Jobs must be in an array";
+      return { error: error, message: message };
+    }
+    // TODO: check if job exists
+  }
   return { error: error, message: message };
 }
 

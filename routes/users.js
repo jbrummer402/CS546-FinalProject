@@ -258,6 +258,11 @@ router.post("/:id", async (req, res) => {
         : undefined;
   let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined
   let email = req.body.email ? xss(req.body.email) : undefined;
+  let jobsActive = req.body.jobsActive;
+  let jobsWorked = req.body.jobsWorked;
+  let jobsProvided = req.body.jobsProvided;
+  let jobsInProgressAsEmployee = req.body.jobsInProgressAsEmployee;
+  let jobsInProgressAsEmployer = req.body.jobsInProgressAsEmployer;
 
   let userID = xss(req.params.id);
 
@@ -288,12 +293,18 @@ router.post("/:id", async (req, res) => {
     !password &&
     !address &&
     !photoLink &&
-    !email
+    !email &&
+      !jobsActive &&
+      !jobsWorked &&
+      !jobsProvided &&
+      !jobsInProgressAsEmployee &&
+      !jobsInProgressAsEmployer
   ) {
     res.status(400).json({
       error:
         "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
-        " 'password', 'address', 'photoLink', 'email'.",
+        " 'password', 'address', 'photoLink', 'email', 'jobsActive', 'jobsWorked', 'jobsProvided', 'jobsInProgressAsEmployee', " +
+          "'jobsInProgressAsEmployer'.",
     });
     return;
   }
@@ -305,6 +316,18 @@ router.post("/:id", async (req, res) => {
         error: errorObj.message,
       });
       return;
+    }
+  }
+
+  for (const jobs of [jobsActive, jobsWorked, jobsProvided, jobsInProgressAsEmployee, jobsInProgressAsEmployer]) {
+    if (jobs !== undefined) {
+      const errorObj = await checkJobs(jobs);
+      if (errorObj.errorCode !== 0) {
+        res.status(400).json({
+          error: errorObj.message,
+        });
+        return;
+      }
     }
   }
 
@@ -334,6 +357,11 @@ router.post("/:id", async (req, res) => {
       address: address,
       photoLink: photoLink,
       email: email,
+      jobsActive: jobsActive,
+      jobsWorked: jobsWorked,
+      jobsProvided: jobsProvided,
+      jobsInProgressAsEmployee: jobsInProgressAsEmployee,
+      jobsInProgressAsEmployer: jobsInProgressAsEmployer
     });
     res.json(user);
   } catch (e) {
@@ -513,6 +541,28 @@ async function checkEmail(email) {
     return { errorCode: errorCode, message: message };
   }
 
+  return { errorCode: errorCode, message: message };
+}
+
+async function checkJobs(jobs) {
+  let errorCode = 0;
+  let message = "";
+
+  if (!Array.isArray(jobs)) {
+    errorCode = 400;
+    message = "Jobs must be in an array";
+    return { errorCode: errorCode, message: message };
+  }
+
+  for (const jobID of jobs) {
+    // check if job id is valid
+    if (!ObjectId.isValid(jobID)) {
+      errorCode = 400;
+      message = "Array must contain valid job IDs.";
+      return { errorCode: errorCode, message: message };
+    }
+    // TODO: check if job exists
+  }
   return { errorCode: errorCode, message: message };
 }
 
