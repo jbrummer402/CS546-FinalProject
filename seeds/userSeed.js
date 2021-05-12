@@ -109,6 +109,27 @@ async function seedUsers() {
     } catch (e) {
         console.error(e);
     }
+
+    try {
+        await users.create(
+            (firstName = "Peter"),
+            (lastName = "Campbell"),
+            (dateOfBirth = "1/4/1976"),
+            (userName = "xx_madman_xx"),
+            (password = "password12"),
+            (address = {
+                street: "13-51 Perry St",
+                aptNo: "6",
+                zipCode: "10014",
+                state: "NY",
+                town: "New York",
+            }),
+            (photoLink = "/pics/pete.jpeg"),
+            (email = "pcambell@sterlingcooper.com")
+        );
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 async function deleteUsers() {

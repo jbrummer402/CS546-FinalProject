@@ -215,6 +215,16 @@ router.get("/username/:username", async (req, res) => {
   }
 });
 
+// search by username
+router.get("/search/:searchterm", async (req, res) => {
+  try {
+    let searchterm = await usersData.searchByUsername(xss(req.params.searchterm));
+    res.json(searchterm);
+  } catch (e) {
+    res.status(404).json({ error: "No matches" });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   // check if id is valid
   const userID = xss(req.params.id);

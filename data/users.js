@@ -278,6 +278,27 @@ async function emailExists(email) {
   return user !== null;
 }
 
+async function searchByUsername(keyword) {
+  // handle inputs
+  if (keyword === undefined) throw "Input must be provided for 'keyword' parameter!";
+  if (typeof keyword !== "string") throw "Input keyword must be a string!";
+
+  const usersCollection = await users();
+
+  const results = await usersCollection.find({ username: new RegExp(keyword) }).toArray();
+  if (results.length === 0) throw "No matches";
+
+  for (let i = 0; i < results.length; i++) {
+    let user = results[i];
+    user._id = user._id.toString();
+    user.dateOfBirth = `${
+        user.dateOfBirth.getMonth() + 1
+    }/${user.dateOfBirth.getDate()}/${user.dateOfBirth.getFullYear()}`;
+  }
+
+  return results;
+}
+
 async function checkString(str, paramName) {
   let error = false;
   let message = "";
@@ -581,4 +602,5 @@ module.exports = {
   update,
   usernameExists,
   emailExists,
+  searchByUsername
 };
