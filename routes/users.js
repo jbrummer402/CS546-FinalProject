@@ -197,8 +197,14 @@ router.get("/:id", async (req, res) => {
     } else {
       rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
     }
+    let username;
+    if (!loggedIn){
+      username = false;
+    } else {
+      username = loggedIn.username;
+    }
     res.render('partials/emp', 
-      {data: {user: user, logged: {uname: loggedIn.username}, reviews: reviewsOf, average: rateAvg}});
+      {data: {user: user, logged: {uname: username}, reviews: reviewsOf, average: rateAvg}});
     
   } catch (e) {
     console.log(e)
