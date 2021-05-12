@@ -67,6 +67,48 @@ async function seedUsers() {
   } catch (e) {
     console.error(e);
   }
+
+    try {
+        await users.create(
+            (firstName = "Paulie"),
+            (lastName = "Walnuts"),
+            (dateOfBirth = "8/4/1959"),
+            (userName = "pauliew"),
+            (password = "aytone"),
+            (address = {
+                street: "145 Belmont Ave",
+                aptNo: "3",
+                zipCode: "07304",
+                state: "nj",
+                town: "Jersey City",
+            }),
+            (photoLink = "/pics/manicotti.jpeg"),
+            (email = "pauliew@colombofam.com")
+        );
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        await users.create(
+            (firstName = "Donald"),
+            (lastName = "Draper"),
+            (dateOfBirth = "8/14/1989"),
+            (userName = "madman"),
+            (password = "dickwhitman"),
+            (address = {
+                street: "303 E 83rd St",
+                aptNo: "14",
+                zipCode: "10028",
+                state: "NY",
+                town: "New York",
+            }),
+            (photoLink = "/pics/me.jpeg"),
+            (email = "dondraper@sterlingcooper.com")
+        );
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 async function deleteUsers() {
