@@ -4,7 +4,8 @@
   "description": "Final Project - Odjöb",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "seed": "node ./seeds/seed.js"
   },
   "repository": {
     "type": "git",
