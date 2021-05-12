@@ -1,3 +1,4 @@
 # CS546-FinalProject
 
-To seed the database call 'npm run seed'
+First seed the database with 'npm run seed'
+Then call 'npm start'
