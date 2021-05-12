@@ -1,4 +1,14 @@
 <div class="centered main">
     <h1>My Active Jobs</h1>
-
+    {{#each activeJobs}}
+        <div>{{jobTitle}}</div>
+        <div>{{datePosted}}</div>
+    {{#if perHour}}
+        <div>${{compensation}}/hour</div>
+    {{else}}
+        <div>${{compensation}}</div>
+    {{/if}}
+        <br>
+    {{/each}}
+    <br>
 </div>
