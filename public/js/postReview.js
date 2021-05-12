@@ -27,6 +27,8 @@ jQuery(document).ready(function($) {
             return;
         }
 
+        // check type of reviewtxt input? Is that necessary?
+
         let ratingNum = Number(ratingVal);
         
         // this shouldnt happen but just to be thorough

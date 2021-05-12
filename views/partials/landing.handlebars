@@ -4,6 +4,7 @@
       see emp.handlebars for example, again might just put header in main --}}
     <a href="/users/signin">Sign In/Profile</a>
 </header>
+<p id="blank-search" class="error" hidden>Please make sure all search fields are filled out</p>
 <form id="search-form">
   <label for="search">Search</label> 
   <input name="search" type="text" placeholder="Enter search here" />
@@ -11,7 +12,8 @@
   <label><input name="search-type" type="radio" value="Users" />Users</label> 
   <button type="submit">Search</button>
 </form>
-<div>
-    {{!-- want to query for jobs here, but uhhhh 
-    that said should only do first ~20 or so jobs i think --}}
-</div>
+<h2 id="jobs-header">Jobs</h2>
+<ul id="landing-list" hidden></ul>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="/public/js/landing.js"></script>
