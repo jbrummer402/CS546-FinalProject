@@ -27,6 +27,15 @@ app.use('/users/signin', (req, res, next) => {
   }
 })
 
+// do not let not logged in user sign out
+app.use('/users/signout', (req, res, next) => {
+  if (!req.session.AuthCookie){
+    return res.redirect('/');
+  } else {
+    next();
+  }
+})
+
 app.use(async (req, res, next) => {
   console.log(req.method);
   if (req.session.AuthCookie) {

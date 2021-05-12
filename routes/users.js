@@ -95,6 +95,11 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.get("/signout", async (req, res) => {
+  req.session.destroy();
+  res.render("partials/landing", { title: "Home" });
+})
+
 router.get("/profile", async (req, res) => {
   // let jobs;
   // try {
