@@ -39,27 +39,19 @@ router.get("/postjob", async (req, res) => {
 });
 
 router.get("/reviews", async (req, res) => {
+    const reviewsReceived = await reviewData.getReviewsReceivedForUser(req.session.AuthCookie.id);
+    for (let i = 0; i < reviewsReceived.length; i++) {
+        let review = reviewsReceived[i];
+        review.reviewerId = (await usersData.readByID(review.reviewerId)).username;
+        review.revieweeId = (await usersData.readByID(review.revieweeId)).username;
+        review.dateOfReview = review.dateOfReview.toDateString();
+    }
     res.render("partials/profile/reviews", {
         title: "My Reviews",
         layout: 'profile',
         username: req.session.AuthCookie.username,
         //TODO: get reviews from reviews data base
-        reviews: [
-            {
-                reviewerId: "agentcoop",
-                revieweeId: "someOtherGuy",
-                rating: 5,
-                reviewDescription: "This guy was cool",
-                dateOfReview: "1/2/2023",
-            },
-            {
-                reviewerId: "agentcoop",
-                revieweeId: "ronaldxxx",
-                rating: 1,
-                reviewDescription: "kinda wak",
-                dateOfReview: "1/2/2019",
-            },
-        ],
+        reviews: reviewsReceived
     });
 });
 
@@ -68,6 +60,17 @@ router.get("/activejobs", async (req, res) => {
         title: "My Active Jobs",
         layout: 'profile',
         username: req.session.AuthCookie.username,
+        activeJobs: [{
+            jobTitle: "NEED HELP MOVING FURNITURE!",
+            compensation: 15,
+            perHour: true,
+            datePosted: "4/1/21"
+        }, {
+            jobTitle: "SOMEONE PLS FIX MY COMPUTER!!",
+            compensation: 300,
+            perHour: false,
+            datePosted: "5/6/21"
+        }]
     });
 });
 
