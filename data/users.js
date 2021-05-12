@@ -245,12 +245,18 @@ async function update(updateObj) {
     jobsInProgressAsEmployer: jobsInProgressAsEmployer === undefined ? user.jobsInProgressAsEmployer : jobsInProgressAsEmployer,
   };
 
+  function UserNotUpdatedException() {
+    this.message = 'No changes to user detected.';
+    this.name = 'UserNotUpdatedException';
+  }
+
   const updatedInfo = await usersCollection.updateOne(
     { _id: ObjectId(id) },
     { $set: updatedUser }
   );
   if (updatedInfo.modifiedCount === 0) {
-    throw "Could not update user successfully!";
+    throw new UserNotUpdatedException();
+    // throw "No changes to user detected.";
   }
 
   return await this.readByID(id);

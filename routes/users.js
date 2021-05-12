@@ -365,7 +365,10 @@ router.post("/:id", async (req, res) => {
     });
     res.json(user);
   } catch (e) {
-    res.sendStatus(500);
+    if (e.name === 'UserNotUpdatedException')
+      res.status(400).json({ error: e.message });
+    else
+      res.sendStatus(500);
   }
 });
 
