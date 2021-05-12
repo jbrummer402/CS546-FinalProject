@@ -22,7 +22,7 @@ async function seedJobs() {
                 town : "Chatham"
             }),
             (creator_id = ObjectID()),
-            (status = active)
+            (status = 'active')
         );
     } catch (e) {
         console.error(e);
@@ -43,7 +43,7 @@ async function seedJobs() {
             }),
             // need to get objectid of user
             (creator_id = ObjectID()),
-            (status = active)
+            (status = 'active')
         );
     } catch (e) {
         console.error(e);

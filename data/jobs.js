@@ -1,6 +1,6 @@
 const mongoCollections = require("./../config/mongoCollections");
 const ObjectId = require("mongodb").ObjectId;
-const jobs = mongoCollections.users;
+const jobs = mongoCollections.jobs;
 
 async function createJob(
   compensation,
@@ -38,7 +38,7 @@ async function readByID(id) {
   if (typeof id !== "string") throw "Input id must be a string!";
   if (!ObjectId.isValid(id)) throw "Input id must be a valid ObjectID!";
 
-  const jobCollection = await jobs();
+  const jobsCollection = await jobs();
 
   const job = await jobsCollection.findOne({ _id: ObjectId(id) });
   if (job === null) throw "No job with that id!";
