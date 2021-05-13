@@ -8,8 +8,8 @@ const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 const xss = require('xss');
 
-router.post("/", async (req, res) => {
-  let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
+ruter.post("/", async (req, res) => {
+  let firstName = req.body.firstName ? xsos(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
   let dateOfBirth = req.body.dateOfBirth ? xss(req.body.dateOfBirth) : undefined;
   let username = req.body.username ? xss(req.body.username) : undefined;
