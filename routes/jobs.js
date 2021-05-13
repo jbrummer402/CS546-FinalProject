@@ -39,7 +39,24 @@ router.post("/", async (req, res) => {
 });
 
 //get every job
-router.get("/", async (req, res) => {});
+router.get("/", async (req, res) => {
+  try {
+    let everyJob = await jobsData.getJobs();
+    res.json(everyJob);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
+router.get('/search/:searchTerm', async (req, res) => {
+  try {
+    let searchData = jobsData.searchByTerms(xss(req.params.body));
+    res.json(searchData);
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ error: "job not found" });
+  }
+})
 
 // to be implemented
 async function checkInputs() {
