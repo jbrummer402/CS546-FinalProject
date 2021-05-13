@@ -3,6 +3,23 @@ jQuery(document).ready(function ($) {
     username = $("#username"),
     password = $("#password"),
     error = $("#error");
+    createAccount = $('#createAcc');
+    signupForm = $('#signupForm');
+    signInstead = $('#signInstead');
+
+  createAccount.on('click', function(event){
+    signupForm.show();
+    signInstead.show();
+    signinForm.hide();
+    createAccount.hide();
+  });
+
+  signInstead.on('click', function(event){
+    signinForm.show();
+    createAccount.show();
+    signupForm.hide();
+    signInstead.hide();
+  })
 
   signinForm.submit(function (event) {
     event.preventDefault();
