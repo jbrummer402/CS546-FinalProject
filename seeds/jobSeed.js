@@ -4,10 +4,12 @@ const mongoConnection = require('../config/mongoConnection');
 const mongoCollections = require('../config/mongoCollections');
 const { ObjectID, ObjectId } = require('bson');
 const jobCollection = mongoCollections.jobs;
-
+const users = data.users;
 
 async function seedJobs() {
     try {
+        const user = await users.readByUsername("agentcoop");
+        let userId = await users.readByID(user._id);
         await jobs.createJob(
             (compensation = 15.5),
             (perHour = true),
@@ -21,13 +23,16 @@ async function seedJobs() {
                 state : "NJ",
                 town : "erfvaer"
             }),
-            (creator_id = ObjectID()),
+            (creator_id = userId._id),
             (status = 'active')
         );
     } catch (e) {
         console.error(e);
     }
         try {
+            const user = await users.readByUsername("agentcoop");
+            let userId = await users.readByID(user._id);
+            
             await jobs.createJob(
                 (compensation = 15.5),
                 (perHour = true),
@@ -41,7 +46,7 @@ async function seedJobs() {
                     state : "NJ",
                     town : "Chatham"
                 }),
-                (creator_id = ObjectID()),
+                (creator_id = ObjectID(userId._id)),
                 (status = 'active')
             );
         } catch (e) {
