@@ -17,12 +17,16 @@ header h1 {
   margin-bottom: 5%;
 }
 
-header a {
+header .to-prof {
   text-align: right;
   margin-right: 20px;
   font-size: 18px;
   margin-top: auto;
   margin-bottom: auto;
+  color: white;
+}
+
+header .to-prof a:visited, .web-title a:visited {
   color: white;
 }
 
@@ -40,6 +44,12 @@ header a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
 }
+
+.web-title a:link {
+  text-decoration: none;
+  font-size: 32px;
+}
+
 
 main {
   margin-top: 15px;
