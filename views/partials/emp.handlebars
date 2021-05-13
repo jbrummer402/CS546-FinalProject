@@ -4,10 +4,10 @@
     {{#if data.logged.uname}}
         <a id="to-profile" href="/users/profile">{{data.logged.uname}}</a>
     {{else}}
-        <a href="/users/signin">Sign In/Profile</a>
+        <a href="/users/signin">Sign In</a>
     {{/if}}
 </header>
-<main>
+<main id="user-page">
     <div id="user-info">
         <img id="profile-pic" src={{data.user.photoLink}} alt={{data.user.username}}>
         <h2>{{data.user.firstName}} {{data.user.lastName}}</h2>

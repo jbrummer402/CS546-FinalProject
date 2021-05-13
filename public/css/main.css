@@ -2,6 +2,7 @@
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+/* establish basic header format */
 header {
   background-color: #307e47;
   color: white;
@@ -23,6 +24,21 @@ header a {
   margin-top: auto;
   margin-bottom: auto;
   color: white;
+}
+
+/* making user page slightly better */
+#user-info {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+#reviews-of-user {
+  grid-area: 1 / 2 / last-line / 3;
+}
+
+#user-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
 }
 
 main {
