@@ -37,7 +37,7 @@ app.use('/users/signout', (req, res, next) => {
 })
 
 // do not let not logged in user access profile page
-app.use('/profile/', (req, res, next) => {
+app.use('/users/profile', (req, res, next) => {
   if (!req.session.AuthCookie){
     return res.redirect('/');
   } else {
