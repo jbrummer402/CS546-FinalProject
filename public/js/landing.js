@@ -65,7 +65,7 @@ jQuery(document).ready(function($){
     function bindUserLink(userItem){
         let LI = $('<li/>')
             .appendTo(landingUserList);
-        let DIV = $('<div/>')
+        let h3 = $('<h3/>')
             .text(`${userItem.firstName} ${userItem.lastName}`)
             .appendTo(LI);
         let A = $('<a/>')
@@ -107,7 +107,7 @@ jQuery(document).ready(function($){
         landingUserList.empty();
 
         let searchType = $('input[name="search-type"]:checked', searchForm).val();
-        let searchText = $('input[name="search"]', searchForm).val();
+        let searchText = $('#search-bar', searchForm).val();
 
         // check all input is accounted for
         if (!searchType || !searchText || searchText.trim().length === 0){
