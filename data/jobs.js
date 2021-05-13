@@ -63,6 +63,27 @@ async function readByID(id) {
   return job;
 }
 
+async function removeJob(id) {
+  const jobCollection = await jobs();
+  try {
+    let jobToDelete = await this.readByID(id);
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+
+  const deleteInfo = jobsCollection.removeOne({ _id : ObjectId(id) })
+  if (deletionInfo.deletedCount === 0) {
+    throw `Could not delete post with id of ${id}`;
+  }
+
+  return true;
+}
+
+// async function updateJob(id) {
+
+// }
+
 async function checkCompensation(compensation) {
   let error = false;
   let message = "";
@@ -254,4 +275,4 @@ async function searchByTerms(terms) {
   return job;
 }
 
-module.exports = { getJobs, createJob, readByID, searchByTerms };
+module.exports = { getJobs, createJob, readByID, removeJob, updateJob, searchByTerms };
