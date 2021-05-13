@@ -10,22 +10,20 @@
     {{!-- this will have different text depending whether user is logged in or not --}}
     <a href="/users/signin">Sign In/Profile</a>
 </header>
-<main>
-    <h2>{{jobInfo.job.title}}</h2>
-    <div id="job-properties">
-        <p>Description: {{jobInfo.job.description}}</p>
-        {{#if job.perHour}}
-            <p>Compensation: ${{jobInfo.job.compensation}}/hr</p>
-        {{/if }}
-        {{#else }}
-            <p>Compensation: ${{jobInfo.job.compensation}}</p>
-        {{/else }}
-        <p>Date Posted: {{jobInfo.job.datePosted}}</p>
-        <p>Location: {{jobInfo.job.address.town}}, {{jobInfo.job.address.state}}</p>
-    </div>
-    <div id=poster-info>
-    <h3>{{jobInfo.poster.firstName}} {{jobInfo.poster.lastName}}</h3>
-    <p>{{jobInfo.poster.username}}</p>
-    <p>Rating: {{jobInfo.poster.averageRating}}</p>
-    </div>
-</main>
+<h2>{{jobInfo.job.title}}</h2>
+<div id="job-properties">
+    <p>Description: {{jobInfo.job.description}}</p>
+    {{#if job.perHour}}
+        <p>Compensation: ${{jobInfo.job.compensation}}/hr</p>
+    {{/if }}
+    {{#else }}
+        <p>Compensation: ${{jobInfo.job.compensation}}</p>
+    {{/else }}
+    <p>Date Posted: {{jobInfo.job.datePosted}}</p>
+    <p>Location: {{jobInfo.job.address.town}}, {{jobInfo.job.address.state}}</p>
+</div>
+<div id=poster-info>
+   <h3>{{jobInfo.poster.firstName}} {{jobInfo.poster.lastName}}</h3>
+   <p>{{jobInfo.poster.username}}</p>
+   <p>Rating: {{jobInfo.poster.averageRating}}</p>
+</div>

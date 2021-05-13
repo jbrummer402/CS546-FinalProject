@@ -2,8 +2,16 @@ const mongoCollections = require("./../config/mongoCollections");
 const ObjectId = require("mongodb").ObjectId;
 const jobs = mongoCollections.jobs;
 
+async function getJobs() {
+  let jobsCollection = await jobs();
+  const jobsList = await jobsCollection.find({}).toArray();
 
-//create and get job methods
+  console.log(jobsList)
+  return jobsList;
+}
+
+
+//create job 
 async function createJob(compensation, perHour, title, description, datePosted, address, creatorId, status) {
   // handle inputs
  
@@ -20,6 +28,7 @@ async function createJob(compensation, perHour, title, description, datePosted, 
   const jobsCollection = await jobs();
 
   let newJob = {
+    compensation : compensation,
     perHour : perHour,
     title : title,
     description : description,
@@ -211,4 +220,38 @@ async function checkInputs(compensation, perHour, title, description, datePosted
 
 }
 
-module.exports = { createJob, readByID };
+async function searchByTerms(terms) {
+  let searchTerm = {};
+  
+  if (!terms || terms === null) {
+    throw "No terms provided";
+  }
+
+  if (typeof terms !== 'object'){
+    throw "Search term must be an object"
+  }
+
+  for (let [key, value] in Object.entries(terms)) {
+    // search through every term in the search term and make sure they don't raise errors
+    await checkInputs((key = value));
+  }
+
+  const jobsCollection = await jobs();
+
+  const job = await jobsCollection.find(
+    { compensation : terms.compensation },
+    { perHour : terms.perHour },
+    { title : terms.title },
+    { description : terms.description },
+    { datePosted : terms.datePosted },
+    { address : terms.address },
+    { creatorId : terms.creatorId },
+    { status : terms.status }
+  )
+
+  if (!job || job === null) throw "No jobs with those search terms";
+
+  return job;
+}
+
+module.exports = { getJobs, createJob, readByID, searchByTerms };
