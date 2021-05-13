@@ -17,6 +17,7 @@ router.get("/account", async (req, res) => {
     //   console.log(error);
     // }
 
+    // TODO: user info in session needs to be updated when an update is made to user's account
     res.render("partials/profile/account", {
         title: req.session.AuthCookie.username,
         layout: 'profile',
@@ -79,6 +80,23 @@ router.get("/inprogressjobs", async (req, res) => {
         title: "My In-Progress Jobs",
         layout: 'profile',
         username: req.session.AuthCookie.username,
+        jobsInProgressAsEmployee: [{
+            jobTitle: "Need kitchen sink fixed ASAP",
+            compensation: 500,
+            perHour: false,
+            datePosted: "5/13/21"
+        }, {
+            jobTitle: "MY DOG NEEDS PIANO LESSONS",
+            compensation: 20,
+            perHour: true,
+            datePosted: "5/2/21"
+        }],
+        jobsInProgressAsEmployer: [{
+            jobTitle: "teach me how to make a grilled cheese",
+            compensation: 1000,
+            perHour: false,
+            datePosted: "3/23/21"
+        }]
     });
 });
 
@@ -87,6 +105,23 @@ router.get("/completedjobs", async (req, res) => {
         title: "My Completed Jobs",
         layout: 'profile',
         username: req.session.AuthCookie.username,
+        jobsWorked: [{
+            jobTitle: "For the love of god, come help me change a light bulb",
+            compensation: 2000,
+            perHour: false,
+            datePosted: "5/5/21"
+        }],
+        jobsProvided: [{
+            jobTitle: "NEED MATH TUTORING",
+            compensation: 5,
+            perHour: true,
+            datePosted: "3/23/21"
+        }, {
+            jobTitle: "anyone know giving ukelele lessons???",
+            compensation: 30,
+            perHour: true,
+            datePosted: "2/7/21"
+        }]
     });
 });
 
