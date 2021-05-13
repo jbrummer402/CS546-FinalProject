@@ -4,18 +4,20 @@
       see emp.handlebars for example, again might just put header in main --}}
     <a href="/users/signin">Sign In/Profile</a>
 </header>
-<p id="blank-search" class="error" hidden>Please make sure all search fields are filled out</p>
-<form id="search-form">
-  <label for="search">Search</label> 
-  <input name="search" type="text" placeholder="Enter search here" />
-  <label><input name="search-type" type="radio" value="Jobs" />Jobs</label> 
-  <label><input name="search-type" type="radio" value="Users" />Users</label> 
-  <button type="submit">Search</button>
-</form>
-<h2 id="jobs-header" hidden>Jobs</h2>
-<h2 id="users-header" hidden>Users</h2>
-<ul id="landing-job-list" hidden></ul>
-<ul id="landing-user-list" hidden></ul>
+<main>
+  <p id="blank-search" class="error" hidden>Please make sure all search fields are filled out</p>
+  <form id="search-form">
+    <label for="search-bar">Search</label> 
+    <input id="search-bar" type="text" placeholder="Enter search here" />
+    <label><input name="search-type" type="radio" value="Jobs" />Jobs</label> 
+    <label><input name="search-type" type="radio" value="Users" />Users</label> 
+    <button type="submit">Search</button>
+  </form>
+  <h2 id="jobs-header" hidden>Jobs</h2>
+  <h2 id="users-header" hidden>Users</h2>
+  <ul id="landing-job-list" hidden></ul>
+  <ul id="landing-user-list" hidden></ul>
+</main>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script src="/public/js/landing.js"></script>
