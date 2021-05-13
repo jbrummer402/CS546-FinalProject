@@ -73,7 +73,7 @@ async function removeJob(id) {
   }
 
   const deleteInfo = jobsCollection.removeOne({ _id : ObjectId(id) })
-  if (deletionInfo.deletedCount === 0) {
+  if (deleteInfo.deletedCount === 0) {
     throw `Could not delete post with id of ${id}`;
   }
 
