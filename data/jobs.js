@@ -275,4 +275,4 @@ async function searchByTerms(terms) {
   return job;
 }
 
-module.exports = { getJobs, createJob, readByID, removeJob, updateJob, searchByTerms };
+module.exports = { getJobs, createJob, readByID, removeJob, /*updateJob,*/ searchByTerms };
