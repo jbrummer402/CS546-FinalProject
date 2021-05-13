@@ -1,0 +1,13 @@
+<div class="centered main">
+    <h1>My Reviews</h1>
+    {{#each reviews}}
+        <div class="block" style="padding: 10px">
+            <div class="revieweeName">{{revieweeId}}</div>
+            <div>{{dateOfReview}}</div>
+            <div>{{reviewDescription}}</div>
+            <div>{{rating}}/5</div>
+            <br>
+        </div>
+    {{/each}}
+    <br>
+</div>

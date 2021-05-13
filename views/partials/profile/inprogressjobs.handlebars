@@ -1,0 +1,37 @@
+<div class="centered main">
+    <h1>My In-Progress Jobs</h1>
+    <h3>As Employee:</h3>
+    {{#each jobsInProgressAsEmployee}}
+        <div class="block">
+            <div style="width:40%; height:100px; float:left; padding: 10px">
+                <div>{{jobTitle}}</div>
+                <div>{{datePosted}}</div>
+                {{#if perHour}}
+                    <div>${{compensation}}/hour</div>
+                {{else}}
+                    <div>${{compensation}}</div>
+                {{/if}}
+                <br>
+            </div>
+        </div>
+    {{/each}}
+    <h3>As Employer:</h3>
+    {{#each jobsInProgressAsEmployer}}
+        <div class="block">
+            <div style="width:40%; height:100px; float:left; padding: 10px">
+                <div>{{jobTitle}}</div>
+                <div>{{datePosted}}</div>
+                {{#if perHour}}
+                    <div>${{compensation}}/hour</div>
+                {{else}}
+                    <div>${{compensation}}</div>
+                {{/if}}
+                <br>
+            </div>
+            <div style="width:30%; height:100px; float:left; padding: 10px">
+                <button type="button">Mark as Completed</button>
+            </div>
+        </div>
+    {{/each}}
+    <br>
+</div>

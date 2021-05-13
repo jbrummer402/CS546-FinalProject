@@ -19,7 +19,7 @@ async function seedUsers() {
         state: "  NE",
         town: "Hoboken",
       }),
-      (photoLink = "C:/pics/owl.png"),
+      (photoLink = "/public/profile_pics/agentcoop.jpeg"),
       (email = "dUdE11@crazysIte.com")
     );
   } catch (e) {
@@ -40,7 +40,7 @@ async function seedUsers() {
         state: "NJ",
         town: "Hoboken",
       }),
-      (photoLink = "/pics/fatburger.jpeg"),
+      (photoLink = "/public/profile_pics/ronald.jpeg"),
       (email = "ronaldmd@mickeydeez.com")
     );
   } catch (e) {
@@ -61,7 +61,7 @@ async function seedUsers() {
         state: "nj",
         town: "Newark",
       }),
-      (photoLink = "/pics/gabagool.jpeg"),
+      (photoLink = "/public/profile_pics/tony.jpeg"),
       (email = "tonys@dafivefamilies.com")
     );
   } catch (e) {
@@ -82,7 +82,7 @@ async function seedUsers() {
                 state: "nj",
                 town: "Jersey City",
             }),
-            (photoLink = "/pics/manicotti.jpeg"),
+            (photoLink = "/public/profile_pics/paulie.jpeg"),
             (email = "pauliew@colombofam.com")
         );
     } catch (e) {
@@ -103,8 +103,29 @@ async function seedUsers() {
                 state: "NY",
                 town: "New York",
             }),
-            (photoLink = "/pics/me.jpeg"),
+            (photoLink = "/public/profile_pics/dondraper.jpeg"),
             (email = "dondraper@sterlingcooper.com")
+        );
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        await users.create(
+            (firstName = "Peter"),
+            (lastName = "Campbell"),
+            (dateOfBirth = "1/4/1976"),
+            (userName = "xx_madman_xx"),
+            (password = "password12"),
+            (address = {
+                street: "13-51 Perry St",
+                aptNo: "6",
+                zipCode: "10014",
+                state: "NY",
+                town: "New York",
+            }),
+            (photoLink = "/public/profile_pics/pete.jpeg"),
+            (email = "pcambell@sterlingcooper.com")
         );
     } catch (e) {
         console.error(e);

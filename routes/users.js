@@ -197,8 +197,14 @@ router.get("/:id", async (req, res) => {
     } else {
       rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
     }
+    let username;
+    if (!loggedIn){
+      username = false;
+    } else {
+      username = loggedIn.username;
+    }
     res.render('partials/emp', 
-      {data: {user: user, logged: {uname: loggedIn.username}, reviews: reviewsOf, average: rateAvg}});
+      {data: {user: user, logged: {uname: username}, reviews: reviewsOf, average: rateAvg}});
     
   } catch (e) {
     console.log(e)
@@ -212,6 +218,16 @@ router.get("/username/:username", async (req, res) => {
     res.json(user);
   } catch (e) {
     res.status(404).json({ error: "User not found" });
+  }
+});
+
+// search by username
+router.get("/search/:searchterm", async (req, res) => {
+  try {
+    let searchterm = await usersData.searchByUsername(xss(req.params.searchterm));
+    res.json(searchterm);
+  } catch (e) {
+    res.status(404).json({ error: "No matches" });
   }
 });
 

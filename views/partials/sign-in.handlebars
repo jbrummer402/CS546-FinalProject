@@ -1,18 +1,19 @@
-<h1>Sign-In</h1>
-<div id="error" hidden>Not a valid username password combination</div>
 <form action="/login" method="POST" id="signinForm">
+  <h1>Sign-In</h1>
+  <div id="error" hidden>Not a valid username password combination</div>
   <label for="username">
     Enter Username:
-    <input id="username" name="username" type="text" />
+    <input id="username" name="username" type="text" placeholder="username"/>
   </label>
   <label for="password">
     Enter Password
-    <input id="password" name="password" type="password" />
+    <input id="password" name="password" type="password" placeholder="password"/>
   </label>
   <button type="submit">Submit</button>
 </form>
 <br>
-<form action="/users" method="POST" id="signupForm">
+<button type="button" id="createAcc">Create an Account</button>
+<form action="/users" method="POST" id="signupForm" hidden>
 <h1>Sign-Up</h1>
   <label for="username2">
     Enter Username:
@@ -90,6 +91,9 @@
       <br>
   <button type="submit">Sign-Up</button>
 </form>
+<br>
+<br>
+<button type="button" id="signInstead" hidden>Sign In Instead</button>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"

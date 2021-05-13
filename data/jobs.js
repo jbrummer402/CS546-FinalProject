@@ -2,28 +2,44 @@ const mongoCollections = require("./../config/mongoCollections");
 const ObjectId = require("mongodb").ObjectId;
 const jobs = mongoCollections.jobs;
 
-async function createJob(
-  compensation,
-  perHour,
-  title,
-  description,
-  datePosted,
-  address,
-  creatorId
-) {
+async function getJobs() {
+  let jobsCollection = await jobs();
+  const jobsList = await jobsCollection.find({}).toArray();
+
+  console.log(jobsList)
+  return jobsList;
+}
+
+
+//create job 
+async function createJob(compensation, perHour, title, description, datePosted, address, creatorId, status) {
   // handle inputs
-  try {
-    await checkInputs();
-  } catch (e) {
-    throw new Error(e);
-  }
+ 
+  await checkInputs(
+    compensation,
+    perHour,
+    title,
+    description,
+    datePosted,
+    address,
+    creatorId
+  );
 
   const jobsCollection = await jobs();
 
-  let newJob = {};
+  let newJob = {
+    compensation : compensation,
+    perHour : perHour,
+    title : title,
+    description : description,
+    datePosted : datePosted,
+    address : address,
+    creatorId : creatorId,
+    status : status
+  };
 
   const insertInfo = await jobsCollection.insertOne(newJob);
-  if (insertInfo.insertedCount === 0) throw "Could not create user!";
+  if (insertInfo.insertedCount === 0) throw "Could not create job!";
 
   const newId = insertInfo.insertedId;
 
@@ -31,6 +47,7 @@ async function createJob(
 
   return job;
 }
+
 
 async function readByID(id) {
   // handle inputs
@@ -50,7 +67,7 @@ async function checkCompensation(compensation) {
   let error = false;
   let message = "";
   if (isNaN(parseFloat(compensation))) {
-    error = false;
+    error = true;
     message = "Compensation must be of type float"
   }
 
@@ -60,10 +77,10 @@ async function checkCompensation(compensation) {
 async function checkPerHour(perHour) {
   let error = false;
   let message = "";
-  
-  if (typeof perHour != "boolean") {
-    error = false;
-    message = "Perhour must be of type bool"
+
+  if (typeof perHour !== "boolean" || !perHour) {
+    error = true;
+    message = "Perhour must be of type boolean"
   }
 
   return {error : error, message : message }
@@ -72,8 +89,9 @@ async function checkPerHour(perHour) {
 async function checkTitle(title) {
   let error = false;
   let message = "";
-  if (typeof title != "string" || !(title.trim())) {
-    error = false;
+  
+  if (typeof title !== "string" || !(title.trim())) {
+    error = true;
     message = "Title must be a non empty string"
   }
 
@@ -83,19 +101,21 @@ async function checkTitle(title) {
 async function checkDescription(description) {
   let error = false;
   let message = "";
-  if (typeof description != "string" || !(description.trim())) {
-    error = false;
+
+  if (!description || typeof description !== 'string' ||  !description.trim() ||  description === null || description === "") {
+    error = true;
     message = "Description must be a non empty string"
   }
 
-  return {error : error, message : message }
+  return { error : error, message : message }
 }
 
 async function checkDatePosted(datePosted) {
   let error = false;
   let message = "";
-  if (!datePosted instanceof Date || isNaN(datePosted.valueOf())) {
-    error = false;
+
+  if (!(datePosted instanceof Date) || isNaN(datePosted.valueOf())) {
+    error = true;
     message = "Date posted must be of type date"
   }
 
@@ -105,45 +125,133 @@ async function checkDatePosted(datePosted) {
 async function checkAddress(address) {
   let error = false;
   let message = "";
-
-  if (!(typeof address === 'object' && address !== null)) {
+  
+  if (typeof address !== 'object' || !address || address === null) {
     error = true; 
     message = "Address must be of type object"
+    
   }
 
-  return {error : error, message : message};
+  if (typeof address.street !== 'object' || !address.street || address.street === null) {
+    error = true; 
+    message = "Address must contain street of type object"
+  
+  }
+
+
+  if (!address.street.streetName || typeof address.street.streetName !== 'string' || address.street.streetName === null) {
+    if (!address.street.streetName) {
+      error = true; 
+      message = "Address street name does not exist"
+      
+    }
+  
+    if (typeof address.street.streetName !== 'string' || !address.street.streetName.trim() || !isNaN(parseInt(address.street.streetName))) {
+      error = true; 
+      message = "Address street name must be a non empty string"
+      
+    }
+  }
+  
+  if (!address.street.streetNo || isNaN(parseInt(address.street.streetNo)) || 
+      typeof address.street.streetNo !== 'number' || 
+      address.street.streetNo === null) {
+      error = true; 
+      message = "Address street number must be a number" 
+      
+  }
+
+  if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
+      error = true; 
+      message = "Address zipcode must be a number"; 
+  }
+
+  if (!address.state ||  typeof address.state !== 'string' || !(address.state.trim())) {
+    error = true; 
+    message = "Address state must be a string"; 
+  }
+
+  if (typeof address.town !== 'string' || !address.town || !(address.town.trim())) {
+    error = true; 
+    message = "Address town must be a number"; 
+  }
+
+  return {error : error, message : message };
 }
 
 async function checkCreatorId(creatorId) {
   let error = false;
   let message = "";
 
-  if (!ObjectId.isValid(creatorId)) {
+  if (!ObjectId.isValid(creatorId) || !creatorId) {
     error = true; 
     message = "Creator id must be of type ObjectId"
   }
-
-  return {error : error, message : message};
+  
+  return {error : error, message : message };
 }
 
 async function checkInputs(compensation, perHour, title, description, datePosted, address, creatorId) {
   let error = false;
   let errorObj = {
-    compensation : error,
-    perHour : error,
-    title : error,
-    description : error,
-    datePosted : error,
-    address : error, 
-    creatorId : error
+    compensation : compensation,
+    perHour      :      perHour,
+    title        :        title,
+    description  :  description,
+    datePosted   :   datePosted,
+    address      :      address, 
+    creatorId    :    creatorId
   }
-  if (!compensation || !perHour || !title || !description || !datePosted || !address || !creatorId) {
-    error = true;
 
-    return {error : error, message : "Inputs must be provided for the following: compensation, perHour, title, description, datePosted, address, creatorId"}
+  let errorFunctions = [checkCompensation, checkPerHour, checkTitle, checkDescription, checkDatePosted,
+                        checkAddress, checkCreatorId];
 
-  }    
+  let index = 0;
+    
+  for (let [key, value] of Object.entries(errorObj)) {
+    value = (await errorFunctions[index](value));
+    
+    if (value && value.error) {
+      throw value.message;
+    }
+
+    index++;
+  }
 
 }
 
-module.exports = { createJob, readByID };
+async function searchByTerms(terms) {
+  let searchTerm = {};
+  
+  if (!terms || terms === null) {
+    throw "No terms provided";
+  }
+
+  if (typeof terms !== 'object'){
+    throw "Search term must be an object"
+  }
+
+  for (let [key, value] in Object.entries(terms)) {
+    // search through every term in the search term and make sure they don't raise errors
+    await checkInputs((key = value));
+  }
+
+  const jobsCollection = await jobs();
+
+  const job = await jobsCollection.find(
+    { compensation : terms.compensation },
+    { perHour : terms.perHour },
+    { title : terms.title },
+    { description : terms.description },
+    { datePosted : terms.datePosted },
+    { address : terms.address },
+    { creatorId : terms.creatorId },
+    { status : terms.status }
+  )
+
+  if (!job || job === null) throw "No jobs with those search terms";
+
+  return job;
+}
+
+module.exports = { getJobs, createJob, readByID, searchByTerms };

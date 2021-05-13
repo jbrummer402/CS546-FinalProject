@@ -3,6 +3,23 @@ jQuery(document).ready(function ($) {
     username = $("#username"),
     password = $("#password"),
     error = $("#error");
+    createAccount = $('#createAcc');
+    signupForm = $('#signupForm');
+    signInstead = $('#signInstead');
+
+  createAccount.on('click', function(event){
+    signupForm.show();
+    signInstead.show();
+    signinForm.hide();
+    createAccount.hide();
+  });
+
+  signInstead.on('click', function(event){
+    signinForm.show();
+    createAccount.show();
+    signupForm.hide();
+    signInstead.hide();
+  })
 
   signinForm.submit(function (event) {
     event.preventDefault();
@@ -26,7 +43,7 @@ jQuery(document).ready(function ($) {
     $.ajax(requestConfig).then(function (responseMessage) {
       console.log(responseMessage);
       if (responseMessage.success === true) {
-        window.location.href = "/users/profile";
+        window.location.href = "/profile/account";
       } else {
         error.show();
         signinForm.trigger("reset");

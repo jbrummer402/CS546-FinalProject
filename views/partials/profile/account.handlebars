@@ -1,0 +1,81 @@
+<!--<div class="main">-->
+<!--    <h2>Account</h2>-->
+<!--    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet augue urna.</p>-->
+<!--</div>-->
+
+
+<div class="centered main">
+    <h1>Account</h1>
+    <form action="/users/{{id}}" method="POST">
+        <label for="firstName">
+            First Name
+            <br>
+            <input type="text" value={{{firstName}}} id="firstName" name="firstName">
+        </label>
+        <br>
+        <label for="lastName">
+            Last Name
+            <br>
+            <input type="text" value={{{lastName}}} id="lastName" name="lastName">
+        </label>
+        <br>
+        <label for="dateOfBirth">
+            Date of Birth
+            <br>
+            <input type="text" value={{{dateOfBirth}}} id="dateOfBirth" name="dateOfBirth">
+        </label>
+        <br>
+        <label for="username">
+            Username
+            <br>
+            <input type="text" value={{{username}}} id="username" name="username">
+        </label>
+        <br>
+        <label for="email">
+            Email
+            <br>
+            <input type="text" placeholder="{{email}}" id="email" name="email">
+        </label>
+        <br>
+        <h3>Address</h3>
+        <label for="street">
+            Street
+            <br>
+            <input type="text" value="{{address.street}}" id="street" name="street">
+        </label>
+        <br>
+        <label for="aptNo">
+            Apartment Number
+            <br>
+            <input type="text" value="{{address.aptNo}}" id="aptNo" name="aptNo">
+        </label>
+        <br>
+        <label for="zipCode">
+            Zip Code
+            <br>
+            <input type="text" value="{{address.zipCode}}" id="zipCode" name="zipCode">
+        </label>
+        <br>
+        <label for="state">
+            State
+            <br>
+            <input type="text" value="{{address.state}}" id="state" name="state">
+        </label>
+        <br>
+        <label for="town">
+            Town
+            <br>
+            <input type="text" value="{{address.town}}" id="town" name="town">
+        </label>
+        <br>
+        <label for="country">
+            Country
+            <br>
+            <input type="text" value="{{address.country}}" id="country" name="country">
+        </label>
+        <br>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+

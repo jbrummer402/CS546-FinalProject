@@ -1,0 +1,67 @@
+<div class="centered main">
+    <h1>Post a Job</h1>
+    <form method="post" action="/jobs" id="newJobForm">
+        <label for="title">
+            Title
+            <br>
+            <input type="text" id="jobTitle">
+        </label>
+        <br>
+        <label for="description">
+            Description
+            <br>
+            <input type="text" id="jobDescription">
+        </label>
+        <br>
+        <label for="compensation">
+            Compensation
+            <br>
+            <input type="text" id="jobCompensation">
+        </label>
+        <br>
+        <label for="perHour">
+            Hourly Pay
+            <br>
+            <input type="text" id="jobperHour">
+        </label>
+        <br>
+        <label for="street">
+            Street
+            <br>
+            <input type="text" value="{{address.street}}" id="street">
+        </label>
+        <br>
+        <label for="aptNo">
+            Apartment Number
+            <br>
+            <input type="text" value="{{address.aptNo}}" id="aptNo">
+        </label>
+        <br>
+        <label for="zipCode">
+            Zip Code
+            <br>
+            <input type="text" value="{{address.zipCode}}" id="zipCode">
+        </label>
+        <br>
+        <label for="state">
+            State
+            <br>
+            <input type="text" value="{{address.state}}" id="state">
+        </label>
+        <br>
+        <label for="town">
+            Town
+            <br>
+            <input type="text" value="{{address.town}}" id="town">
+        </label>
+        <br>
+        <label for="country">
+            Country
+            <br>
+            <input type="text" value="{{address.country}}" id="country">
+        </label>
+        <br>
+        <button type="submit">Post Job</button>
+        {{!-- TODO: Implement address change --}}
+    </form>
+</div>

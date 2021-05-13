@@ -1,0 +1,23 @@
+<div class="centered main">
+    <h1>My Active Jobs</h1>
+    {{#each activeJobs}}
+        <div class="block">
+            <div style="width:40%; height:100px; float:left; padding: 10px">
+                <div>{{jobTitle}}</div>
+                <div>{{datePosted}}</div>
+                {{#if perHour}}
+                    <div>${{compensation}}/hour</div>
+                {{else}}
+                    <div>${{compensation}}</div>
+                {{/if}}
+                <br>
+            </div>
+            <div style="width:30%; height:100px; float:left; padding: 10px">
+                <button type="button">Delete Job</button>
+                <button type="button">Edit Job</button>
+            </div>
+        </div>
+
+    {{/each}}
+    <br>
+</div>
