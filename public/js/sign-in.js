@@ -43,7 +43,7 @@ jQuery(document).ready(function ($) {
     $.ajax(requestConfig).then(function (responseMessage) {
       console.log(responseMessage);
       if (responseMessage.success === true) {
-        window.location.href = "/users/profile";
+        window.location.href = "/profile/account";
       } else {
         error.show();
         signinForm.trigger("reset");
