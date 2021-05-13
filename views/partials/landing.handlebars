@@ -3,7 +3,7 @@
     {{!-- this will have different text depending whether user is logged in or not --}}
     <h2 class="to-prof">
     {{#if data.logged.uname}}
-        <a id="to-profile" href="/users/profile">{{data.logged.uname}}</a>
+        <a id="to-profile" href="/profile/account">{{data.logged.uname}}</a>
     {{else}}
         <a href="/users/signin">Sign In</a>
     {{/if}}
