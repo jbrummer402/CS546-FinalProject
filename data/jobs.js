@@ -28,6 +28,7 @@ async function createJob(compensation, perHour, title, description, datePosted, 
   const jobsCollection = await jobs();
 
   let newJob = {
+    compensation : compensation,
     perHour : perHour,
     title : title,
     description : description,

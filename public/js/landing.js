@@ -32,10 +32,10 @@ jQuery(document).ready(function($){
         // compensation + type
         let type = '';
         if (jobItem.perHour){
-            type = 'per Hour';
+            type = ' per Hour';
         }
         let comp = $('<h4/>')
-            .text("Compensation:" + jobItem.compensation + type)
+            .text("Compensation: " + jobItem.compensation + type)
             .appendTo(LI);
         // address.town
         let loc = $('<h4/>')
