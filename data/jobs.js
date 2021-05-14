@@ -113,7 +113,7 @@ async function checkPerHour(perHour) {
   let error = false;
   let message = "";
 
-  if (typeof perHour !== "boolean" || !perHour) {
+  if (typeof perHour !== "boolean" || perHour === null || perHour === undefined) {
     error = true;
     message = "Perhour must be of type boolean"
   }
@@ -280,4 +280,4 @@ async function searchByTerms(terms) {
   return jobsList;
 }
 
-module.exports = { getJobs, createJob, readByID, removeJob, /*updateJob,*/ searchByTerms };
+module.exports = { getJobs, createJob, readByID, removeJob, updateJob, searchByTerms };

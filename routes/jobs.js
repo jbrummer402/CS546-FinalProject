@@ -42,11 +42,11 @@ router.post("/", async (req, res) => {
 //get every job
 router.get("/", async (req, res) => {
   try {
-    const { errorCode, message } = await checkInputs();
-    if (errorCode !== 0) {
+    //const { errorCode, message } = await checkInputs();
+    /*if (errorCode !== 0) {
       res.status(errorCode).json({ error: message });
       return;
-    }
+    } */
     let everyJob = await jobsData.getJobs();
     res.json(everyJob);
   } catch (e) {
@@ -107,7 +107,7 @@ async function checkPerHour(perHour) {
   let error = false;
   let message = "";
 
-  if (typeof perHour !== "boolean" || !perHour) {
+  if (typeof perHour !== "boolean" || perHour === null || perHour === undefined) {
     error = true;
     message = "Perhour must be of type boolean"
   }
