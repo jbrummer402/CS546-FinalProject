@@ -62,7 +62,11 @@ router.get('/search/:searchTerm', async (req, res) => {
       res.status(errorCode).json({ error: message });
       return;
     }
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     res.json(searchData);
   } catch (e) {
     console.log(e);
@@ -107,7 +111,11 @@ async function checkPerHour(perHour) {
   let error = false;
   let message = "";
 
+<<<<<<< Updated upstream
   if (typeof perHour !== "boolean" || perHour === null || perHour === undefined) {
+=======
+  if (typeof perHour !== "boolean" || !perHour) {
+>>>>>>> Stashed changes
     error = true;
     message = "Perhour must be of type boolean"
   }
