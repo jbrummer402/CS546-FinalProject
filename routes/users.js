@@ -6,23 +6,33 @@ const jobsData = data.jobs;
 const reviewData = data.reviews;
 const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
-const xss = require('xss');
+const xss = require("xss");
 
-ruter.post("/", async (req, res) => {
+router.post("/", async (req, res) => {
   let firstName = req.body.firstName ? xsos(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
-  let dateOfBirth = req.body.dateOfBirth ? xss(req.body.dateOfBirth) : undefined;
+  let dateOfBirth = req.body.dateOfBirth
+    ? xss(req.body.dateOfBirth)
+    : undefined;
   let username = req.body.username ? xss(req.body.username) : undefined;
   let password = req.body.password ? xss(req.body.password) : undefined;
-  let address = req.body.address ?
-      {street: req.body.address.street ? xss(req.body.address.street) : undefined,
+  let address = req.body.address
+    ? {
+        street: req.body.address.street
+          ? xss(req.body.address.street)
+          : undefined,
         aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
-        zipCode: req.body.address.zipCode ? xss(req.body.address.zipCode) : undefined,
+        zipCode: req.body.address.zipCode
+          ? xss(req.body.address.zipCode)
+          : undefined,
         state: req.body.address.state ? xss(req.body.address.state) : undefined,
         town: req.body.address.town ? xss(req.body.address.town) : undefined,
-        country: req.body.address.country ? xss(req.body.address.country) : undefined}
-      : undefined;
-  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined
+        country: req.body.address.country
+          ? xss(req.body.address.country)
+          : undefined,
+      }
+    : undefined;
+  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined;
   let email = req.body.email ? xss(req.body.email) : undefined;
 
   // handle inputs
@@ -53,7 +63,7 @@ ruter.post("/", async (req, res) => {
       photoLink,
       email
     );
-    res.json(newUser);
+    res.render(newUser);
   } catch (e) {
     res.sendStatus(500);
   }
@@ -98,7 +108,7 @@ router.post("/signin", async (req, res) => {
 router.get("/signout", async (req, res) => {
   req.session.destroy();
   res.render("partials/landing", { title: "Home" });
-})
+});
 
 router.get("/profile", async (req, res) => {
   // let jobs;
@@ -183,31 +193,38 @@ router.get("/:id", async (req, res) => {
     let rateAvg = 0;
     // get names of users associated with reviews
     try {
-      for (let i = 0; i < reviewsOf.length; i++){
+      for (let i = 0; i < reviewsOf.length; i++) {
         let reviewer = await usersData.readByID(reviewsOf[i].reviewerId);
-        reviewsOf[i].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
+        reviewsOf[
+          i
+        ].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
         reviewsOf[i].dateOfReview = reviewsOf[i].dateOfReview.toDateString();
         rateAvg += reviewsOf[i].rating;
       }
     } catch {
       // do nothing, just dont show reviews ig
     }
-    if (rateAvg === 0){
-      rateAvg = 'N/A';
+    if (rateAvg === 0) {
+      rateAvg = "N/A";
     } else {
-      rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
+      rateAvg = Math.round((rateAvg / reviewsOf.length) * 100) / 100;
     }
     let username;
-    if (!loggedIn){
+    if (!loggedIn) {
       username = false;
     } else {
       username = loggedIn.username;
     }
-    res.render('partials/emp', 
-      {data: {user: user, logged: {uname: username}, reviews: reviewsOf, average: rateAvg}});
-    
+    res.render("partials/emp", {
+      data: {
+        user: user,
+        logged: { uname: username },
+        reviews: reviewsOf,
+        average: rateAvg,
+      },
+    });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(404).json({ error: "User not found" });
   }
 });
@@ -224,7 +241,9 @@ router.get("/username/:username", async (req, res) => {
 // search by username
 router.get("/search/:searchterm", async (req, res) => {
   try {
-    let searchterm = await usersData.searchByUsername(xss(req.params.searchterm));
+    let searchterm = await usersData.searchByUsername(
+      xss(req.params.searchterm)
+    );
     res.json(searchterm);
   } catch (e) {
     res.status(404).json({ error: "No matches" });
@@ -264,20 +283,31 @@ router.delete("/:id", async (req, res) => {
 });
 
 //Made into a post request because it is imposible to make a patch request from a form
-router.post("/:id", async (req, res) => {
+router.post("/:id", async (req, res) => { 
   let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
-  let dateOfBirth = req.body.dateOfBirth ? xss(req.body.dateOfBirth) : undefined;
+  let dateOfBirth = req.body.dateOfBirth
+    ? xss(req.body.dateOfBirth)
+    : undefined;
+  let username = req.body.username ? xss(req.body.username) : undefined;
   let password = req.body.password ? xss(req.body.password) : undefined;
-  let address = req.body.address ?
-      {street: req.body.address.street ? xss(req.body.address.street) : undefined,
+  let address = req.body.address
+    ? {
+        street: req.body.address.street
+          ? xss(req.body.address.street)
+          : undefined,
         aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
-        zipCode: req.body.address.zipCode ? xss(req.body.address.zipCode) : undefined,
+        zipCode: req.body.address.zipCode
+          ? xss(req.body.address.zipCode)
+          : undefined,
         state: req.body.address.state ? xss(req.body.address.state) : undefined,
         town: req.body.address.town ? xss(req.body.address.town) : undefined,
-        country: req.body.address.country ? xss(req.body.address.country) : undefined}
-        : undefined;
-  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined
+        country: req.body.address.country
+          ? xss(req.body.address.country)
+          : undefined,
+      }
+    : undefined;
+  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined;
   let email = req.body.email ? xss(req.body.email) : undefined;
   let jobsActive = req.body.jobsActive;
   let jobsWorked = req.body.jobsWorked;
@@ -311,21 +341,22 @@ router.post("/:id", async (req, res) => {
     !firstName &&
     !lastName &&
     !dateOfBirth &&
+    !username &&
     !password &&
     !address &&
     !photoLink &&
     !email &&
-      !jobsActive &&
-      !jobsWorked &&
-      !jobsProvided &&
-      !jobsInProgressAsEmployee &&
-      !jobsInProgressAsEmployer
+    !jobsActive &&
+    !jobsWorked &&
+    !jobsProvided &&
+    !jobsInProgressAsEmployee &&
+    !jobsInProgressAsEmployer
   ) {
     res.status(400).json({
       error:
         "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
         " 'password', 'address', 'photoLink', 'email', 'jobsActive', 'jobsWorked', 'jobsProvided', 'jobsInProgressAsEmployee', " +
-          "'jobsInProgressAsEmployer'.",
+        "'jobsInProgressAsEmployer'.",
     });
     return;
   }
@@ -340,7 +371,13 @@ router.post("/:id", async (req, res) => {
     }
   }
 
-  for (const jobs of [jobsActive, jobsWorked, jobsProvided, jobsInProgressAsEmployee, jobsInProgressAsEmployer]) {
+  for (const jobs of [
+    jobsActive,
+    jobsWorked,
+    jobsProvided,
+    jobsInProgressAsEmployee,
+    jobsInProgressAsEmployer,
+  ]) {
     if (jobs !== undefined) {
       const errorObj = await checkJobs(jobs);
       if (errorObj.errorCode !== 0) {
@@ -356,7 +393,7 @@ router.post("/:id", async (req, res) => {
     firstName === undefined ? user.firstName : firstName,
     lastName === undefined ? user.lastName : lastName,
     dateOfBirth === undefined ? user.dateOfBirth : dateOfBirth,
-    user.username,
+    username === undefined ? user.username : username,
     password === undefined ? user.password : password,
     address === undefined ? user.address : address,
     photoLink === undefined ? user.photoLink : photoLink,
@@ -372,6 +409,7 @@ router.post("/:id", async (req, res) => {
     const user = await usersData.update({
       id: req.params.id,
       firstName: firstName,
+      username: username,
       lastName: lastName,
       dateOfBirth: dateOfBirth,
       password: password,
@@ -382,14 +420,22 @@ router.post("/:id", async (req, res) => {
       jobsWorked: jobsWorked,
       jobsProvided: jobsProvided,
       jobsInProgressAsEmployee: jobsInProgressAsEmployee,
-      jobsInProgressAsEmployer: jobsInProgressAsEmployer
+      jobsInProgressAsEmployer: jobsInProgressAsEmployer,
     });
-    res.json(user);
+    req.session.AuthCookie = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      dateOfBirth: user.dateOfBirth,
+      username: user.username,
+      email: user.email,
+      address: user.address,
+      id: user._id,
+    };
+    res.redirect("/profile/account");
   } catch (e) {
-    if (e.name === 'UserNotUpdatedException')
+    if (e.name === "UserNotUpdatedException")
       res.status(400).json({ error: e.message });
-    else
-      res.sendStatus(500);
+    else res.sendStatus(500);
   }
 });
 
