@@ -275,6 +275,9 @@ router.get("/search/:searchterm", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
+  if(!req.AuthCookie || (req.AuthCookie.id != req.params.id)){
+    res.status(401).json({ error: "You can only delete account you are signed into" });
+  } 
   // check if id is valid
   const userID = xss(req.params.id);
   if (!ObjectId.isValid(userID)) {
