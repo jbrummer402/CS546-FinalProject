@@ -18,7 +18,7 @@ const constructorMethod = (app) => {
     } else {
       username = req.session.AuthCookie.username;
     }
-    res.render('partials/landing', {data: {logged: {uname: username}}});
+    res.render('partials/landing', {data: {title: "Odjöb", logged: {uname: username}}});
   });
 
   app.use("*", (req, res) => {

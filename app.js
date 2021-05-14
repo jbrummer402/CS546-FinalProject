@@ -18,6 +18,12 @@ app.use(
   })
 );
 
+// helper for handlebars
+let hbs = exphbs.create({});
+hbs.handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
+  return (arg1 === arg2) ? options.fn(this) : options.inverse(this);
+});
+
 // do not let already logged in user go to sign in page
 app.use('/users/signin', (req, res, next) => {
   if (req.session.AuthCookie){
@@ -95,3 +101,7 @@ async function main() {
 }
 
 main();
+
+
+// handlebars equal helpher from 
+// https://stackoverflow.com/questions/34252817/handlebarsjs-check-if-a-string-is-equal-to-a-value

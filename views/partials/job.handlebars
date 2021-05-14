@@ -1,29 +1,27 @@
-{{!-- assuming that im getting passed in an object called jobInfo containing
-    object called job with fields same as in db proposal along w object poster;
-    also going to clean up actual look but for now just getting fields listed --}}
-
-{{!-- also maybe will put header in layouts/main.handlebars, but for now just
-    putting in each file --}}
-
-<header>
-    <h1>Odjöb</h1>
-    {{!-- this will have different text depending whether user is logged in or not --}}
-    <a href="/users/signin">Sign In/Profile</a>
-</header>
-<h2>{{jobInfo.job.title}}</h2>
+<h2>{{data.job.title}}</h2>
 <div id="job-properties">
-    <p>Description: {{jobInfo.job.description}}</p>
+    <p>Description: {{data.job.description}}</p>
     {{#if job.perHour}}
-        <p>Compensation: ${{jobInfo.job.compensation}}/hr</p>
+        <p>Compensation: ${{data.job.compensation}}/hr</p>
     {{/if }}
     {{#else }}
-        <p>Compensation: ${{jobInfo.job.compensation}}</p>
+        <p>Compensation: ${{data.job.compensation}}</p>
     {{/else }}
-    <p>Date Posted: {{jobInfo.job.datePosted}}</p>
-    <p>Location: {{jobInfo.job.address.town}}, {{jobInfo.job.address.state}}</p>
+    <p>Date Posted: {{data.job.datePosted}}</p>
+    <p>Location: {{data.job.address.town}}, {{jobInfo.job.address.state}}</p>
+    {{#ifEquals "active" data.job.status }}
+        <button id="claim-button" type="button">Claim Job</button>
+    {{/ifEquals }}
+    {{#ifEquals "in-progress" data.job.status }}
+        <p id="job-claimed">Job has been claimed</p>
+    {{/ifEquals}}
+    {{#ifEquals "completed" data.job.status }}
+        <p id="job-completed">Job has been completed</p>
+    {{/ifEquals }}
 </div>
 <div id=poster-info>
-   <h3>{{jobInfo.poster.firstName}} {{jobInfo.poster.lastName}}</h3>
-   <p>{{jobInfo.poster.username}}</p>
-   <p>Rating: {{jobInfo.poster.averageRating}}</p>
+    <h2>Posted By</h2>
+   <h3>{{data.poster.firstName}} {{data.poster.lastName}}</h3>
+   <h4><a href="/users/{{data.poster._id}}">{{data.poster.username}}</a></h4>
+   <p>Average Rating: {{data.average}}</p>
 </div>
