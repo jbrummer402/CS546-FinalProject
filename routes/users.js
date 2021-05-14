@@ -8,8 +8,9 @@ const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 const xss = require("xss");
 
+//FIX DEFAULT PROFILE ICON
 router.post("/", async (req, res) => {
-  let firstName = req.body.firstName ? xsos(req.body.firstName) : undefined;
+  let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
   let dateOfBirth = req.body.dateOfBirth
     ? xss(req.body.dateOfBirth)
@@ -32,7 +33,7 @@ router.post("/", async (req, res) => {
           : undefined,
       }
     : undefined;
-  let photoLink = req.body.photoLink ? xss(req.body.photoLink) : undefined;
+  let photoLink = "/public/profile_pics/agentcoop.jpeg";
   let email = req.body.email ? xss(req.body.email) : undefined;
 
   // handle inputs
@@ -63,7 +64,16 @@ router.post("/", async (req, res) => {
       photoLink,
       email
     );
-    res.render(newUser);
+    req.session.AuthCookie = {
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      username: username,
+      email: email,
+      address: address,
+      id: newUser._id,
+    };
+    res.render("partials/profile/account");
   } catch (e) {
     res.sendStatus(500);
   }
@@ -283,7 +293,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //Made into a post request because it is imposible to make a patch request from a form
-router.post("/:id", async (req, res) => { 
+router.post("/:id", async (req, res) => {
   let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
   let dateOfBirth = req.body.dateOfBirth
@@ -401,6 +411,7 @@ router.post("/:id", async (req, res) => {
     "PATCH"
   );
   if (errorCode !== 0) {
+    //res.status(errorCode).json({ error: message });
     res.status(errorCode).json({ error: message });
     return;
   }

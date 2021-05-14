@@ -1,101 +1,118 @@
+<header>
+  <h1 class="web-title"><a href="/">Odjöb</a></h1>
+  {{! this will have different text depending whether user is logged in or not }}
+  <h2 class="to-prof">
+  </h2>
+</header>
 <form action="/login" method="POST" id="signinForm">
   <h1>Sign-In</h1>
   <div id="error" hidden>Not a valid username password combination</div>
   <label for="username">
     Enter Username:
-    <input id="username" name="username" type="text" placeholder="username"/>
+    <input id="username" name="username" type="text" placeholder="username" />
   </label>
   <label for="password">
     Enter Password
-    <input id="password" name="password" type="password" placeholder="password"/>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="password"
+    />
   </label>
   <button type="submit">Submit</button>
 </form>
-<br>
+<br />
 <button type="button" id="createAcc">Create an Account</button>
 <form action="/users" method="POST" id="signupForm" hidden>
-<h1>Sign-Up</h1>
+  <h1>Sign-Up</h1>
   <label for="username2">
     Enter Username:
-    <br>
+    <br />
     <input id="username2" name="username" type="text" />
   </label>
-  <br>
+  <br />
   <label for="password2">
     Enter Password:
-    <br>
+    <br />
     <input id="password2" name="password" type="text" />
   </label>
-  <br>
+  <br />
   <label for="firstName">
     First Name
-    <br>
+    <br />
     <input id="firstName" name="firstName" type="text" />
   </label>
-  <br>
+  <br />
   <label for="lastName">
     Last Name:
-    <br>
+    <br />
     <input id="lastName" name="lastName" type="text" />
   </label>
-  <br>
+  <br />
   <label for="dateOfBirth">
     Date of Birth:
-    <br>
+    <br />
     <input id="dateOfBirth" name="dateOfBirth" type="date" />
   </label>
-  <br>
+  <br />
   <label for="email">
     Email:
-    <br>
+    <br />
     <input id="email" name="email" type="email" />
   </label>
-  <br>
-  {{!-- add photo link --}}
+  <br />
+  {{! add photo link }}
   <h3>Address</h3>
-      <label for="street">
-        Street
-        <br>
-        <input type="text" id="street" name="street">
-      </label>
-      <br>
-      <label for="aptNo">
-        Apartment Number
-        <br>
-        <input type="text" id="aptNo" name="aptNo">
-      </label>
-      <br>
-      <label for="zipCode">
-        Zip Code
-        <br>
-        <input type="text" id="zipCode" name="zipCode">
-      </label>
-      <br>
-      <label for="state">
-        State
-        <br>
-        <input type="text" id="state" name="state">
-      </label>
-      <br>
-      <label for="town">
-        Town
-        <br>
-        <input type="text" id="town" name="town">
-      </label>
-      <br>
-      <label for="country">
-        Country
-        <br>
-        <input type="text" id="country" name="country">
-      </label>
-      <br>
+  <label for="street">
+    Street
+    <br />
+    <input type="text" id="street" name="street" />
+  </label>
+  <br />
+  <label for="aptNo">
+    Apartment Number
+    <br />
+    <input type="text" id="aptNo" name="aptNo" />
+  </label>
+  <br />
+  <label for="zipCode">
+    Zip Code
+    <br />
+    <input type="text" id="zipCode" name="zipCode" />
+  </label>
+  <br />
+  <label for="state">
+    State
+    <br />
+    <input type="text" id="state" name="state" />
+  </label>
+  <br />
+  <label for="town">
+    Town
+    <br />
+    <input type="text" id="town" name="town" />
+  </label>
+  <br />
+  <label for="country">
+    Country
+    <br />
+    <input type="text" id="country" name="country" />
+  </label>
+  <br />
   <button type="submit">Sign-Up</button>
 </form>
-<br>
-<br>
+<br />
+<br />
 <button type="button" id="signInstead" hidden>Sign In Instead</button>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+  crossorigin="anonymous"
+></script>
 <script src="../../public/js/sign-in.js"></script>

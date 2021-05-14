@@ -221,7 +221,6 @@ async function update(updateObj) {
 
   const usersCollection = await users();
 
-  console.log(username);
   const updatedUser = {
     firstName: firstName === undefined ? user.firstName : firstName.trim(),
     lastName: lastName === undefined ? user.lastName : lastName.trim(),
