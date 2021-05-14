@@ -59,12 +59,12 @@ router.get("/", async (req, res) => {
 
 router.get('/search/:searchTerm', async (req, res) => {
   try {
-    let searchData = jobsData.searchByTerms(xss(req.params.body));
-    const { errorCode, message } = await checkInputs();
+    let searchData = await jobsData.searchByTerms(xss(req.params.searchTerm));
+    /*const { errorCode, message } = await checkInputs();
     if (errorCode !== 0) {
       res.status(errorCode).json({ error: message });
       return;
-    }
+    } */
     res.json(searchData);
   } catch (e) {
     console.log(e);

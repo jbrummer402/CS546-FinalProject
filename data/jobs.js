@@ -261,19 +261,30 @@ async function searchByTerms(terms) {
   if (typeof terms !== 'string'){
     throw "Search term must be an object"
   }
-
-  if (!terms || !terms.trim()) {
+  if (!terms || terms.trim() === '') {
     throw "No terms provided";
   }
 
+  const jobCollection = await jobs();
 
-  for (let [key, value] in Object.entries(terms)) {
+  terms = terms.toLowerCase();
+  termsReg = new RegExp(terms, 'i');
+  termsAsNum = parseFloat(terms);
+
+  jobsList = await jobCollection.find({ $or: [
+     {title : termsReg},
+     {compensation : {$gt : termsAsNum - 1, $lt : termsAsNum + 1}},
+     {description : termsReg},
+     {'address.town' : termsReg}
+  ]}).toArray();
+
+  /*for (let [key, value] in Object.entries(terms)) {
     // search through every term in the search term and make sure they don't raise errors
     await checkInputs((key = value));
     if (String(value).contains) {
       jobsList.append({ key : value });
     }
-  }
+  }*/
 
   if (jobsList === []) throw "No jobs with that search term";
 
