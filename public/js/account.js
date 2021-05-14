@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
 
   updateAccountForm.submit(function (event) {
     event.preventDefault();
-
+    // guys remember to error check the input data
     var requestConfig = {
       method: "POST",
       url: updateAccountForm.attr("action"),

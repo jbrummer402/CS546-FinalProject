@@ -1,13 +1,13 @@
 jQuery(document).ready(function ($) {
-  var signinForm = $("#signinForm"),
+  let signinForm = $("#signinForm"),
     username = $("#username"),
     password = $("#password"),
     error = $("#error"),
     createAccount = $("#createAcc"),
-    signupForm = $("#signupForm"),
-    signInstead = $("#signInstead");
+    signInstead = $("#signInstead"),
+    signinLink = $('#to-signin');
 
-  var signupForm = $("#signupForm"),
+  let signupForm = $("#signupForm"),
     firstName = $("#firstName"),
     lastName = $("#lastName"),
     dateOfBirth = $("#dateOfBirth"),
@@ -20,6 +20,8 @@ jQuery(document).ready(function ($) {
     state = $("#state"),
     town = $("#town"),
     country = $("#country");
+
+  signinLink.hide();
 
   createAccount.on("click", function (event) {
     signupForm.show();

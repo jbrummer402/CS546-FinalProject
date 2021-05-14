@@ -116,6 +116,9 @@ router.get('/:id', async(req, res) => {
     } else {
       username = req.session.AuthCookie.username;
     }
+
+    jobById.datePosted = jobById.datePosted.toDateString();
+    
     res.render('partials/job', {data: {title: jobById.title, logged: {uname: username}, 
       job: jobById, poster: posterInfo, average: rateAvg}});
   } catch (e) {

@@ -13,8 +13,11 @@
             <h2 class="to-prof">
             {{#if data.logged.uname}}
                 <a id="to-profile" href="/profile/account">{{data.logged.uname}}</a>
+                <br>
+                <br>
+                <a id="to-signout" href="/users/signout">Sign Out</a>
             {{else}}
-                <a href="/users/signin">Sign In</a>
+                <a href="/users/signin" id="to-signin">Sign In</a>
             {{/if}}
             </h2>
         </header>

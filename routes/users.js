@@ -117,7 +117,7 @@ router.post("/signin", async (req, res) => {
 
 router.get("/signout", async (req, res) => {
   req.session.destroy();
-  res.render("partials/landing", { title: "Home" });
+  res.render("partials/signedOut", {data: {title: "Signed Out"}});
 });
 
 router.get("/profile", async (req, res) => {
@@ -205,9 +205,7 @@ router.get("/:id", async (req, res) => {
     try {
       for (let i = 0; i < reviewsOf.length; i++) {
         let reviewer = await usersData.readByID(reviewsOf[i].reviewerId);
-        reviewsOf[
-          i
-        ].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
+        reviewsOf[i].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
         reviewsOf[i].dateOfReview = reviewsOf[i].dateOfReview.toDateString();
         rateAvg += reviewsOf[i].rating;
       }
@@ -229,6 +227,14 @@ router.get("/:id", async (req, res) => {
     } else {
       username = loggedIn.username;
     }
+
+    // need jobs offered by poster
+    // this is where i will loop through jobs posted by the user and they will go in a
+    // a separate spot in data, waiting until i can actually post jobs so that a user has posted jobs
+    // we need to link the seeds more so that we have jobs that are actually linked to users
+    // also post form should have placeholder data and typed data
+    // makes sure to error check that input
+    // should reviews have a title field? does that matter? im very tired
 
     res.render('partials/emp', 
       {data: {
