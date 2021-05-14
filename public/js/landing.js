@@ -5,6 +5,7 @@ jQuery(document).ready(function($){
     let userHeader = $('#user-header');
     let searchForm = $('#search-form');
     let blankSearch = $('#blank-search');
+    let noResults = $('#no-result');
 
     // just in case
     blankSearch.hide();
@@ -12,6 +13,7 @@ jQuery(document).ready(function($){
     landingJobList.hide();
     userHeader.hide();
     landingUserList.hide();
+    noResults.hide();
 
     // clear list
     landingJobList.empty();
@@ -121,7 +123,13 @@ jQuery(document).ready(function($){
         if (searchType === 'Users'){
             let requestConfig = {
                 method: 'GET',
-                url: '/users/search/' + searchText.trim()
+                url: '/users/search/' + searchText.trim(),
+                error: function(){
+                    userHeader.hide();
+                    jobHeader.hide();
+
+                    noResults.show();
+                }
             }
             $.ajax(requestConfig).then(function(res){
                 $.each(res, function(curUser){
@@ -137,7 +145,13 @@ jQuery(document).ready(function($){
         else if (searchType === 'Jobs'){
             let requestConfig = {
                 method: 'GET',
-                url: '/jobs/search/' + searchText.trim()
+                url: '/jobs/search/' + searchText.trim(),
+                error: function(){
+                    userHeader.hide();
+                    jobHeader.hide();
+                    
+                    noResults.show();
+                }
             }
             $.ajax(requestConfig).then(function(res){
                 $.each(res, function(curJob) {
