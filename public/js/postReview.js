@@ -6,6 +6,7 @@ jQuery(document).ready(function($) {
     let invalidRating = $('#invalid-rating');
     let addError = $('#add-error');
     let ownError = $('#own-error');
+    let noAuth = $('#no-auth');
 
     // on submit event
     reviewForm.submit(function(event) {
@@ -23,6 +24,7 @@ jQuery(document).ready(function($) {
             invalidRating.hide();
             addError.hide();
             ownError.hide();
+            noAuth.hide();
             blankError.show();
             return;
         }
@@ -36,6 +38,7 @@ jQuery(document).ready(function($) {
             blankError.hide();
             addError.hide();
             ownError.hide();
+            noAuth.hide();
             invalidRating.show();
             return;
         }
@@ -47,7 +50,13 @@ jQuery(document).ready(function($) {
         let revieweeName = $('#user-to-review').text();
 
         // get reviewer name, uses link to profile
-        let reviewerName = $('#to-profile').text();      
+        let reviewerName = $('#to-profile').text();  
+        
+        // person not logged in
+        if (reviewerName.length === 0){
+            noAuth.show();
+            return;
+        }
         
 
         // get revieweeId
@@ -78,7 +87,7 @@ jQuery(document).ready(function($) {
                     return;
                 }
                 ownError.hide();
-
+                noAuth.hide();
                 //now post to reviews/new with relevant info
                 let requestConfig3 = {
 					method: 'POST',
