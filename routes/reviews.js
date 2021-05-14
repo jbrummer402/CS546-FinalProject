@@ -101,6 +101,34 @@ router.post('/new', async (req, res) =>{
     }
 });
 
+router.patch('/:reviewid', async (req, res)=>{
+    try{
+        let id = xss(req.params.reviewid);
+        let newRating = xss(req.body.rating);
+        let newReviewDescription = xss(req.body.reviewDescription);
+        if(!newRating && !newReviewDescription) throw 'No data to update';
+        if( !Number.isInteger(newRating) || newRating < 1 || newRating > 5 ) throw 'Rating must be integer between 1 and 5';
+        if(newReviewDescription.trim()=="") throw 'New review must be non-whitespace string';
+        try{
+            ObjectId(id);
+        }
+        catch(e){
+            throw 'ReviewID is not a valid ObjectID';
+        }
+        try{
+            let review = reviewsData.getReviewById(id);
+        }
+        catch(e){
+            res.status(404).json({"message": `Review not found`, "updated": "false"});
+        }
+        const updatedReview = reviewsData.updateReview(id, newRating, newReviewDescription);
+        res.status(200).json({"updatedReview": updatedReview, "updated": "true"})
+    }
+    catch(e){
+        res.status(400).json({"message": `${e}`, "updated": "false"});
+    }
+});
+
 router.delete('/:reviewid', async (req, res) =>{
     try {
         let id = xss(req.params.reviewid);
@@ -111,13 +139,22 @@ router.delete('/:reviewid', async (req, res) =>{
         catch (e){
             throw 'Invalid id';
         }
+        let review;
+        try{
+            review = await reviewsData.getReviewById(id);
+        }
+        catch(e){
+            res.status(404).json({"message":"review not found", "deleted": "false"});
+        }
+        if(!req.AuthCookie || (req.AuthCookie.id != review.reviewerId)){
+            res.status(401).json({"message":"User can only delete review that they have written", "deleted": "false"});
+        } 
         let deleteSuccess = false;
-
         deleteSuccess = await reviewsData.removeReviewById(id);
         if(!deletedSuccess) throw 'Not found';
         res.json({"message": `review ${id} deleted`, "deleted": "true"});
     } catch (e) {
-        res.status(404).json({"message":"review not found", "deleted": "false"});
+        res.status(500).json({"message":"Error deleting review", "deleted": "false"});
     }
 });
 
