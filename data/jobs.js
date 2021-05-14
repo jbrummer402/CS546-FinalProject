@@ -167,25 +167,15 @@ async function checkAddress(address) {
     
   }
 
-  if (typeof address.street !== 'object' || !address.street || address.street === null) {
-    error = true; 
-    message = "Address must contain street of type object"
-  
+  if (!address.street) {
+    error = true;
+    message = "Address must contain a street"
   }
 
-
-  if (!address.street.streetName || typeof address.street.streetName !== 'string' || address.street.streetName === null) {
-    if (!address.street.streetName) {
-      error = true; 
-      message = "Address street name does not exist"
-      
-    }
-  
-    if (typeof address.street.streetName !== 'string' || !address.street.streetName.trim() || !isNaN(parseInt(address.street.streetName))) {
-      error = true; 
-      message = "Address street name must be a non empty string"
-      
-    }
+  if (typeof address.street !== 'string' || !address.street.trim()) {
+    error = true; 
+    message = "Address street name must be a non empty string"
+    
   }
   
   if (!address.street.streetNo || isNaN(parseInt(address.street.streetNo)) || 
@@ -277,14 +267,6 @@ async function searchByTerms(terms) {
      {description : termsReg},
      {'address.town' : termsReg}
   ]}).toArray();
-
-  /*for (let [key, value] in Object.entries(terms)) {
-    // search through every term in the search term and make sure they don't raise errors
-    await checkInputs((key = value));
-    if (String(value).contains) {
-      jobsList.append({ key : value });
-    }
-  }*/
 
   if (jobsList === []) throw "No jobs with that search term";
 
