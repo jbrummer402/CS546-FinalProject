@@ -1,33 +1,96 @@
 jQuery(document).ready(function($){
     let claimButton = $('#claim-button');
 
+    // returns array without given jobid
+    function removeByMatch(id, array){
+        let newArr = [];
+        for (let i = 0; i < array.length; i++){
+            if (array[i] === id){
+                continue;
+            }
+            newArr.push(array[i]);
+        }
+        return newArr;
+    }
+
     claimButton.on('click', function(event){
         // update jobsactive as employee and jobs active as employer for relevant parties
         // and set job status to in-progress
         event.preventDefault();
 
         let workerUname = $('#to-profile').text();
+        let posterUname = $('#to-poster-prof').text();
+        let jobId = $('.job-page-title').attr("id");
         let jobUrl = claimButton.attr("formaction");
 
         if (workerUname.length === 0){
             // error saying you must be logged in to claim
             return;
         }
-        
-        // need poster id and id of person claiming job
-        // get poster url and update jobsInProgressAsEmployer
-        let posterUrl = $('#to-poster-prof').attr("href");
 
-
-        // get worker id
-        let requestConfig = {
-            method: 'GET',
-            url: 'users/username/' + workerUname.trim()
+        // usernames are unique, so this is ok
+        if (workerUname.trim() === posterUname.trim()){
+            // error saying you may not claim a job that you posted
+            return;
         }
-        $.ajax(requestConfig).then(function(res){
-            let workerId = res._id;
+        
+        // get poster
+        let posterRequest = {
+            method: 'GET',
+            url: '/users/username/' + posterUname.trim()
+        }
+
+        $.ajax(posterRequest).then(function(res){
+            // grab relevant fields to be updated
+            let posterId = res._id;
+            let posterActive = res.jobsActive;
+            let posterInProgress = res.jobsInProgressAsEmployer;
             
-            // update jobsInProgressAsEmployee 
+            let posterActiveNew = removeByMatch(jobId, posterActive);
+            
+            posterInProgress.push(jobId);
+            
+            // make post request to update user, need to put what happens on an error
+            let posterUpdate = {
+                method: 'POST',
+                url: '/users/' + posterId,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    jobsActive: posterActiveNew,
+                    jobsInProgressAsEmployer: posterInProgress
+                })
+            }
+
+            $.ajax(posterUpdate).then(function(res){
+                // nothing atm
+            });
+
+        })
+
+
+        // get worker 
+        let workerRequest = {
+            method: 'GET',
+            url: '/users/username/' + workerUname.trim()
+        }
+        $.ajax(workerRequest).then(function(res){
+            let workerId = res._id;
+            let workerInProgress = res.jobsInProgressAsEmployee;
+
+            workerInProgress.push(jobId);
+
+            // update jobsInProgressAsEmployee, need to have error functionality
+            let workerUpdate = {
+                method: 'POST',
+                url: '/users/' + workerId,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    jobsInProgressAsEmployee: workerInProgress
+                })
+            }
+            $.ajax(workerUpdate).then(function(res){
+
+            });
 
         });
 

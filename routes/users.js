@@ -450,15 +450,18 @@ router.post("/:id", async (req, res) => {
       jobsInProgressAsEmployee: jobsInProgressAsEmployee,
       jobsInProgressAsEmployer: jobsInProgressAsEmployer,
     });
-    req.session.AuthCookie = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      dateOfBirth: user.dateOfBirth,
-      username: user.username,
-      email: user.email,
-      address: user.address,
-      id: user._id,
-    };
+    // so that claim job update doesnt change user
+    if (req.session.AuthCookie.id === user._id){
+      req.session.AuthCookie = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        dateOfBirth: user.dateOfBirth,
+        username: user.username,
+        email: user.email,
+        address: user.address,
+        id: user._id,
+      };
+    }
     res.redirect("/profile/account");
   } catch (e) {
     if (e.name === "UserNotUpdatedException")
