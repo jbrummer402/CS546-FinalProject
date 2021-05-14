@@ -258,7 +258,7 @@ async function checkInputs(compensation, perHour, title, description, datePosted
 async function searchByTerms(terms) {
   let jobsList = [];
 
-  if (typeof terms !== 'object'){
+  if (typeof terms !== 'string'){
     throw "Search term must be an object"
   }
 
