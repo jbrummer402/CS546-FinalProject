@@ -48,17 +48,25 @@
       <button type="submit">Post Review</button>
     </form>
   </div>
+
+  {{#unless data.logged.userID}}
+  <div id="currentUser" user="none"></div>
+  {{/unless}}
+  {{#if data.logged.userID}}
+  <div id="currentUser" user="{{data.logged.userID}}"></div>
+  {{/if}}
+
   <div id="reviews-of-user">
     {{#if data.isReviews}}
     <h2>Reviews for this User</h2>
     <ul id="reviews-of-list">
       {{#each data.reviews}}
-        <li>
+        <li reviewer="{{this.reviewerId}}" id="{{this._id}}">
           <h3 class="review-header">Review By {{this.reviewerName}}</h3>
           <h4>{{this.dateOfReview}}</h4>
-          <h4>Rating: {{this.rating}}</h4>
+          <h4 class='reviewRating'>Rating: {{this.rating}}</h4>
           <h4>Review:</h4>
-          <p>{{this.reviewDescription}}</p>
+          <p class='reviewDescription'>{{this.reviewDescription}}</p>
         </li>
       {{/each}}
     </ul>
@@ -71,3 +79,4 @@
   crossorigin="anonymous"
 ></script>
 <script src="/public/js/postReview.js"></script>
+<script src="/public/js/modifyReview.js"></script>

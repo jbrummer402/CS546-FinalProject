@@ -181,7 +181,7 @@ async function update(updateObj) {
     );
   }
 
-  if (email !== undefined) {
+  if (email !== undefined && email !== user.email) {
     const errorObj = await checkEmail(email);
     if (errorObj.error) {
       throw errorObj.message;

@@ -116,3 +116,7 @@ label {
 .revieweeName{
   font-weight: bold;
 }
+
+.reviewDeleteButton {
+  color: red;
+}
