@@ -23,8 +23,11 @@ jQuery(document).ready(function($){
             .appendTo(landingJobList);
         // each job item has title
         let title = $('<h2/>')
-            .text(jobItem.title)
             .appendTo(LI);
+        let A = $('<a/>')
+            .text(jobItem.title)
+            .attr("href", `/jobs/${jobItem._id}`)
+            .appendTo(title);
         // datePosted
         let date = $('<h4/>')
             .text(new Date(jobItem.datePosted).toDateString())
