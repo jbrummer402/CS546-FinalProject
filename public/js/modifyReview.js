@@ -92,7 +92,7 @@ jQuery(document).ready(function($) {
             }
             $('#reviewEditArea').remove();
             // show new review info
-            if(newRating) $(`#${reviewIdToEdit} .reviewRating`).html(`${newRating}`);
+            if(newRating) $(`#${reviewIdToEdit} .reviewRating`).html(`Rating: ${newRating}`);
             if(newReviewDescription) $(`#${reviewIdToEdit} .reviewDescription`).html(`${newReviewDescription}`);
             
             if($(`#reviewEditSuccessMsg`).length){
