@@ -52,7 +52,7 @@ async function create(
     jobsWorked: [],
     jobsProvided: [],
     jobsInProgressAsEmployee: [],
-    jobsInProgressAsEmployer: []
+    jobsInProgressAsEmployer: [],
   };
 
   const insertInfo = await usersCollection.insertOne(newUser);
@@ -130,6 +130,7 @@ async function update(updateObj) {
     id,
     firstName,
     lastName,
+    username,
     dateOfBirth,
     password,
     address,
@@ -139,7 +140,7 @@ async function update(updateObj) {
     jobsWorked,
     jobsProvided,
     jobsInProgressAsEmployee,
-    jobsInProgressAsEmployer
+    jobsInProgressAsEmployer,
   } = updateObj;
   let user = {};
 
@@ -161,6 +162,7 @@ async function update(updateObj) {
   if (
     firstName === undefined &&
     lastName === undefined &&
+    username === underfined &&
     dateOfBirth === undefined &&
     password === undefined &&
     address === undefined &&
@@ -173,9 +175,9 @@ async function update(updateObj) {
     jobsInProgressAsEmployer === undefined
   ) {
     throw (
-        "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
-        " 'password', 'address', 'photoLink', 'email', 'jobsActive', 'jobsWorked', 'jobsProvided', 'jobsInProgressAsEmployee', " +
-        "'jobsInProgressAsEmployer'."
+      "Input must be provided for at least one of the following parameters: 'firstName', 'lastName', 'dateOfBirth'," +
+      " 'password', 'address', 'photoLink', 'email', 'jobsActive', 'jobsWorked', 'jobsProvided', 'jobsInProgressAsEmployee', " +
+      "'jobsInProgressAsEmployer'."
     );
   }
 
@@ -186,7 +188,13 @@ async function update(updateObj) {
     }
   }
 
-  for (const jobs of [jobsActive, jobsWorked, jobsProvided, jobsInProgressAsEmployee, jobsInProgressAsEmployer]) {
+  for (const jobs of [
+    jobsActive,
+    jobsWorked,
+    jobsProvided,
+    jobsInProgressAsEmployee,
+    jobsInProgressAsEmployer,
+  ]) {
     if (jobs !== undefined) {
       const errorObj = await checkJobs(jobs);
       if (errorObj.error) {
@@ -200,7 +208,7 @@ async function update(updateObj) {
       firstName === undefined ? user.firstName : firstName,
       lastName === undefined ? user.lastName : lastName,
       dateOfBirth === undefined ? user.dateOfBirth : dateOfBirth,
-      user.username,
+      username,
       password === undefined ? user.password : password,
       address === undefined ? user.address : address,
       photoLink === undefined ? user.photoLink : photoLink,
@@ -220,7 +228,7 @@ async function update(updateObj) {
       dateOfBirth === undefined
         ? new Date(user.dateOfBirth)
         : new Date(dateOfBirth),
-    username: user.username,
+    username: username === undefined ? user.username : username,
     password:
       password === undefined
         ? user.password
@@ -241,13 +249,19 @@ async function update(updateObj) {
     jobsActive: jobsActive === undefined ? user.jobsActive : jobsActive,
     jobsWorked: jobsWorked === undefined ? user.jobsWorked : jobsWorked,
     jobsProvided: jobsProvided === undefined ? user.jobsProvided : jobsProvided,
-    jobsInProgressAsEmployee: jobsInProgressAsEmployee === undefined ? user.jobsInProgressAsEmployee : jobsInProgressAsEmployee,
-    jobsInProgressAsEmployer: jobsInProgressAsEmployer === undefined ? user.jobsInProgressAsEmployer : jobsInProgressAsEmployer,
+    jobsInProgressAsEmployee:
+      jobsInProgressAsEmployee === undefined
+        ? user.jobsInProgressAsEmployee
+        : jobsInProgressAsEmployee,
+    jobsInProgressAsEmployer:
+      jobsInProgressAsEmployer === undefined
+        ? user.jobsInProgressAsEmployer
+        : jobsInProgressAsEmployer,
   };
 
   function UserNotUpdatedException() {
-    this.message = 'No changes to user detected.';
-    this.name = 'UserNotUpdatedException';
+    this.message = "No changes to user detected.";
+    this.name = "UserNotUpdatedException";
   }
 
   const updatedInfo = await usersCollection.updateOne(
@@ -280,21 +294,24 @@ async function emailExists(email) {
 
 async function searchByUsername(keyword) {
   // handle inputs
-  if (keyword === undefined) throw "Input must be provided for 'keyword' parameter!";
+  if (keyword === undefined)
+    throw "Input must be provided for 'keyword' parameter!";
   if (typeof keyword !== "string") throw "Input keyword must be a string!";
 
   // so that regex search works even if use enters caps
   keyword = keyword.toLowerCase();
   const usersCollection = await users();
 
-  const results = await usersCollection.find({ username: new RegExp(keyword) }).toArray();
+  const results = await usersCollection
+    .find({ username: new RegExp(keyword) })
+    .toArray();
   if (results.length === 0) throw "No matches";
 
   for (let i = 0; i < results.length; i++) {
     let user = results[i];
     user._id = user._id.toString();
     user.dateOfBirth = `${
-        user.dateOfBirth.getMonth() + 1
+      user.dateOfBirth.getMonth() + 1
     }/${user.dateOfBirth.getDate()}/${user.dateOfBirth.getFullYear()}`;
   }
 
@@ -604,5 +621,5 @@ module.exports = {
   update,
   usernameExists,
   emailExists,
-  searchByUsername
+  searchByUsername,
 };
