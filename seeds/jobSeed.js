@@ -643,6 +643,66 @@ async function seedJobs() {
         console.error(e);
     }
 
+    try {
+        let employer = await users.readByUsername("pauliew");
+
+        let job = await jobs.createJob(
+            (compensation = 2000),
+            (perHour = false),
+            (title = "For the love of god, come help me change a light bulb"),
+            (description = "i've tried and i've tried but i just can't do it. they don't teach you this stuff at Stevens."),
+            (datePosted = new Date('9/15/2020')),
+            (address = employer.address),
+            (creator_id = ObjectID(employer._id)),
+            (status = 'completed')
+        );
+        let employerID = employer._id;
+        let employeeID = (await users.readByUsername("agentcoop"))._id;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        let employer = await users.readByUsername("agentcoop");
+
+        let job = await jobs.createJob(
+            (compensation = 5),
+            (perHour = true),
+            (title = "NEED MATH TUTORING"),
+            (description = "i have no clue what a derivative is. pls halp"),
+            (datePosted = new Date('4/15/2019')),
+            (address = employer.address),
+            (creator_id = ObjectID(employer._id)),
+            (status = 'completed')
+        );
+        let employerID = employer._id;
+        let employeeID = (await users.readByUsername("toneee"))._id;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        let employer = await users.readByUsername("agentcoop");
+
+        let job = await jobs.createJob(
+            (compensation = 30),
+            (perHour = true),
+            (title = "anyone know giving ukelele lessons???"),
+            (description = "i just landed a Greek yogurt commercial gig and need to learn ASAP"),
+            (datePosted = new Date('10/4/2020')),
+            (address = employer.address),
+            (creator_id = ObjectID(employer._id)),
+            (status = 'completed')
+        );
+        let employerID = employer._id;
+        let employeeID = (await users.readByUsername("xx_madman_xx"))._id;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
 
 
     // insert jobs into job arrays for users
@@ -667,6 +727,15 @@ async function seedJobs() {
 
             updateObjEmployer.jobsInProgressAsEmployer = jobsInProgressAsEmployer;
             updateObjEmployee.jobsInProgressAsEmployee = jobsInProgressAsEmployee;
+        } else if (job.status === 'completed') {
+            let jobsProvided = employer.jobsProvided;
+            let jobsWorked = employee.jobsWorked;
+
+            jobsProvided.push(jobID);
+            jobsWorked.push(jobID);
+
+            updateObjEmployer.jobsProvided = jobsProvided;
+            updateObjEmployee.jobsWorked = jobsWorked;
         }
 
         try {
@@ -674,7 +743,7 @@ async function seedJobs() {
         } catch (e) {
             console.error(e)
         }
-        if (job.status !== 'active'){
+        if (job.status === 'in-progress' || job.status === 'completed'){
             try {
                 await users.update(updateObjEmployee);
             } catch (e) {
