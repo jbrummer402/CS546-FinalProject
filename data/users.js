@@ -162,7 +162,7 @@ async function update(updateObj) {
   if (
     firstName === undefined &&
     lastName === undefined &&
-    username === underfined &&
+    username === undefined &&
     dateOfBirth === undefined &&
     password === undefined &&
     address === undefined &&
