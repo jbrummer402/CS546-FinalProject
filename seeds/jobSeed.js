@@ -674,10 +674,12 @@ async function seedJobs() {
         } catch (e) {
             console.error(e)
         }
-        try {
-            await users.update(updateObjEmployee);
-        } catch (e) {
-            console.error(e)
+        if (job.status !== 'active'){
+            try {
+                await users.update(updateObjEmployee);
+            } catch (e) {
+                console.error(e)
+            }
         }
 
     }
