@@ -259,7 +259,7 @@ async function searchByTerms(terms) {
   let jobsList = [];
 
   if (typeof terms !== 'string'){
-    throw "Search term must be an object"
+    throw "Search term must be a string"
   }
   if (!terms || terms.trim() === '') {
     throw "No terms provided";

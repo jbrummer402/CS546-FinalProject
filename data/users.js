@@ -300,10 +300,15 @@ async function searchByUsername(keyword) {
 
   // so that regex search works even if use enters caps
   keyword = keyword.toLowerCase();
+  keyReg = new RegExp(keyword, 'i');
   const usersCollection = await users();
 
   const results = await usersCollection
-    .find({ username: new RegExp(keyword) })
+    .find({ $or: [
+      {username: keyReg},
+      {firstName: keyReg},
+      {lastName: keyReg}
+    ]})
     .toArray();
   if (results.length === 0) throw "No matches";
 

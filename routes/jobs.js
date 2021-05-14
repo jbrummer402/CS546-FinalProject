@@ -65,6 +65,12 @@ router.get('/search/:searchTerm', async (req, res) => {
       res.status(errorCode).json({ error: message });
       return;
     } */
+    if (typeof xss(req.params.searchTerm) !== 'string'){
+      throw "Search term must be a string"
+    }
+    if (!xss(req.params.searchTerm) || xss(req.params.searchTerm).trim() === '') {
+      throw "No terms provided";
+    }
     res.json(searchData);
   } catch (e) {
     console.log(e);
