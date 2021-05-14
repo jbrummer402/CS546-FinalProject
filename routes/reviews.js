@@ -146,7 +146,9 @@ router.delete('/:reviewid', async (req, res) =>{
         catch(e){
             res.status(404).json({"message":"review not found", "deleted": "false"});
         }
-        if(req.AuthCookie.id != review.reviewerId) res.status(401).json({"message":"User can only delete review that they have written", "deleted": "false"});
+        if(!req.AuthCookie || (req.AuthCookie.id != review.reviewerId)){
+            res.status(401).json({"message":"User can only delete review that they have written", "deleted": "false"});
+        } 
         let deleteSuccess = false;
         deleteSuccess = await reviewsData.removeReviewById(id);
         if(!deletedSuccess) throw 'Not found';
