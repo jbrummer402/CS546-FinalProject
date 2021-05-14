@@ -63,6 +63,41 @@ async function readByID(id) {
   return job;
 }
 
+async function removeJob(id) {
+  const jobCollection = await jobs();
+  try {
+    let jobToDelete = await this.readByID(id);
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+
+  const deleteInfo = jobsCollection.removeOne({ _id : ObjectId(id) })
+  if (deleteInfo.deletedCount === 0) {
+    throw `Could not delete post with id of ${id}`;
+  }
+
+  return true;
+}
+
+async function updateJob(id, jobToUpdate) {
+  try {
+    await this.checkInputs(jobToUpdate);
+
+    if (!ObjectId.isValid(id)) {
+      throw "Update job: Object id is not valid"
+    }
+
+    const jobsCollection = await jobs();
+
+    await jobsCollection.updateOne({ _id: ObjectId(id)}, {$set : jobToUpdate})
+
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+}
+
 async function checkCompensation(compensation) {
   let error = false;
   let message = "";
@@ -78,7 +113,7 @@ async function checkPerHour(perHour) {
   let error = false;
   let message = "";
 
-  if (typeof perHour !== "boolean" || !perHour) {
+  if (typeof perHour !== "boolean" || perHour === null || perHour === undefined) {
     error = true;
     message = "Perhour must be of type boolean"
   }
@@ -221,37 +256,28 @@ async function checkInputs(compensation, perHour, title, description, datePosted
 }
 
 async function searchByTerms(terms) {
-  let searchTerm = {};
-  
-  if (!terms || terms === null) {
-    throw "No terms provided";
-  }
+  let jobsList = [];
 
   if (typeof terms !== 'object'){
     throw "Search term must be an object"
   }
 
+  if (!terms || !terms.trim()) {
+    throw "No terms provided";
+  }
+
+
   for (let [key, value] in Object.entries(terms)) {
     // search through every term in the search term and make sure they don't raise errors
     await checkInputs((key = value));
+    if (String(value).contains) {
+      jobsList.append({ key : value });
+    }
   }
 
-  const jobsCollection = await jobs();
+  if (jobsList === []) throw "No jobs with that search term";
 
-  const job = await jobsCollection.find(
-    { compensation : terms.compensation },
-    { perHour : terms.perHour },
-    { title : terms.title },
-    { description : terms.description },
-    { datePosted : terms.datePosted },
-    { address : terms.address },
-    { creatorId : terms.creatorId },
-    { status : terms.status }
-  )
-
-  if (!job || job === null) throw "No jobs with those search terms";
-
-  return job;
+  return jobsList;
 }
 
-module.exports = { getJobs, createJob, readByID, searchByTerms };
+module.exports = { getJobs, createJob, readByID, removeJob, updateJob, searchByTerms };

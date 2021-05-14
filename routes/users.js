@@ -241,7 +241,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/username/:username", async (req, res) => {
   try {
-    let user = await usersData.readByUsername(xss(req.params.username));
+    let user = await usersData.readByUsername(xss(req.params.username).toLowerCase());
     res.json(user);
   } catch (e) {
     res.status(404).json({ error: "User not found" });
