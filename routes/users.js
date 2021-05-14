@@ -179,10 +179,10 @@ router.get("/username/:username", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  // check if id is valid
-  if(req.AuthCookie.id != req.params.id){
+  if(!req.AuthCookie || (req.AuthCookie.id != req.params.id)){
     res.status(401).json({ error: "You can only delete account you are signed into" });
   } 
+  // check if id is valid
   if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json({ error: "Input id must be a valid ObjectID" });
     return;
