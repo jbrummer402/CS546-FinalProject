@@ -28,6 +28,29 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.use('/reviews', async (req, res, next) => {
+  // Users can only delete reviews they created
+  // Any user can see review
+  // User can only update(patch) review they created
+  const method = req.method;
+  let auth = req.session.AuthCookie;
+  if(method == 'DELETE' || method == 'POST' || method == 'PATCH'){
+    if(!auth) res.status(401).json({'message':'Unauthorized request'});
+  }
+  next();
+});
+
+app.use('/users', async (req, res, next) => {
+  // Users can see(GET) any profile
+  // Users can only delete their own account
+  const method = req.method;
+  let auth = req.session.AuthCookie;
+  if(method == 'DELETE'){
+    if(!auth) res.status(401).json({'message':'Unauthorized request'});
+  }
+  next();
+});
+
 // FOR TESTING ONLY. TO BE DELETED LATER
 async function seed() {
   // USER SEED

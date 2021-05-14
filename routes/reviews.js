@@ -136,13 +136,20 @@ router.delete('/:reviewid', async (req, res) =>{
         catch (e){
             throw 'Invalid id';
         }
+        let review;
+        try{
+            review = await reviewsData.getReviewById(id);
+        }
+        catch(e){
+            res.status(404).json({"message":"review not found", "deleted": "false"});
+        }
+        if(req.AuthCookie.id != review.reviewerId) res.status(401).json({"message":"User can only delete review that they have written", "deleted": "false"});
         let deleteSuccess = false;
-
         deleteSuccess = await reviewsData.removeReviewById(id);
         if(!deletedSuccess) throw 'Not found';
         res.json({"message": `review ${id} deleted`, "deleted": "true"});
     } catch (e) {
-        res.status(404).json({"message":"review not found", "deleted": "false"});
+        res.status(500).json({"message":"Error deleting review", "deleted": "false"});
     }
 });
 
