@@ -7,534 +7,538 @@ const jobCollection = mongoCollections.jobs;
 const users = data.users;
 
 async function seedJobs() {
-    try {
-        const user = await users.readByUsername("agentcoop");
-        let userId = await users.readByID(user._id);
-        await jobs.createJob(
-            (compensation = 15.5),
-            (perHour = true),
-            (title = "asdc"),
-            (description = "dfvd"),
-            (datePosted = new Date('03/12/2021')),
-            (address = {
-                street : { streetNo : 23, streetName : "Schindler Court"},
-                aptNo : "",
-                zipCode : "07928",
-                state : "NJ",
-                town : "Chatham"
-            }),
-            (creator_id = userId._id),
-            (status = 'active')
-        );
-    } catch (e) {
-        console.error(e);
-    }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 52, streetName : "Chandler road"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 1351.25),
-                (perHour = false),
-                (title = "moving"),
-                (description = "I need help moving"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 246, streetName : "Street street"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'in-progress')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'completed')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'in-progress')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'completed')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'in-progress')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'completed')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
-        try {
-            const user = await users.readByUsername("agentcoop");
-            let userId = await users.readByID(user._id);
-            
-            await jobs.createJob(
-                (compensation = 15.5),
-                (perHour = true),
-                (title = "moving"),
-                (description = "sdcsd"),
-                (datePosted = new Date('03/12/2021')),
-                (address = {
-                    street : { streetNo : 23, streetName : "schindler"},
-                    aptNo : "",
-                    zipCode : "07928",
-                    state : "NJ",
-                    town : "Chatham"
-                }),
-                (creator_id = ObjectID(userId._id)),
-                (status = 'active')
-            );
-        } catch (e) {
-            console.error(e);
-        }
+    // try {
+    //     const user = await users.readByUsername("agentcoop");
+    //     let userId = await users.readByID(user._id);
+    //     await jobs.createJob(
+    //         (compensation = 15.5),
+    //         (perHour = true),
+    //         (title = "asdc"),
+    //         (description = "dfvd"),
+    //         (datePosted = new Date('03/12/2021')),
+    //         (address = {
+    //             street : { streetNo : 23, streetName : "Schindler Court"},
+    //             aptNo : "",
+    //             zipCode : "07928",
+    //             state : "NJ",
+    //             town : "Chatham"
+    //         }),
+    //         (creator_id = userId._id),
+    //         (status = 'active')
+    //     );
+    // } catch (e) {
+    //     console.error(e);
+    // }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 52, streetName : "Chandler road"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 1351.25),
+    //             (perHour = false),
+    //             (title = "moving"),
+    //             (description = "I need help moving"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 246, streetName : "Street street"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'in-progress')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'completed')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'in-progress')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'completed')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'in-progress')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'completed')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    //     try {
+    //         const user = await users.readByUsername("agentcoop");
+    //         let userId = await users.readByID(user._id);
+    //
+    //         await jobs.createJob(
+    //             (compensation = 15.5),
+    //             (perHour = true),
+    //             (title = "moving"),
+    //             (description = "sdcsd"),
+    //             (datePosted = new Date('03/12/2021')),
+    //             (address = {
+    //                 street : { streetNo : 23, streetName : "schindler"},
+    //                 aptNo : "",
+    //                 zipCode : "07928",
+    //                 state : "NJ",
+    //                 town : "Chatham"
+    //             }),
+    //             (creator_id = ObjectID(userId._id)),
+    //             (status = 'active')
+    //         );
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+
+
+
+
 
     // SLIGHTLY DIFFERENT SEEDING FORMAT. ALSO UPDATES USERS' JOB ARRAYS.
     let jobsCreated = [];
@@ -548,14 +552,7 @@ async function seedJobs() {
             (title = "NEED HELP MOVING FURNITURE!"),
             (description = "it's just... too heavy, you know?"),
             (datePosted = new Date('04/1/2021')),
-            (address = {
-                street: { streetNo : 465, streetName : "Main"},
-                aptNo: '9',
-                zipCode: '33322',
-                state: 'NJ',
-                town: 'Hoboken',
-                country: 'USA'
-            }),
+            (address = user.address),
             (creator_id = ObjectID(user._id)),
             (status = 'active')
         );
@@ -575,14 +572,7 @@ async function seedJobs() {
             (title = "SOMEONE PLS FIX MY COMPUTER!!"),
             (description = "I think you need to download some more RAM to fix it."),
             (datePosted = new Date('3/10/2021')),
-            (address = {
-                street: { streetNo : 465, streetName : "Main"},
-                aptNo: '9',
-                zipCode: '33322',
-                state: 'NJ',
-                town: 'Hoboken',
-                country: 'USA'
-            }),
+            (address = user.address),
             (creator_id = ObjectID(user._id)),
             (status = 'active')
         );
@@ -602,14 +592,7 @@ async function seedJobs() {
             (title = "Need kitchen sink fixed ASAP"),
             (description = "Didn't know you weren't supposed to put glass bottles in the garbage disposal."),
             (datePosted = new Date('5/1/2021')),
-            (address = {
-                street: { streetNo : 8, streetName : "Adams St"},
-                aptNo: '',
-                zipCode: '22334',
-                state: 'NJ',
-                town: 'Hoboken',
-                country: 'USA'
-            }),
+            (address = employer.address),
             (creator_id = ObjectID(employer._id)),
             (status = 'in-progress')
         );
@@ -629,14 +612,7 @@ async function seedJobs() {
             (title = "MY DOG NEEDS PIANO LESSONS"),
             (description = "She's been playing for year and butchers Moonlight Sonata."),
             (datePosted = new Date('2/7/2021')),
-            (address = {
-                street: { streetNo : 61, streetName : "Canopy St"},
-                aptNo: '34',
-                zipCode: '02155',
-                state: 'NJ',
-                town: 'Newark',
-                country: 'USA'
-            }),
+            (address = employer.address),
             (creator_id = ObjectID(employer._id)),
             (status = 'in-progress')
         );
@@ -656,14 +632,7 @@ async function seedJobs() {
             (title = "teach me how to make a grilled cheese"),
             (description = "i really want to impress my boss when he comes to my dinner party next month"),
             (datePosted = new Date('4/21/2021')),
-            (address = {
-                street: { streetNo : 465, streetName : "Main"},
-                aptNo: '9',
-                zipCode: '33322',
-                state: 'NJ',
-                town: 'Hoboken',
-                country: 'USA'
-            }),
+            (address = employer.address),
             (creator_id = ObjectID(employer._id)),
             (status = 'in-progress')
         );
