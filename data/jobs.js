@@ -177,14 +177,6 @@ async function checkAddress(address) {
     message = "Address street name must be a non empty string"
     
   }
-  
-  if (!address.street.streetNo || isNaN(parseInt(address.street.streetNo)) || 
-      typeof address.street.streetNo !== 'number' || 
-      address.street.streetNo === null) {
-      error = true; 
-      message = "Address street number must be a number" 
-      
-  }
 
   if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
       error = true; 
