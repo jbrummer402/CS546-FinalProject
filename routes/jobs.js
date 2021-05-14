@@ -219,7 +219,7 @@ async function checkAddress(address) {
   }
 
   return {error : error, message : message };
-}
+
 
   if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
       error = true; 
@@ -238,6 +238,8 @@ async function checkAddress(address) {
 
   return {error : error, message : message };
 }
+
+
 
 async function checkCreatorId(creatorId) {
   let error = false;
