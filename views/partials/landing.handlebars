@@ -1,14 +1,3 @@
-<header>
-  <h1><a href="/" ><img src="../../public/logo.png" alt="Odjob Logo" class="logo"></a></h1>
-    {{!-- this will have different text depending whether user is logged in or not --}}
-    <h2 class="to-prof">
-    {{#if data.logged.uname}}
-        <a id="to-profile" href="/profile/account">{{data.logged.uname}}</a>
-    {{else}}
-        <a href="/users/signin">Sign In</a>
-    {{/if}}
-    </h2>
-</header>
 <main>
   <p id="blank-search" class="error" hidden>Please make sure all search fields are filled out</p>
   <form id="search-form">

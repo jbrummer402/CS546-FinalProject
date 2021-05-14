@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const jobsData = data.jobs;
+const userData = data.users;
+const reviewData = data.reviews;
 const ObjectId = require("mongodb").ObjectId;
 const xss = require('xss');
 
@@ -42,6 +44,7 @@ router.post("/", async (req, res) => {
 //get every job
 router.get("/", async (req, res) => {
   try {
+    /* I dont know that error checking is necessary for inputs here since its a get */
     //const { errorCode, message } = await checkInputs();
     /*if (errorCode !== 0) {
       res.status(errorCode).json({ error: message });
@@ -79,13 +82,36 @@ router.get('/:id', async(req, res) => {
     return;
   }
   try {
-    const { errorCode, message } = await checkInputs();
+    /*const { errorCode, message } = await checkInputs();
     if (errorCode !== 0) {
       res.status(errorCode).json({ error: message });
       return;
-    }
+    } */
+
     const jobById = await jobsData.readByID(xss(req.params.id));
-    res.json(jobById);
+    const posterInfo = await userData.readByID(jobById.creatorId.toString());
+
+    // need to get average rating and we currently dont have a better way
+    let rateAvg = 0;
+    
+    let reviewsOf = await reviewData.getReviewsReceivedForUser(posterInfo._id.toString());
+
+    for (let i = 0; i < reviewsOf.length; i++){
+      rateAvg += reviewsOf[i].rating;
+    }
+    if (rateAvg === 0){
+      rateAvg = 'N/A';
+    } else {
+      rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
+    }
+    let username;
+    if (!req.session.AuthCookie){
+      username = false;
+    } else {
+      username = req.session.AuthCookie.username;
+    }
+    res.render('partials/job', {data: {title: jobById.title, logged: {uname: username}, 
+      job: jobById, poster: posterInfo, average: rateAvg}});
   } catch (e) {
     res.status(500).send({error : e});
   }

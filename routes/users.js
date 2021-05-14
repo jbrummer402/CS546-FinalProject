@@ -225,14 +225,17 @@ router.get("/:id", async (req, res) => {
     } else {
       username = loggedIn.username;
     }
-    res.render("partials/emp", {
-      data: {
-        user: user,
-        logged: { uname: username },
-        reviews: reviewsOf,
-        average: rateAvg,
-      },
-    });
+
+    res.render('partials/emp', 
+      {data: {
+        title: user.username, 
+        user: user, 
+        logged: {uname: username}, 
+        reviews: reviewsOf, 
+        average: rateAvg
+       }
+     });
+    
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: "User not found" });
@@ -241,7 +244,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/username/:username", async (req, res) => {
   try {
-    let user = await usersData.readByUsername(xss(req.params.username).toLowerCase());
+    let user = await usersData.readByUsername(xss(req.params.username));
     res.json(user);
   } catch (e) {
     res.status(404).json({ error: "User not found" });
