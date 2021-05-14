@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const jobsData = data.jobs;
 const ObjectId = require("mongodb").ObjectId;
+const xss = require('xss');
 
 router.post("/", async (req, res) => {
   let {
@@ -50,7 +51,7 @@ router.get("/", async (req, res) => {
 
 router.get('/search/:searchTerm', async (req, res) => {
   try {
-    let searchData = jobsData.searchByTerms(xss(req.params.body));
+    let searchData = jobsData.searchByTerms(xss(req.params.searchTerm));
     res.json(searchData);
   } catch (e) {
     console.log(e);

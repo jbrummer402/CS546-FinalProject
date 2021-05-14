@@ -131,6 +131,22 @@ jQuery(document).ready(function($){
                 landingUserList.show();
             });
         }
+        else if (searchType === 'Jobs'){
+            let requestConfig = {
+                method: 'GET',
+                url: '/jobs/search/' + searchText.trim()
+            }
+            $.ajax(requestConfig).then(function(res){
+                $.each(res, function(curJob) {
+                    bindJobListLink(res[curJob]);
+                });
+                userHeader.hide();
+                landingUserList.hide();
+
+                jobHeader.show();
+                landingJobList.show();
+            });
+        }
 
 
     });
