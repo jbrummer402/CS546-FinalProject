@@ -388,7 +388,7 @@ router.post("/:id", async (req, res) => {
     return;
   }
 
-  if (email !== undefined) {
+  if (email !== undefined && email !== user.email) {
     const errorObj = await checkEmail(email);
     if (errorObj.errorCode !== 0) {
       res.status(400).json({
