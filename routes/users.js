@@ -214,6 +214,10 @@ router.get("/:id", async (req, res) => {
     } catch {
       // do nothing, just dont show reviews ig
     }
+    let isReviews = true;
+    if (reviewsOf.length === 0){
+      isReviews = false;
+    }
     if (rateAvg === 0) {
       rateAvg = "N/A";
     } else {
@@ -232,7 +236,8 @@ router.get("/:id", async (req, res) => {
         user: user, 
         logged: {uname: username}, 
         reviews: reviewsOf, 
-        average: rateAvg
+        average: rateAvg,
+        isReviews : isReviews
        }
      });
     
