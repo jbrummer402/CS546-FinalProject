@@ -60,22 +60,18 @@ router.get("/", async (req, res) => {
 router.get('/search/:searchTerm', async (req, res) => {
   try {
     let searchData = await jobsData.searchByTerms(xss(req.params.searchTerm));
-    /*const { errorCode, message } = await checkInputs();
-    if (errorCode !== 0) {
-      res.status(errorCode).json({ error: message });
-      return;
-    } */
+    
     if (typeof xss(req.params.searchTerm) !== 'string'){
       throw "Search term must be a string"
     }
     if (!xss(req.params.searchTerm) || xss(req.params.searchTerm).trim() === '') {
       throw "No terms provided";
     }
-    res.json(searchData);
-  } catch (e) {
-    console.log(e);
-    res.status(404).json({ error: "job not found" });
-  }
+      res.json(searchData);
+    } catch (e) {
+      console.log(e);
+      res.status(404).json({ error: "job not found" });
+    }
 });
 
 router.get('/:id', async(req, res) => {
@@ -195,25 +191,15 @@ async function checkAddress(address) {
     
   }
 
-  if (typeof address.street !== 'object' || !address.street || address.street === null) {
-    error = true; 
-    message = "Address must contain street of type object"
-  
+  if (!address.street) {
+    error = true;
+    message = "Address must contain a street"
   }
 
-
-  if (!address.street.streetName || typeof address.street.streetName !== 'string' || address.street.streetName === null) {
-    if (!address.street.streetName) {
-      error = true; 
-      message = "Address street name does not exist"
-      
-    }
-  
-    if (typeof address.street.streetName !== 'string' || !address.street.streetName.trim() || !isNaN(parseInt(address.street.streetName))) {
-      error = true; 
-      message = "Address street name must be a non empty string"
-      
-    }
+  if (typeof address.street !== 'string' || !address.street.trim()) {
+    error = true; 
+    message = "Address street name must be a non empty string"
+    
   }
   
   if (!address.street.streetNo || isNaN(parseInt(address.street.streetNo)) || 
@@ -223,6 +209,24 @@ async function checkAddress(address) {
       message = "Address street number must be a number" 
       
   }
+
+  if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
+      error = true; 
+      message = "Address zipcode must be a number"; 
+  }
+
+  if (!address.state ||  typeof address.state !== 'string' || !(address.state.trim())) {
+    error = true; 
+    message = "Address state must be a string"; 
+  }
+
+  if (typeof address.town !== 'string' || !address.town || !(address.town.trim())) {
+    error = true; 
+    message = "Address town must be a number"; 
+  }
+
+  return {error : error, message : message };
+}
 
   if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
       error = true; 
