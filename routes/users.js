@@ -214,7 +214,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/username/:username", async (req, res) => {
   try {
-    let user = await usersData.readByUsername(xss(req.params.username));
+    let user = await usersData.readByUsername(xss(req.params.username).toLowerCase());
     res.json(user);
   } catch (e) {
     res.status(404).json({ error: "User not found" });
@@ -224,7 +224,7 @@ router.get("/username/:username", async (req, res) => {
 // search by username
 router.get("/search/:searchterm", async (req, res) => {
   try {
-    let searchterm = await usersData.searchByUsername(xss(req.params.searchterm));
+    let searchterm = await usersData.searchByUsername(xss(req.params.searchterm).toLowerCase());
     res.json(searchterm);
   } catch (e) {
     res.status(404).json({ error: "No matches" });

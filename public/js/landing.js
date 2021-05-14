@@ -22,12 +22,15 @@ jQuery(document).ready(function($){
         let LI = $('<li/>')
             .appendTo(landingJobList);
         // each job item has title
-        let title = $('<h3/>')
-            .text(jobItem.title)
+        let title = $('<h2/>')
             .appendTo(LI);
+        let A = $('<a/>')
+            .text(jobItem.title)
+            .attr("href", `/jobs/${jobItem._id}`)
+            .appendTo(title);
         // datePosted
         let date = $('<h4/>')
-            .text(jobItem.datePosted)
+            .text(new Date(jobItem.datePosted).toDateString())
             .appendTo(LI);
         // compensation + type
         let type = '';
@@ -42,22 +45,18 @@ jQuery(document).ready(function($){
             .text("Location: " + jobItem.address.town)
             .appendTo(LI);
         // show description on click
-        let descBtn = $('<input/>')
+        let descBtn = $('<button/>')
             .text("Description")
             .attr("type", "button")
             .attr("id", jobItem._id.toString())
             .appendTo(LI);
-        let descLbl = $('<label/>')
-            .text("Description Button")
-            .appendTo(LI)
-            .hide();
         let descTxt = $('<p/>')
             .text(jobItem.description)
             .appendTo(LI)
             .hide();
         // toggle on click whether description is shown
         descBtn.on('click', function(event){
-            descBtn.toggle();
+            descTxt.toggle();
         });
         
     }
@@ -133,6 +132,22 @@ jQuery(document).ready(function($){
 
                 userHeader.show();
                 landingUserList.show();
+            });
+        }
+        else if (searchType === 'Jobs'){
+            let requestConfig = {
+                method: 'GET',
+                url: '/jobs/search/' + searchText.trim()
+            }
+            $.ajax(requestConfig).then(function(res){
+                $.each(res, function(curJob) {
+                    bindJobListLink(res[curJob]);
+                });
+                userHeader.hide();
+                landingUserList.hide();
+
+                jobHeader.show();
+                landingJobList.show();
             });
         }
 

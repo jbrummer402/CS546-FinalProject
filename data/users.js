@@ -283,6 +283,8 @@ async function searchByUsername(keyword) {
   if (keyword === undefined) throw "Input must be provided for 'keyword' parameter!";
   if (typeof keyword !== "string") throw "Input keyword must be a string!";
 
+  // so that regex search works even if use enters caps
+  keyword = keyword.toLowerCase();
   const usersCollection = await users();
 
   const results = await usersCollection.find({ username: new RegExp(keyword) }).toArray();

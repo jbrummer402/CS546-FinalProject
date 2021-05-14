@@ -26,6 +26,14 @@ header .to-prof {
   color: white;
 }
 
+.logo {
+  display: block;
+  margin-left: 15px;
+  margin-right: auto;
+  width:150px;
+  height:150px;
+}
+
 header .to-prof a:visited, .web-title a:visited {
   color: white;
 }

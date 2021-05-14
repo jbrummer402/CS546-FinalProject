@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const jobsData = data.jobs;
 const ObjectId = require("mongodb").ObjectId;
+const xss = require('xss');
 
 router.post("/", async (req, res) => {
   let {
@@ -41,11 +42,11 @@ router.post("/", async (req, res) => {
 //get every job
 router.get("/", async (req, res) => {
   try {
-    const { errorCode, message } = await checkInputs();
-    if (errorCode !== 0) {
+    //const { errorCode, message } = await checkInputs();
+    /*if (errorCode !== 0) {
       res.status(errorCode).json({ error: message });
       return;
-    }
+    } */
     let everyJob = await jobsData.getJobs();
     res.json(everyJob);
   } catch (e) {
@@ -61,7 +62,6 @@ router.get('/search/:searchTerm', async (req, res) => {
       res.status(errorCode).json({ error: message });
       return;
     }
-    
     res.json(searchData);
   } catch (e) {
     console.log(e);
@@ -106,7 +106,7 @@ async function checkPerHour(perHour) {
   let error = false;
   let message = "";
 
-  if (typeof perHour !== "boolean" || !perHour) {
+  if (typeof perHour !== "boolean" || perHour === null || perHour === undefined) {
     error = true;
     message = "Perhour must be of type boolean"
   }
