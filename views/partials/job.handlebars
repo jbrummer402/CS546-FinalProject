@@ -10,7 +10,7 @@
     <p>Date Posted: {{data.job.datePosted}}</p>
     <p>Location: {{data.job.address.town}}, {{jobInfo.job.address.state}}</p>
     {{#ifEquals "active" data.job.status }}
-        <button id="claim-button" type="button">Claim Job</button>
+        <button id="claim-button" type="button" formaction="/jobs/{{data.job._id}}">Claim Job</button>
     {{/ifEquals }}
     {{#ifEquals "in-progress" data.job.status }}
         <p id="job-claimed">Job has been claimed</p>
@@ -22,7 +22,7 @@
 <div id=poster-info>
     <h2>Posted By</h2>
    <h3>{{data.poster.firstName}} {{data.poster.lastName}}</h3>
-   <h4><a href="/users/{{data.poster._id}}">{{data.poster.username}}</a></h4>
+   <h4><a id="to-poster-prof" href="/users/{{data.poster._id}}">{{data.poster.username}}</a></h4>
    <p>Average Rating: {{data.average}}</p>
 </div>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
