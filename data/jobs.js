@@ -80,9 +80,23 @@ async function removeJob(id) {
   return true;
 }
 
-// async function updateJob(id) {
+async function updateJob(id, jobToUpdate) {
+  try {
+    await this.checkInputs(jobToUpdate);
 
-// }
+    if (!ObjectId.isValid(id)) {
+      throw "Update job: Object id is not valid"
+    }
+
+    const jobsCollection = await jobs();
+
+    await jobsCollection.updateOne({ _id: ObjectId(id)}, {$set : jobToUpdate})
+
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+}
 
 async function checkCompensation(compensation) {
   let error = false;
