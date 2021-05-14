@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 
         for(let review of reviewsList.children()){
             const reviewer = $(review).attr('reviewer');
-            const reviewid = $(review).attr('reviewid');
+            const reviewid = $(review).attr('id');
             if(reviewer == currentUserID){
                 $(review).append(`<button class="reviewEditButton" reviewid=${reviewid}>Edit Review</button>`);
                 $(review).append(`<button class="reviewDeleteButton" reviewid=${reviewid}>Delete Review</button>`);
