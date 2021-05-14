@@ -90,6 +90,9 @@ jQuery(document).ready(function($){
             if (curJob >= 20){
                 return false;
             }
+            if (res[curJob].status === 'completed' || res[curJob].status === 'in-progress'){
+                return;
+            }
             bindJobListLink(res[curJob]);
         });
         userHeader.hide();
@@ -157,12 +160,23 @@ jQuery(document).ready(function($){
             }
             $.ajax(requestConfig).then(function(res){
                 $.each(res, function(curJob) {
+                    if (res[curJob].status === 'completed' || res[curJob].status === 'in-progress'){
+                        return;
+                    }
                     bindJobListLink(res[curJob]);
                 });
                 userHeader.hide();
                 landingUserList.hide();
-                noResults.hide();
                 blankSearch.hide();
+
+                if (landingJobList.is(':empty')){
+                    jobHeader.hide();
+                    landingJobList.hide();
+                    noResults.show();
+                    return;
+                }
+
+                noResults.hide();
 
                 jobHeader.show();
                 landingJobList.show();

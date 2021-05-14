@@ -95,6 +95,7 @@ jQuery(document).ready(function($){
         });
 
         // use jobUrl to update job status
+        // once job status is updated, hide claim job button and show in progress, or just reload page
 
         // then need to post so that can update job, need an update route tho
         // var requestConfig = {
