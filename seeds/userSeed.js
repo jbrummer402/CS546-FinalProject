@@ -16,7 +16,7 @@ async function seedUsers() {
         street: "465 main st",
         aptNo: "9",
         zipCode: "33322",
-        state: "  NE",
+        state: "  NJ",
         town: "Hoboken",
       }),
       (photoLink = "/public/profile_pics/agentcoop.jpeg"),

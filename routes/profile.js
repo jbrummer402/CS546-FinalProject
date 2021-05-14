@@ -60,54 +60,56 @@ router.get("/reviews", async (req, res) => {
 });
 
 router.get("/activejobs", async (req, res) => {
+  let user = await usersData.readByID(req.session.AuthCookie.id);
+  let activeJobs = [];
+  for (const jobID of user.jobsActive) {
+    const job = await jobsData.readByID(jobID);
+    const jobObj = {
+      jobTitle: job.title,
+      compensation: job.compensation,
+      perHour: job.perHour,
+      datePosted: job.datePosted.toString()
+    }
+    activeJobs.push(jobObj);
+  }
   res.render("partials/profile/activejobs", {
     title: "My Active Jobs",
     layout: "profile",
     username: req.session.AuthCookie.username,
-    activeJobs: [
-      {
-        jobTitle: "NEED HELP MOVING FURNITURE!",
-        compensation: 15,
-        perHour: true,
-        datePosted: "4/1/21",
-      },
-      {
-        jobTitle: "SOMEONE PLS FIX MY COMPUTER!!",
-        compensation: 300,
-        perHour: false,
-        datePosted: "5/6/21",
-      },
-    ],
+    activeJobs: activeJobs,
   });
 });
 
 router.get("/inprogressjobs", async (req, res) => {
+  let user = await usersData.readByID(req.session.AuthCookie.id);
+  let jobsInProgressAsEmployee = [];
+  let jobsInProgressAsEmployer = [];
+  for (const jobID of user.jobsInProgressAsEmployee) {
+    const job = await jobsData.readByID(jobID);
+    const jobObj = {
+      jobTitle: job.title,
+      compensation: job.compensation,
+      perHour: job.perHour,
+      datePosted: job.datePosted.toString()
+    }
+    jobsInProgressAsEmployee.push(jobObj);
+  }
+  for (const jobID of user.jobsInProgressAsEmployer) {
+    const job = await jobsData.readByID(jobID);
+    const jobObj = {
+      jobTitle: job.title,
+      compensation: job.compensation,
+      perHour: job.perHour,
+      datePosted: job.datePosted.toString()
+    }
+    jobsInProgressAsEmployer.push(jobObj);
+  }
   res.render("partials/profile/inprogressjobs", {
     title: "My In-Progress Jobs",
     layout: "profile",
     username: req.session.AuthCookie.username,
-    jobsInProgressAsEmployee: [
-      {
-        jobTitle: "Need kitchen sink fixed ASAP",
-        compensation: 500,
-        perHour: false,
-        datePosted: "5/13/21",
-      },
-      {
-        jobTitle: "MY DOG NEEDS PIANO LESSONS",
-        compensation: 20,
-        perHour: true,
-        datePosted: "5/2/21",
-      },
-    ],
-    jobsInProgressAsEmployer: [
-      {
-        jobTitle: "teach me how to make a grilled cheese",
-        compensation: 1000,
-        perHour: false,
-        datePosted: "3/23/21",
-      },
-    ],
+    jobsInProgressAsEmployee: jobsInProgressAsEmployee,
+    jobsInProgressAsEmployer: jobsInProgressAsEmployer
   });
 });
 

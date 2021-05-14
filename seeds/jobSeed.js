@@ -535,6 +535,183 @@ async function seedJobs() {
         } catch (e) {
             console.error(e);
         }
+
+    // SLIGHTLY DIFFERENT SEEDING FORMAT. ALSO UPDATES USERS' JOB ARRAYS.
+    let jobsCreated = [];
+
+    try {
+        let user = await users.readByUsername("agentcoop");
+
+        let job = await jobs.createJob(
+            (compensation = 15),
+            (perHour = true),
+            (title = "NEED HELP MOVING FURNITURE!"),
+            (description = "it's just... too heavy, you know?"),
+            (datePosted = new Date('04/1/2021')),
+            (address = {
+                street: { streetNo : 465, streetName : "Main"},
+                aptNo: '9',
+                zipCode: '33322',
+                state: 'NJ',
+                town: 'Hoboken',
+                country: 'USA'
+            }),
+            (creator_id = ObjectID(user._id)),
+            (status = 'active')
+        );
+        let employerID = user._id;
+        let employeeID = undefined;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        let user = await users.readByUsername("agentcoop");
+
+        let job = await jobs.createJob(
+            (compensation = 300),
+            (perHour = false),
+            (title = "SOMEONE PLS FIX MY COMPUTER!!"),
+            (description = "I think you need to download some more RAM to fix it."),
+            (datePosted = new Date('3/10/2021')),
+            (address = {
+                street: { streetNo : 465, streetName : "Main"},
+                aptNo: '9',
+                zipCode: '33322',
+                state: 'NJ',
+                town: 'Hoboken',
+                country: 'USA'
+            }),
+            (creator_id = ObjectID(user._id)),
+            (status = 'active')
+        );
+        let employerID = user._id;
+        let employeeID = undefined;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        let employer = await users.readByUsername("ronaldxxx");
+
+        let job = await jobs.createJob(
+            (compensation = 500),
+            (perHour = false),
+            (title = "Need kitchen sink fixed ASAP"),
+            (description = "Didn't know you weren't supposed to put glass bottles in the garbage disposal."),
+            (datePosted = new Date('5/1/2021')),
+            (address = {
+                street: { streetNo : 8, streetName : "Adams St"},
+                aptNo: '',
+                zipCode: '22334',
+                state: 'NJ',
+                town: 'Hoboken',
+                country: 'USA'
+            }),
+            (creator_id = ObjectID(employer._id)),
+            (status = 'in-progress')
+        );
+        let employerID = employer._id;
+        let employeeID = (await users.readByUsername("agentcoop"))._id;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        let employer = await users.readByUsername("toneee");
+
+        let job = await jobs.createJob(
+            (compensation = 20),
+            (perHour = true),
+            (title = "MY DOG NEEDS PIANO LESSONS"),
+            (description = "She's been playing for year and butchers Moonlight Sonata."),
+            (datePosted = new Date('2/7/2021')),
+            (address = {
+                street: { streetNo : 61, streetName : "Canopy St"},
+                aptNo: '34',
+                zipCode: '02155',
+                state: 'NJ',
+                town: 'Newark',
+                country: 'USA'
+            }),
+            (creator_id = ObjectID(employer._id)),
+            (status = 'in-progress')
+        );
+        let employerID = employer._id;
+        let employeeID = (await users.readByUsername("agentcoop"))._id;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        let employer = await users.readByUsername("agentcoop");
+
+        let job = await jobs.createJob(
+            (compensation = 1000),
+            (perHour = false),
+            (title = "teach me how to make a grilled cheese"),
+            (description = "i really want to impress my boss when he comes to my dinner party next month"),
+            (datePosted = new Date('4/21/2021')),
+            (address = {
+                street: { streetNo : 465, streetName : "Main"},
+                aptNo: '9',
+                zipCode: '33322',
+                state: 'NJ',
+                town: 'Hoboken',
+                country: 'USA'
+            }),
+            (creator_id = ObjectID(employer._id)),
+            (status = 'in-progress')
+        );
+        let employerID = employer._id;
+        let employeeID = (await users.readByUsername("madman"))._id;
+        jobsCreated.push([employerID, employeeID, job]);
+    } catch (e) {
+        console.error(e);
+    }
+
+
+
+    // insert jobs into job arrays for users
+    for (let [employerID, employeeID, job] of jobsCreated) {
+        let employer = await users.readByID(employerID);
+        let employee = employeeID !== undefined ? await users.readByID(employeeID) : undefined;
+        let jobID = job._id.toString();
+
+        let updateObjEmployer = {id: employerID};
+        let updateObjEmployee = {id: employeeID};
+
+        if (job.status === 'active') {
+            let jobsActive = employer.jobsActive;
+            jobsActive.push(jobID);
+            updateObjEmployer.jobsActive = jobsActive;
+        } else if (job.status === 'in-progress') {
+            let jobsInProgressAsEmployer = employer.jobsInProgressAsEmployer;
+            let jobsInProgressAsEmployee = employee.jobsInProgressAsEmployee;
+
+            jobsInProgressAsEmployer.push(jobID);
+            jobsInProgressAsEmployee.push(jobID);
+
+            updateObjEmployer.jobsInProgressAsEmployer = jobsInProgressAsEmployer;
+            updateObjEmployee.jobsInProgressAsEmployee = jobsInProgressAsEmployee;
+        }
+
+        try {
+            await users.update(updateObjEmployer);
+        } catch (e) {
+            console.error(e)
+        }
+        try {
+            await users.update(updateObjEmployee);
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
     
 }
 
