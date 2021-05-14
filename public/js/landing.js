@@ -104,8 +104,6 @@ jQuery(document).ready(function($){
     searchForm.submit(function(event){
         event.preventDefault();
 
-        landingJobList.empty();
-        landingUserList.empty();
 
         let searchType = $('input[name="search-type"]:checked', searchForm).val();
         let searchText = $('#search-bar', searchForm).val();
@@ -116,6 +114,8 @@ jQuery(document).ready(function($){
             return;
         }
 
+        landingJobList.empty();
+        landingUserList.empty();
 
         // make calls to appropriate routes for searches
         // need routes or smth
@@ -137,6 +137,8 @@ jQuery(document).ready(function($){
                 });
                 jobHeader.hide();
                 landingJobList.hide();
+                noResults.hide();
+                blankSearch.hide();
 
                 userHeader.show();
                 landingUserList.show();
@@ -159,6 +161,8 @@ jQuery(document).ready(function($){
                 });
                 userHeader.hide();
                 landingUserList.hide();
+                noResults.hide();
+                blankSearch.hide();
 
                 jobHeader.show();
                 landingJobList.show();
