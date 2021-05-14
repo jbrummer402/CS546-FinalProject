@@ -256,37 +256,28 @@ async function checkInputs(compensation, perHour, title, description, datePosted
 }
 
 async function searchByTerms(terms) {
-  let searchTerm = {};
-  
-  if (!terms || terms === null) {
-    throw "No terms provided";
-  }
+  let jobsList = [];
 
   if (typeof terms !== 'object'){
     throw "Search term must be an object"
   }
 
+  if (!terms || !terms.trim()) {
+    throw "No terms provided";
+  }
+
+
   for (let [key, value] in Object.entries(terms)) {
     // search through every term in the search term and make sure they don't raise errors
     await checkInputs((key = value));
+    if (String(value).contains) {
+      jobsList.append({ key : value });
+    }
   }
 
-  const jobsCollection = await jobs();
+  if (jobsList === []) throw "No jobs with that search term";
 
-  const job = await jobsCollection.find(
-    { compensation : terms.compensation },
-    { perHour : terms.perHour },
-    { title : terms.title },
-    { description : terms.description },
-    { datePosted : terms.datePosted },
-    { address : terms.address },
-    { creatorId : terms.creatorId },
-    { status : terms.status }
-  )
-
-  if (!job || job === null) throw "No jobs with those search terms";
-
-  return job;
+  return jobsList;
 }
 
 module.exports = { getJobs, createJob, readByID, removeJob, updateJob, searchByTerms };
