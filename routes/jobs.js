@@ -175,7 +175,7 @@ router.get('/:id', async(req, res) => {
   }
 })
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const jobBody = req.body;
   let updatedJob = {};
   try {
