@@ -121,7 +121,7 @@ router.delete('/:reviewid', async (req, res) =>{
         let deleteSuccess = false;
 
         deleteSuccess = await reviewsData.removeReviewById(id);
-        if(!deletedSuccess) throw 'Not found';
+        if(!deleteSuccess) throw 'Not found';
         res.json({"message": `review ${id} deleted`, "deleted": "true"});
     } catch (e) {
         res.status(404).json({"message":"review not found", "deleted": "false"});

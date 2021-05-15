@@ -79,6 +79,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/", async (req,res) => {
+  // call db function that just returns all 
+  try{
+    const users = await usersData.getAllUsers();
+    res.json(users);
+  } catch(e){
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 router.get("/signin", async (req, res) => {
   res.render("partials/sign-in", { title: "Sign-In" });
 });
