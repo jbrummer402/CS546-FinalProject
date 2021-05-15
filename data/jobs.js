@@ -28,14 +28,15 @@ async function createJob(compensation, perHour, title, description, datePosted, 
   const jobsCollection = await jobs();
 
   let newJob = {
-    compensation : compensation,
+    compensation : Number(compensation),
     perHour : perHour,
     title : title,
     description : description,
-    datePosted : datePosted,
+    datePosted : new Date(datePosted),
     address : address,
     creatorId : creatorId,
-    status : status
+    employeeId : '',
+    status : status,
   };
 
   const insertInfo = await jobsCollection.insertOne(newJob);
@@ -64,7 +65,7 @@ async function readByID(id) {
 }
 
 async function removeJob(id) {
-  const jobCollection = await jobs();
+  const jobsCollection = await jobs();
   try {
     let jobToDelete = await this.readByID(id);
   } catch (e) {
@@ -72,7 +73,8 @@ async function removeJob(id) {
     return;
   }
 
-  const deleteInfo = jobsCollection.removeOne({ _id : ObjectId(id) })
+  const deleteInfo = await jobsCollection.deleteOne({ _id : ObjectId(id) })
+
   if (deleteInfo.deletedCount === 0) {
     throw `Could not delete post with id of ${id}`;
   }
@@ -82,7 +84,8 @@ async function removeJob(id) {
 
 async function updateJob(id, jobToUpdate) {
   try {
-    await this.checkInputs(jobToUpdate);
+    let {compensation, perHour, title, description, datePosted, address, creatorId} = jobToUpdate;
+    await checkInputs(compensation, perHour, title, description, datePosted, address, creatorId);
 
     if (!ObjectId.isValid(id)) {
       throw "Update job: Object id is not valid"
@@ -101,9 +104,9 @@ async function updateJob(id, jobToUpdate) {
 async function checkCompensation(compensation) {
   let error = false;
   let message = "";
-  if (isNaN(parseFloat(compensation))) {
+  if (isNaN(compensation) || !Number(compensation) > 0) {
     error = true;
-    message = "Compensation must be of type float"
+    message = "Compensation must be a positive number"
   }
 
   return {error : error, message : message }
@@ -145,11 +148,11 @@ async function checkDescription(description) {
   return { error : error, message : message }
 }
 
-async function checkDatePosted(datePosted) {
+async function checkDatePosted(datePostedObj) {
   let error = false;
   let message = "";
 
-  if (!(datePosted instanceof Date) || isNaN(datePosted.valueOf())) {
+  if (!(datePostedObj instanceof Date) || isNaN(datePostedObj.valueOf())) {
     error = true;
     message = "Date posted must be of type date"
   }
@@ -215,7 +218,7 @@ async function checkInputs(compensation, perHour, title, description, datePosted
     perHour      :      perHour,
     title        :        title,
     description  :  description,
-    datePosted   :   datePosted,
+    datePosted   :   new Date(datePosted),
     address      :      address, 
     creatorId    :    creatorId
   }

@@ -16,13 +16,13 @@
         <label for="compensation">
             Compensation
             <br>
-            <input type="text" id="jobCompensation">
+            <input type="number" id="jobCompensation" placeholder="Ex. 400">
         </label>
         <br>
         <label for="perHour">
             Hourly Pay
             <br>
-            <input type="text" id="jobperHour">
+            <input type="text" id="jobperHour" placeholder="Ex. 15">
         </label>
         <br>
         <label for="street">
@@ -46,7 +46,7 @@
         <label for="state">
             State
             <br>
-            <input type="text" value="{{address.state}}" id="state">
+            <input type="text" value="{{address.state}}" placeholder="Ex. NJ" id="state">
         </label>
         <br>
         <label for="town">
@@ -58,10 +58,23 @@
         <label for="country">
             Country
             <br>
-            <input type="text" value="{{address.country}}" id="country">
+            <input type="text" value="USA" id="country" disabled/>
         </label>
         <br>
         <button type="submit">Post Job</button>
         {{!-- TODO: Implement address change --}}
     </form>
+    <div id="error" hidden>
+    </div>
 </div>
+<script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"
+></script>
+<script src="/public/js/postjob.js"></script>
