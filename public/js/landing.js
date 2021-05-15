@@ -1,8 +1,8 @@
 jQuery(document).ready(function($){
     let landingJobList = $('#landing-job-list');
     let landingUserList = $('#landing-user-list');
-    let jobHeader = $('#job-header');
-    let userHeader = $('#user-header');
+    let jobHeader = $('#jobs-header');
+    let userHeader = $('#users-header');
     let searchForm = $('#search-form');
     let blankSearch = $('#blank-search');
     let noResults = $('#no-result');
@@ -35,7 +35,7 @@ jQuery(document).ready(function($){
             .attr("href", `/jobs/${jobItem._id}`)
             .appendTo(title);
         // datePosted
-        let date = $('<h4/>')
+        let date = $('<h3/>')
             .text(new Date(jobItem.datePosted).toDateString())
             .appendTo(LI);
         // compensation + type
@@ -227,6 +227,7 @@ jQuery(document).ready(function($){
                 bindJobListLink(res[curJob]);
             });
         });
+        jobHeader.show();
         landingJobList.show();
     });
 
@@ -262,6 +263,7 @@ jQuery(document).ready(function($){
                 bindUserLink(res[curUser]);
             });
         });
+        userHeader.show();
         landingUserList.show();
     });
 
