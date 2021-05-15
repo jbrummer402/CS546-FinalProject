@@ -4,7 +4,7 @@
 <!--</div>-->
 <div class="centered main">
   <h1>Account</h1>
-  <div id='currentUser' user='{{id}}'></div>
+  <div id='currentUser' title='{{id}}'></div>
   <form id="updateAccountForm" action="/users/{{id}}">
     <label for="firstName">
       First Name
@@ -46,7 +46,7 @@
       <input type="text" value="{{email}}" id="email" name="email" />
     </label>
     <br />
-    <h3>Address</h3>
+    <h2>Address</h2>
     <label for="street">
       Street
       <br />

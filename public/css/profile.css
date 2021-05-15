@@ -14,11 +14,11 @@ body {
     padding-top: 20px;
 }
 
-.sidenav h2 {
+.sidenav h1 {
     padding: 6px 6px 6px 32px;
     text-decoration: none;
     font-size: 15px;
-    color: #f1f1f1;
+    color: white;
     display: block;
 }
 
@@ -26,7 +26,7 @@ body {
     padding: 6px 6px 6px 32px;
     text-decoration: none;
     font-size: 20px;
-    color: #f1f1f1;
+    color: white;
     display: block;
 }
 

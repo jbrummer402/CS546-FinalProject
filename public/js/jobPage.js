@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
         let workerUname = $('#to-profile').text();
         let posterUname = $('#to-poster-prof').text();
         let jobId = $('.job-page-title').attr("id");
-        let jobUrl = claimButton.attr("formaction");
+        let jobUrl = claimButton.attr("name");
 
         if (workerUname.length === 0){
             // error saying you must be logged in to claim
@@ -107,7 +107,7 @@ jQuery(document).ready(function($){
                         //then need to post so that can update job, need an update route tho
                         var requestConfig = {
                             method: "PATCH",
-                            url: claimButton.attr("formaction"),
+                            url: claimButton.attr("name"),
                             contentType: "application/json",
                             data: JSON.stringify({
                                 status: 'in-progress',
