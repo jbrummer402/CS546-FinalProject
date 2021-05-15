@@ -124,11 +124,7 @@ router.put("/:id", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     /* I dont know that error checking is necessary for inputs here since its a get */
-    //const { errorCode, message } = await checkInputs();
-    /*if (errorCode !== 0) {
-      res.status(errorCode).json({ error: message });
-      return;
-    } */
+    
     let everyJob = await jobsData.getJobs();
     res.json(everyJob);
   } catch (e) {
@@ -220,7 +216,7 @@ router.patch('/:id', async (req, res) => {
 
 
 router.delete("/:id", async (req, res) => {
-  let jobID = req.params.id;
+  let jobID = xss(req.params.id);
   const userID = xss(req.session.AuthCookie.id);
   let user;
   try {
@@ -230,12 +226,20 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send({error: e});
   }
 
-  // TODO: check if jobID is valid
-
   // TODO: check if jobID exists
+  if (!jobId) {
+    throw "Job id not given"
+  }
+  
+  // TODO: check if jobID is valid
+  if (!ObjectId.isValid(jobId)) {
+    throw "Job id is not a valid object id"
+  }
 
   // TODO: make sure only a signed in user can delete
-
+  if (!userId) {
+    throw "Only a signed in user can delete";
+  }
   // remove job
   try {
     await jobsData.removeJob(jobID);
