@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     address,
   } = req.body;
     const creatorId = req.session.AuthCookie.id;
-  const user;
+  let user;
   try {
     user = await userData.readByID(creatorId);
   } catch(e){
@@ -222,7 +222,7 @@ router.patch('/:id', async (req, res) => {
 router.delete("/:id", async (req, res) => {
   let jobID = req.params.id;
   const userID = req.session.AuthCookie.id;
-  const user;
+  let user;
   try {
     user = await userData.readByID(userID);
   } catch(e){
