@@ -16,6 +16,40 @@ jQuery(document).ready(function ($) {
     let errorDivList = $('#errorList');
     let deleteButton = document.getElementById('deleteBtn');
     let userid = $('#currentUser').attr('title');
+    let profilePicUpdateBtn = $('#profilePicUpdateSubmitBtn');
+    let photoUpdateErrorDiv = $('#photoUpdateError');
+    let photoUpdateSuccessDiv = $('#photoUpdateSuccess');
+    photoUpdateErrorDiv.hide();
+    photoUpdateSuccessDiv.hide();
+
+    $(document).on('submit', '#picUpdateForm', async (e) => {
+        e.preventDefault();
+        photoUpdateErrorDiv.empty();
+        photoUpdateErrorDiv.hide();
+        photoUpdateSuccessDiv.hide();
+        const fd = new FormData($("#picUpdateForm").get(0));   
+
+        var requestConfig = {
+            method: "PATCH",
+            url: `/users/pic/${userid}`,
+            processData: false,
+            contentType: false,
+            data: fd
+        };
+        
+        try{
+            let result;
+            result = await $.ajax(requestConfig);
+            photoUpdateSuccessDiv.empty();
+            photoUpdateSuccessDiv.append(`<p>Profile picture updated.</p>`);
+            photoUpdateSuccessDiv.show();
+        }
+        catch (e){
+            console.log(e);
+            photoUpdateErrorDiv.append(`<p> Error uploading picture</p>`);
+            photoUpdateErrorDiv.show();
+        }
+    });
 
     $(document).on('click', '.updateAccountBtn', async (e) => {
         //error checking
