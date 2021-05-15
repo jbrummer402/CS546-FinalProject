@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
     datePosted,
     address,
   } = req.body;
-    const creatorId = req.session.AuthCookie.id;
+    const creatorId = xss(req.session.AuthCookie.id);
   let user;
   try {
     user = await userData.readByID(creatorId);
@@ -68,7 +68,7 @@ router.put("/:id", async (req, res) => {
   const jobID = req.params.id;
   try {
   let job = await jobsData.readByID(jobID);
-  const employerID = req.session.AuthCookie.id;
+  const employerID = xss(req.session.AuthCookie.id);
   const employeeID = job.employeeId.toString();
   const employer = await userData.readByID(employerID);
   const employee = await userData.readByID(employeeID);
@@ -153,7 +153,7 @@ router.get('/search/:searchTerm', async (req, res) => {
 });
 
 router.get('/:id', async(req, res) => {
-  if (!req.params.id) {
+  if (!xss(req.params.id)) {
     res.status(404).send({message: "Id is not given"});
     return;
   }
@@ -185,10 +185,10 @@ router.get('/:id', async(req, res) => {
       rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
     }
     let username;
-    if (!req.session.AuthCookie){
+    if (!xss(req.session.AuthCookie)){
       username = false;
     } else {
-      username = req.session.AuthCookie.username;
+      username = xss(req.session.AuthCookie.username);
     }
 
     jobById.datePosted = jobById.datePosted.toDateString();
@@ -202,15 +202,15 @@ router.get('/:id', async(req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const jobBody = req.body;
-  //let updatedJob = {};
   try {
-    const currentJob = await jobsData.readByID(req.params.id);
+    const currentJob = await jobsData.readByID(xss(req.params.id));
 
     for (let key in jobBody) {
       currentJob[key] = jobBody[key];
-    }
 
-    let update = await jobsData.updateJob(req.params.id, currentJob);
+    }
+    
+    let update = await jobsData.updateJob(xss(req.params.id), currentJob);
 
     res.json(update);
   } catch (e) {
@@ -221,7 +221,7 @@ router.patch('/:id', async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   let jobID = req.params.id;
-  const userID = req.session.AuthCookie.id;
+  const userID = xss(req.session.AuthCookie.id);
   let user;
   try {
     user = await userData.readByID(userID);
@@ -250,7 +250,7 @@ router.delete("/:id", async (req, res) => {
       console.error(e);
     }
 
-    res.json({ userId: req.params.id, deleted: true });
+    res.json({ userId: xss(req.params.id), deleted: true });
   } catch (e) {
     console.error(e)
     res.sendStatus(500);
