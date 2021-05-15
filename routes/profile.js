@@ -53,9 +53,11 @@ router.get("/reviews", async (req, res) => {
   );
   for (let i = 0; i < reviewsReceived.length; i++) {
     let review = reviewsReceived[i];
+    review.reviewerActualId = review.reviewerId;
     review.reviewerId = (await usersData.readByID(review.reviewerId)).username;
     review.revieweeId = (await usersData.readByID(review.revieweeId)).username;
     review.dateOfReview = review.dateOfReview.toDateString();
+    review.jobTitle = (await jobsData.readByID(review.jobId.toString())).title;
   }
   res.render("partials/profile/reviews", {
     title: "My Reviews",
