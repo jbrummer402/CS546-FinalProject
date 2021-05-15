@@ -21,6 +21,14 @@ jQuery(document).ready(function ($) {
     town = $("#town"),
     country = $("#country");
 
+  let loginErrorDiv = $('#loginError');
+  loginErrorDiv.hide();
+  let loginErrorDivList = $('#loginErrorList');
+
+  let signUpErrorDiv = $('#signUpError');
+  signUpErrorDiv.hide();
+  let signUpErrorDivList = $('#signUpErrorList');
+
   signinLink.hide();
 
   createAccount.on("click", function (event) {
@@ -31,6 +39,8 @@ jQuery(document).ready(function ($) {
   });
 
   signInstead.on("click", function (event) {
+    loginErrorDiv.hide();
+    signUpErrorDiv.hide();
     signinForm.show();
     createAccount.show();
     signupForm.hide();
@@ -40,11 +50,12 @@ jQuery(document).ready(function ($) {
   signinForm.submit(function (event) {
     event.preventDefault();
 
-    if (username.val().trim() === "") {
-      error.show();
-      signinForm.trigger("reset");
-      return;
-    }
+    loginErrorDiv.hide();
+    loginErrorDivList.empty();
+    let errList = [];
+    if(username.val().trim() === "") errList.push('Please enter a username');
+    if(password.val().trim() === "") errList.push('Please enter a password');
+
 
     var requestConfig = {
       method: "POST",
@@ -56,19 +67,45 @@ jQuery(document).ready(function ($) {
       }),
     };
 
-    $.ajax(requestConfig).then(function (responseMessage) {
-      console.log(responseMessage);
-      if (responseMessage.success === true) {
-        window.location.href = "/profile/account";
-      } else {
-        error.show();
-        signinForm.trigger("reset");
+    if(errList.length > 0){
+      for(let err of errList){
+        loginErrorDivList.append(`<li class='loginError'>${err}</li>`);
       }
-    });
+      loginErrorDiv.show();
+    }
+    else{
+      $.ajax(requestConfig).then(function (responseMessage) {
+        console.log(responseMessage);
+        if (responseMessage.success === true) {
+          window.location.href = "/profile/account";
+        } else {
+          loginErrorDivList.empty();
+          loginErrorDiv.show();
+          loginErrorDivList.append(`<li class='loginError'>Invalid login credentials</li>`);
+          signinForm.trigger("reset");
+        }
+      });
+    }
+    
   });
 
   signupForm.submit(function (event) {
     event.preventDefault();
+    signUpErrorDiv.hide();
+    signUpErrorDivList.empty();
+
+    let errList = [];
+    if(firstName.val().trim()==='') errList.push('First Name can not be blank');
+    if(lastName.val().trim()==='') errList.push('Last Name can not be blank');
+    if(username2.val().trim()==='') errList.push('Username can not be blank');
+    if(password2.val().trim()==='') errList.push('Password can not be blank');
+    if(!dateOfBirth.val().trim()) errList.push('Please enter date of birth');
+    if(!( /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.val().trim()))) errList.push('Invalid Email format');
+    if(street.val().trim()==='') errList.push('Street can not be blank');
+    if(!(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipCode.val().trim())))  errList.push('Zipcode not in valid format');
+    if(state.val().trim()==='') errList.push('State can not be blank');
+    if(town.val().trim()==='') errList.push('Town can not be blank');
+    if(country.val().trim()==='') errList.push('Country can not be blank');
 
     var requestConfig = {
       method: "POST",
@@ -91,13 +128,22 @@ jQuery(document).ready(function ($) {
         },
       }),
     };
-    $.ajax(requestConfig).then(function (responseMessage) {
-      if (responseMessage.error) {
-        error.innerHTML = responseMessage.error;
-        error.hidden = false;
-      } else {
-        window.location.href = "/profile/account";
+    if(errList.length > 0){
+      for(let err of errList){
+        signUpErrorDivList.append(`<li class='accountCreationError'>${err}</li>`);
       }
-    });
+      signUpErrorDiv.show();
+    }
+    else{
+      $.ajax(requestConfig).then(function (responseMessage) {
+        if (responseMessage.error) {
+          error.innerHTML = responseMessage.error;
+          error.hidden = false;
+        } else {
+          window.location.href = "/profile/account";
+        }
+      });
+    }
+    
   });
 });

@@ -1,6 +1,9 @@
 <form action="/login" method="POST" id="signinForm">
   <h1>Sign-In</h1>
   <div id="error" hidden>Not a valid username password combination</div>
+  <div id='loginError'>
+    <ul id='loginErrorList'></ul>
+  </div>
   <label for="username">
     Enter Username:
     <input id="username" name="username" type="text" placeholder="username" />
@@ -95,6 +98,9 @@
   </label>
   <br />
   <button type="submit">Sign-Up</button>
+  <div id='signUpError'>
+    <ul id='signUpErrorList'></ul>
+  </div>
 </form>
 <br />
 <br />
