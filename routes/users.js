@@ -516,8 +516,6 @@ router.patch("/:id", async (req, res) => {
   );
   if (errorCode !== 0) {
     //res.status(errorCode).json({ error: message });
-    console.log("in here");
-    console.log(message);
     res.status(errorCode).json({ error: message });
     return;
   }
@@ -551,7 +549,6 @@ router.patch("/:id", async (req, res) => {
         id: user._id,
       };
     }
-    console.log("end of route call");
     res.status(200).json(user);
   } catch (e) {
     if (e.name === "UserNotUpdatedException")

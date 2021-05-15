@@ -1,37 +1,116 @@
 <div class="centered main">
-    <h1>My Active Jobs</h1>
-    {{#each activeJobs}}
-        <div class="block">
-            <div style="width:40%; height:100px; float:left; padding: 10px">
-                <div>Job title:
-                    <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
-                </div>
-                <div>Date posted: {{datePosted}}</div>
-                {{#if perHour}}
-                    <div>Compensation: ${{compensation}}/hour</div>
-                {{else}}
-                    <div>Compensation: ${{compensation}}</div>
-                {{/if}}
-                <br>
-            </div>
-            <div style="width:30%; height:100px; float:left; padding: 10px">
-                <button type="button" class="deleteBtn">Delete Job</button>
-                <button type="button" class="editBtn">Edit Job</button>
-                <input type="hidden" class="jobID" name="jobID" value={{jobID}}>
-            </div>
+  <h1>My Active Jobs</h1>
+  {{#each activeJobs}}
+    {{!-- <div class="block">
+      <div style="width:40%; height:100px; float:left; padding: 10px">
+        <div>Job title:
+          <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
         </div>
+        <div>Date posted: {{datePosted}}</div>
+        {{#if perHour}}
+          <div>Compensation: ${{compensation}}/hour</div>
+        {{else}}
+          <div>Compensation: ${{compensation}}</div>
+        {{/if}}
+        <br />
+      </div>
+      <div style="width:30%; height:100px; float:left; padding: 10px">
+        <button type="button" class="deleteBtn">Delete Job</button>
+        <button type="button" class="editBtn">Edit Job</button>
+        <input type="hidden" class="jobID" name="jobID" value={{jobID}} />
+      </div>
+    </div> --}}
+    <h2>
+      <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
+    </h2>
+    <form action="/jobs/{{jobID}}" method="POST" class="editJobForm">
+      <label for="jobTitle">
+        Job Title:
+        <br />
+        <input type="text" value="{{jobTitle}}" id="jobTitle" name="jobTitle" />
+      </label>
+      <br />
+      <label for="description">
+        Description:
+        <br />
+        <input
+          type="text"
+          value="{{description}}"
+          id="description"
+          name="description"
+        />
+      </label>
+      <br />
+      {{#if perHour}}
+        <label for="compensation">
+          Compensation:
+          <br />
+          $
+          <input
+            type="text"
+            value={{compensation}}
+            id="compensation"
+            name="compensation"
+          />
+          /hour
+        </label>
+        <br />
+      {{else}}
+        <label for="compensation">
+          Compensation:
+          <br />
+          $
+          <input
+            type="text"
+            value={{compensation}}
+            id="compensation"
+            name="compensation"
+          />
+        </label>
+        <br />
+      {{/if}}
+      <label for="perHour">
+        Per Hour:
+        {{#if perHour}}
+          <input type="checkbox" checked id="perHour" name="perHour" />
+        {{else}}
+          <input type="checkbox" id="perHour" name="perHour" />
+        {{/if}}
 
-    {{/each}}
-    <br>
+      </label>
+
+      <br />
+      <label for="datePosted">
+        Date Posted:
+        <br />
+        <input
+          type="text"
+          value="{{datePosted}}"
+          id="datePosted"
+          name="datePosted"
+          disabled
+        />
+      </label>
+      <br />
+
+      <button type="button" class="deleteBtn">Delete Job</button>
+      <button type="submit">Edit Job</button>
+      <input type="hidden" class="jobID" name="jobID" value={{jobID}} />
+      <br />
+
+    </form>
+
+  {{/each}}
+  <br />
 </div>
 <script
-        src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
 ></script>
 <script
-        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+  crossorigin="anonymous"
 ></script>
 <script src="/public/js/profile/activejobs.js"></script>
