@@ -11,7 +11,7 @@
         {{/else }}
         <p>Location: {{data.job.address.town}}, {{jobInfo.job.address.state}}</p>
         {{#ifEquals "active" data.job.status }}
-            <button id="claim-button" type="button" formaction="/jobs/{{data.job._id}}">Claim Job</button>
+            <button id="claim-button" type="button" name="/jobs/{{data.job._id}}">Claim Job</button>
         {{/ifEquals }}
         {{#ifEquals "in-progress" data.job.status }}
             <p id="job-claimed">Job has been claimed</p>

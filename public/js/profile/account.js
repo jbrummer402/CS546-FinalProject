@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
     errorDiv.hide();
     let errorDivList = $('#errorList');
     let deleteButton = document.getElementById('deleteBtn');
-    let userid = $('#currentUser').attr('user');
+    let userid = $('#currentUser').attr('title');
 
     $(document).on('click', '.updateAccountBtn', async (e) => {
         //error checking
@@ -49,7 +49,7 @@ jQuery(document).ready(function ($) {
                     town: town.val(),
                     country: country.val(),
                 },
-            }),
+            })
         };
         if(errList.length > 0){
             for(let err of errList){

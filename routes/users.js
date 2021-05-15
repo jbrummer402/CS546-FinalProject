@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
         street: req.body.address.street
           ? xss(req.body.address.street)
           : undefined,
-        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
+        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : "",
         zipCode: req.body.address.zipCode
           ? xss(req.body.address.zipCode)
           : undefined,
@@ -91,7 +91,7 @@ router.get("/", async (req,res) => {
 });
 
 router.get("/signin", async (req, res) => {
-  res.render("partials/sign-in", { title: "Sign-In" });
+  res.render("partials/sign-in", { data: {title: "Sign-In" }});
 });
 
 //TODO: Better error checking
@@ -364,7 +364,7 @@ router.patch("/:id", async (req, res) => {
         street: req.body.address.street
           ? xss(req.body.address.street)
           : undefined,
-        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
+        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : "",
         zipCode: req.body.address.zipCode
           ? xss(req.body.address.zipCode)
           : undefined,
@@ -469,6 +469,8 @@ router.patch("/:id", async (req, res) => {
   );
   if (errorCode !== 0) {
     //res.status(errorCode).json({ error: message });
+    console.log("in here");
+    console.log(message);
     res.status(errorCode).json({ error: message });
     return;
   }
@@ -502,6 +504,7 @@ router.patch("/:id", async (req, res) => {
         id: user._id,
       };
     }
+    console.log("end of route call");
     res.status(200).json(user);
   } catch (e) {
     if (e.name === "UserNotUpdatedException")
