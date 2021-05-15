@@ -351,8 +351,7 @@ router.delete("/", async (req, res) => {
   }
 });
 
-//Made into a post request because it is imposible to make a patch request from a form
-router.post("/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
   let dateOfBirth = req.body.dateOfBirth
@@ -427,7 +426,6 @@ router.post("/:id", async (req, res) => {
         " 'password', 'address', 'photoLink', 'email', 'jobsActive', 'jobsWorked', 'jobsProvided', 'jobsInProgressAsEmployee', " +
         "'jobsInProgressAsEmployer'.",
     });
-    return;
   }
 
   if (email !== undefined && email !== user.email) {
@@ -504,7 +502,7 @@ router.post("/:id", async (req, res) => {
         id: user._id,
       };
     }
-    res.redirect("/profile/account");
+    res.status(200).json(user);
   } catch (e) {
     if (e.name === "UserNotUpdatedException")
       res.status(400).json({ error: e.message });

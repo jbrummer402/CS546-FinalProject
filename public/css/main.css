@@ -142,3 +142,7 @@ label {
 .reviewDeleteConfirmation{
   color: #0000FF
 }
+
+.updateError {
+  color: red;
+}

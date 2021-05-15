@@ -10,14 +10,30 @@ jQuery(document).ready(function ($) {
     let state = $("#state");
     let town = $("#town");
     let country = $("#country");
-    let error = $("#error");
-
+    let errorDiv = $('#error');
+    errorDiv.hide();
+    let errorDivList = $('#errorList');
+    let successDiv = $('#successDiv');
     let value = jobperHour.prop('checked')
-    console.log(value)
 
     updateNewJobForm.submit(function (event) {
         event.preventDefault();
-        // guys remember to error check the input data
+        successDiv.empty();
+        successDiv.hide();
+        let errList = [];
+        errorDiv.hide();
+        errorDivList.empty();
+
+        if(jobTitle.val().trim()==='') errList.push('Job Title can not be blank');
+        if(jobDescription.val().trim()==='') errList.push('Job Description can not be blank');
+        let jobComp = jobCompensation.val().trim();
+        if(jobComp === '') errList.push('Job Compensation value is required');
+        if(parseInt(jobComp) <= 0) errList.push('Job Compensation must be a positive number');
+        if(street.val().trim()==='') errList.push('Street can not be blank');   
+        if(!(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipCode.val().trim())))  errList.push('Zipcode not in valid format');
+        if(state.val().trim()==='') errList.push('State can not be blank');
+        if(town.val().trim()==='') errList.push('Town can not be blank');
+
         let requestConfig = {
             method: "POST",
             url: updateNewJobForm.attr("action"),
@@ -38,27 +54,36 @@ jQuery(document).ready(function ($) {
                 },
             }),
         };
-        $.ajax(requestConfig).then(function (responseMessage) {
-            console.log(responseMessage)
-            if (responseMessage.error) {
-                error.show();
-                error.empty();
-                error.append(responseMessage.error);
-            } else {
-                error.show();
-                error.empty();
-                error.append('Job posted succesfully!');
-                jobTitle.val('');
-                jobDescription.val('');
-                jobTitle.val('');
-                jobCompensation.val('');
-                jobperHour.val('');
-                street.val('');
-                aptNo.val('');
-                zipCode.val('');
-                state.val('');
-                town.val('');
+        if(errList.length > 0){
+            for(let err of errList){
+                errorDivList.append(`<li class='updateError'>${err}</li>`);
             }
-        });
+            errorDiv.show();
+        }
+        else{
+            $.ajax(requestConfig).then(function (responseMessage) {
+                console.log(responseMessage)
+                if (responseMessage.error) {
+                    errorDiv.show();
+                    errorDiv.empty();
+                    errorDiv.append(`Error creating job from server: ${responseMessage.error}`);
+                } else {
+                    successDiv.show();
+                    successDiv.empty();
+                    successDiv.append('Job posted succesfully!');
+                    jobTitle.val('');
+                    jobDescription.val('');
+                    jobTitle.val('');
+                    jobCompensation.val('');
+                    jobperHour.val('');
+                    street.val('');
+                    aptNo.val('');
+                    zipCode.val('');
+                    state.val('');
+                    town.val('');
+                }
+            });
+        }
+        
     });
 });
