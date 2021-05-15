@@ -101,9 +101,11 @@ async function updateJob(id, jobToUpdate) {
 
     await jobsCollection.updateOne({ _id: ObjectId(id)}, {$set : jobToUpdate})
 
+    return true;
+
   } catch (e) {
     console.log(e);
-    return;
+    return false;
   }
 }
 
