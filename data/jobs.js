@@ -6,7 +6,6 @@ async function getJobs() {
   let jobsCollection = await jobs();
   const jobsList = await jobsCollection.find({}).toArray();
 
-  console.log(jobsList)
   return jobsList;
 }
 
