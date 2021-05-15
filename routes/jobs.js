@@ -5,35 +5,29 @@ const jobsData = data.jobs;
 const userData = data.users;
 const reviewData = data.reviews;
 const ObjectId = require("mongodb").ObjectId;
-const xss = require('xss');
+const xss = require("xss");
 
 router.post("/", async (req, res) => {
-  let {
+  let { compensation, perHour, title, description, datePosted, address } =
+    req.body;
+  const creatorId = xss(req.session.AuthCookie.id);
+  let user;
+  try {
+    user = await userData.readByID(creatorId);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+
+  // // handle inputs
+  const { errorCode, message } = await checkInputs(
     compensation,
     perHour,
     title,
     description,
     datePosted,
     address,
-  } = req.body;
-    const creatorId = xss(req.session.AuthCookie.id);
-  let user;
-  try {
-    user = await userData.readByID(creatorId);
-  } catch(e){
-    console.error(e)
-    res.sendStatus(500);
-  }
-
-  // // handle inputs
-  const { errorCode, message } = await checkInputs(
-      compensation,
-      perHour,
-      title,
-      description,
-      datePosted,
-      address,
-      creatorId
+    creatorId
   );
   if (errorCode !== 0) {
     res.json({ error: message });
@@ -49,11 +43,11 @@ router.post("/", async (req, res) => {
       datePosted,
       address,
       creatorId,
-        'active'
+      "active"
     );
-    user.jobsActive.push(newJob._id.toString())
+    user.jobsActive.push(newJob._id.toString());
     try {
-      userData.update({id: creatorId, jobsActive: user.jobsActive});
+      userData.update({ id: creatorId, jobsActive: user.jobsActive });
     } catch (e) {
       console.error(e);
     }
@@ -67,38 +61,40 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const jobID = req.params.id;
   try {
-  let job = await jobsData.readByID(jobID);
-  const employerID = xss(req.session.AuthCookie.id);
-  const employeeID = job.employeeId.toString();
-  const employer = await userData.readByID(employerID);
-  const employee = await userData.readByID(employeeID);
+    let job = await jobsData.readByID(jobID);
+    const employerID = xss(req.session.AuthCookie.id);
+    const employeeID = job.employeeId.toString();
+    const employer = await userData.readByID(employerID);
+    const employee = await userData.readByID(employeeID);
 
-  job.status = 'completed';
+    job.status = "completed";
 
-  // update job
-  try {
-    await jobsData.updateJob(jobID, job);
-  } catch (e){
-    console.error(e)
-    res.sendStatus(500);
-    return;
-  }
+    // update job
+    try {
+      await jobsData.updateJob(jobID, job);
+    } catch (e) {
+      console.error(e);
+      res.sendStatus(500);
+      return;
+    }
 
     // move job to correct array
-    employer.jobsInProgressAsEmployer = employer.jobsInProgressAsEmployer.filter(function(item) {
-      return item !== jobID;
-
-    })
-    employee.jobsInProgressAsEmployee = employee.jobsInProgressAsEmployee.filter(function(item) {
-      return item !== jobID;
-    })
+    employer.jobsInProgressAsEmployer =
+      employer.jobsInProgressAsEmployer.filter(function (item) {
+        return item !== jobID;
+      });
+    employee.jobsInProgressAsEmployee =
+      employee.jobsInProgressAsEmployee.filter(function (item) {
+        return item !== jobID;
+      });
     employer.jobsProvided.push(jobID);
     employee.jobsWorked.push(jobID);
     try {
       userData.update({
         id: employerID,
         jobsInProgressAsEmployer: employer.jobsInProgressAsEmployer,
-        jobsProvided: employer.jobsProvided});
+        jobsProvided: employer.jobsProvided,
+      });
     } catch (e) {
       console.error(e);
     }
@@ -107,24 +103,24 @@ router.put("/:id", async (req, res) => {
       userData.update({
         id: employeeID,
         jobsInProgressAsEmployee: employee.jobsInProgressAsEmployee,
-        jobsWorked: employee.jobsWorked});
+        jobsWorked: employee.jobsWorked,
+      });
     } catch (e) {
       console.error(e);
     }
 
     res.json({ userId: req.params.id, updated: true });
   } catch (e) {
-    console.error(e)
+    console.error(e);
     res.sendStatus(500);
   }
-
 });
 
 //get every job
 router.get("/", async (req, res) => {
   try {
     /* I dont know that error checking is necessary for inputs here since its a get */
-    
+
     let everyJob = await jobsData.getJobs();
     res.json(everyJob);
   } catch (e) {
@@ -132,29 +128,32 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/search/:searchTerm', async (req, res) => {
+router.get("/search/:searchTerm", async (req, res) => {
   try {
-    if (typeof xss(req.params.searchTerm) !== 'string'){
-      throw "Search term must be a string"
+    if (typeof xss(req.params.searchTerm) !== "string") {
+      throw "Search term must be a string";
     }
-    if (!xss(req.params.searchTerm) || xss(req.params.searchTerm).trim() === '') {
+    if (
+      !xss(req.params.searchTerm) ||
+      xss(req.params.searchTerm).trim() === ""
+    ) {
       throw "No terms provided";
     }
     let searchData = await jobsData.searchByTerms(xss(req.params.searchTerm));
-      res.json(searchData);
-    } catch (e) {
-      console.log(e);
-      res.status(404).json({ error: "job not found" });
-    }
+    res.json(searchData);
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ error: "job not found" });
+  }
 });
 
-router.get('/:id', async(req, res) => {
+router.get("/:id", async (req, res) => {
   if (!xss(req.params.id)) {
-    res.status(404).send({message: "Id is not given"});
+    res.status(404).send({ message: "Id is not given" });
     return;
   }
   if (!ObjectId.isValid(xss(req.params.id))) {
-    res.status(404).send({message: "Id is not valid"});
+    res.status(404).send({ message: "Id is not valid" });
     return;
   }
   try {
@@ -169,71 +168,78 @@ router.get('/:id', async(req, res) => {
 
     // need to get average rating and we currently dont have a better way
     let rateAvg = 0;
-    
-    let reviewsOf = await reviewData.getReviewsReceivedForUser(posterInfo._id.toString());
 
-    for (let i = 0; i < reviewsOf.length; i++){
+    let reviewsOf = await reviewData.getReviewsReceivedForUser(
+      posterInfo._id.toString()
+    );
+
+    for (let i = 0; i < reviewsOf.length; i++) {
       rateAvg += reviewsOf[i].rating;
     }
-    if (rateAvg === 0){
-      rateAvg = 'N/A';
+    if (rateAvg === 0) {
+      rateAvg = "N/A";
     } else {
-      rateAvg = Math.round((rateAvg/reviewsOf.length)*100)/100;
+      rateAvg = Math.round((rateAvg / reviewsOf.length) * 100) / 100;
     }
     let username;
-    if (!xss(req.session.AuthCookie)){
+    if (!xss(req.session.AuthCookie)) {
       username = false;
     } else {
       username = xss(req.session.AuthCookie.username);
     }
 
     jobById.datePosted = jobById.datePosted.toDateString();
-    
-    res.render('partials/job', {data: {title: jobById.title, logged: {uname: username}, 
-      job: jobById, poster: posterInfo, average: rateAvg}});
-  } catch (e) {
-    res.status(500).send({error : e});
-  }
-})
 
-router.patch('/:id', async (req, res) => {
+    res.render("partials/job", {
+      data: {
+        title: jobById.title,
+        logged: { uname: username },
+        job: jobById,
+        poster: posterInfo,
+        average: rateAvg,
+      },
+    });
+  } catch (e) {
+    res.status(500).send({ error: e });
+  }
+});
+
+router.patch("/:id", async (req, res) => {
   const jobBody = req.body;
   try {
     const currentJob = await jobsData.readByID(xss(req.params.id));
 
     for (let key in jobBody) {
       currentJob[key] = jobBody[key];
-
     }
-    
+
     let update = await jobsData.updateJob(xss(req.params.id), currentJob);
 
     res.json(update);
   } catch (e) {
-    res.status(400).json({error: e});
+    res.status(400).json({ error: e });
   }
-})
-
+});
 
 router.delete("/:id", async (req, res) => {
-  let jobID = xss(req.params.id);
-  const userID = xss(req.session.AuthCookie.id);
+  let jobId= xss(req.params.id);
+  const userId = xss(req.session.AuthCookie.id);
   let user;
   try {
-    user = await userData.readByID(userID);
-  } catch(e){
+    user = await userData.readByID(userId);
+  } catch (e) {
     console.log(e);
-    res.status(500).send({error: e});
+    res.status(500).send({ error: e });
   }
 
   // TODO: check if jobID exists
   if (!jobId) {
-    throw "Job id not given"
+    throw "Job id not given";
   }
-  
+
   // TODO: check if jobID is valid
   if (!ObjectId.isValid(jobId)) {
-    throw "Job id is not a valid object id"
+    throw "Job id is not a valid object id";
   }
 
   // TODO: make sure only a signed in user can delete
@@ -242,21 +248,21 @@ router.delete("/:id", async (req, res) => {
   }
   // remove job
   try {
-    await jobsData.removeJob(jobID);
+    await jobsData.removeJob(jobId);
 
     // remove job from user's job array
-    user.jobsActive = user.jobsActive.filter(function(item) {
-      return item !== jobID;
-    })
+    user.jobsActive = user.jobsActive.filter(function (item) {
+      return item !== jobId;
+    });
     try {
-      userData.update({id: userID, jobsActive: user.jobsActive});
+      userData.update({ id: userId, jobsActive: user.jobsActive });
     } catch (e) {
       console.error(e);
     }
 
     res.json({ userId: xss(req.params.id), deleted: true });
   } catch (e) {
-    console.error(e)
+    console.error(e);
     res.sendStatus(500);
   }
 });
@@ -266,46 +272,56 @@ async function checkCompensation(compensation) {
   let message = "";
   if (isNaN(compensation) || !Number(compensation) > 0) {
     error = true;
-    message = "Compensation must be a positive number"
+    message = "Compensation must be a positive number";
   }
 
-  return {error : error, message : message }
+  return { error: error, message: message };
 }
 
 async function checkPerHour(perHour) {
   let error = false;
   let message = "";
 
-  if (typeof perHour !== "boolean" || perHour === null || perHour === undefined) {
+  if (
+    typeof perHour !== "boolean" ||
+    perHour === null ||
+    perHour === undefined
+  ) {
     error = true;
-    message = "Perhour must be of type boolean"
+    message = "Perhour must be of type boolean";
   }
 
-  return {error : error, message : message }
+  return { error: error, message: message };
 }
 
 async function checkTitle(title) {
   let error = false;
   let message = "";
-  
-  if (typeof title !== "string" || !(title.trim())) {
+
+  if (typeof title !== "string" || !title.trim()) {
     error = true;
-    message = "Title must be a non empty string"
+    message = "Title must be a non empty string";
   }
 
-  return {error : error, message : message }
+  return { error: error, message: message };
 }
 
 async function checkDescription(description) {
   let error = false;
   let message = "";
 
-  if (!description || typeof description !== 'string' ||  !description.trim() ||  description === null || description === "") {
+  if (
+    !description ||
+    typeof description !== "string" ||
+    !description.trim() ||
+    description === null ||
+    description === ""
+  ) {
     error = true;
-    message = "Description must be a non empty string"
+    message = "Description must be a non empty string";
   }
 
-  return { error : error, message : message }
+  return { error: error, message: message };
 }
 
 async function checkDatePosted(datePostedObj) {
@@ -314,91 +330,113 @@ async function checkDatePosted(datePostedObj) {
 
   if (!(datePostedObj instanceof Date) || isNaN(datePostedObj.valueOf())) {
     error = true;
-    message = "Date posted must be of type date"
+    message = "Date posted must be of type date";
   }
 
-  return {error : error, message : message }
+  return { error: error, message: message };
 }
 
 async function checkAddress(address) {
   let error = false;
   let message = "";
-  
-  if (typeof address !== 'object' || !address || address === null) {
-    error = true; 
-    message = "Address must be of type object"
-    
+
+  if (typeof address !== "object" || !address || address === null) {
+    error = true;
+    message = "Address must be of type object";
   }
 
   if (!address.street) {
     error = true;
-    message = "Address must contain a street"
+    message = "Address must contain a street";
   }
 
-  if (typeof address.street !== 'string' || !address.street.trim()) {
-    error = true; 
-    message = "Address street name must be a non empty string"
-    
+  if (typeof address.street !== "string" || !address.street.trim()) {
+    error = true;
+    message = "Address street name must be a non empty string";
   }
 
-
-  if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
-      error = true; 
-      message = "Address zipcode must be a number"; 
+  if (
+    !address.zipCode ||
+    address.zipCode.length !== 5 ||
+    isNaN(parseInt(address.zipCode))
+  ) {
+    error = true;
+    message = "Address zipcode must be a number";
   }
 
-  if (!address.state ||  typeof address.state !== 'string' || !(address.state.trim())) {
-    error = true; 
-    message = "Address state must be a string"; 
+  if (
+    !address.state ||
+    typeof address.state !== "string" ||
+    !address.state.trim()
+  ) {
+    error = true;
+    message = "Address state must be a string";
   }
 
-  if (typeof address.town !== 'string' || !address.town || !(address.town.trim())) {
-    error = true; 
-    message = "Address town must be a number"; 
+  if (
+    typeof address.town !== "string" ||
+    !address.town ||
+    !address.town.trim()
+  ) {
+    error = true;
+    message = "Address town must be a number";
   }
 
-  return {error : error, message : message };
+  return { error: error, message: message };
 }
-
-
 
 async function checkCreatorId(creatorId) {
   let error = false;
   let message = "";
 
   if (!ObjectId.isValid(creatorId) || !creatorId) {
-    error = true; 
-    message = "Creator id must be of type ObjectId"
+    error = true;
+    message = "Creator id must be of type ObjectId";
   }
-  
-  return {error : error, message : message };
+
+  return { error: error, message: message };
 }
 
-async function checkInputs(compensation, perHour, title, description, datePosted, address, creatorId) {
+async function checkInputs(
+  compensation,
+  perHour,
+  title,
+  description,
+  datePosted,
+  address,
+  creatorId
+) {
   let errorCode = 0;
   let message = "";
 
   let error = false;
   let errorObj = {
-    compensation : compensation,
-    perHour      :      perHour,
-    title        :        title,
-    description  :  description,
-    datePosted   :   new Date(datePosted),
-    address      :      address, 
-    creatorId    :    creatorId
-  }
+    compensation: compensation,
+    perHour: perHour,
+    title: title,
+    description: description,
+    datePosted: new Date(datePosted),
+    address: address,
+    creatorId: creatorId,
+  };
 
-  let errorFunctions = [checkCompensation, checkPerHour, checkTitle, checkDescription, checkDatePosted,
-                        checkAddress, checkCreatorId];
+  let errorFunctions = [
+    checkCompensation,
+    checkPerHour,
+    checkTitle,
+    checkDescription,
+    checkDatePosted,
+    checkAddress,
+    checkCreatorId,
+  ];
 
   let index = 0;
-    
+
   for (let [key, value] of Object.entries(errorObj)) {
-    value = (await errorFunctions[index](value));
-    
+    value = await errorFunctions[index](value);
+
     if (value && value.error) {
-      return { errorCode: 400, message: value.message }
+      return { errorCode: 400, message: value.message };
       // throw value.message;
     }
 
@@ -406,7 +444,6 @@ async function checkInputs(compensation, perHour, title, description, datePosted
   }
 
   return { errorCode: 0, message: "" };
-
 }
 
 module.exports = router;
