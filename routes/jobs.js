@@ -122,6 +122,24 @@ router.get('/:id', async(req, res) => {
   }
 })
 
+router.patch('/:id', (req, res) => {
+  const jobBody = req.body;
+  let updatedJob = {};
+  try {
+    const currentJob = await jobsData.readByID(req.params.id);
+
+    for (let [key, value] in Object.entries(jobBody)) {
+      if (currentJob[key] !== value) {
+        updatedJob[key] = value;
+      }
+    }
+
+    return updatedJob;
+  } catch (e) {
+    res.status(400).json({error : e});
+  }
+});
+
 async function checkCompensation(compensation) {
   let error = false;
   let message = "";
@@ -201,24 +219,6 @@ async function checkAddress(address) {
     message = "Address street name must be a non empty string"
     
   }
-
-
-  if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
-      error = true; 
-      message = "Address zipcode must be a number"; 
-  }
-
-  if (!address.state ||  typeof address.state !== 'string' || !(address.state.trim())) {
-    error = true; 
-    message = "Address state must be a string"; 
-  }
-
-  if (typeof address.town !== 'string' || !address.town || !(address.town.trim())) {
-    error = true; 
-    message = "Address town must be a number"; 
-  }
-
-  return {error : error, message : message };
 
 
   if (!address.zipCode || address.zipCode.length !== 5 || isNaN(parseInt(address.zipCode))) {
