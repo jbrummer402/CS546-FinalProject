@@ -29,6 +29,7 @@ router.get("/account", async (req, res) => {
     // address: req.session.AuthCookie.address,
     // email: req.session.AuthCookie.email,
     // id: req.session.AuthCookie.id,
+    photo: user.photoLink,
     firstName: user.firstName,
     lastName: user.lastName,
     dateOfBirth: user.dateOfBirth,

@@ -5,6 +5,18 @@
 <div class="centered main">
   <h1>Account</h1>
   <div id='currentUser' title='{{id}}'></div>
+  <div id='profile_pic'>
+    <img src='{{photo}}' alt='Profile picture not found' width="200" height="200">
+    <form id='picUpdateForm' enctype="multipart/form-data">
+      <label for='profilePic'>Upload a new profile picture</label>
+      <br>
+      <input id="profilePic" name="profile_picture" type="file" />
+      <button id='profilePicUpdateSubmitBtn' class='profilePicUpdateSubmit' type='submit'>Submit</button>
+    </form>
+  </div>
+  <div id='photoUpdateError'></div>
+  <div id='photoUpdateSuccess'></div>
+  
   <form id="updateAccountForm" action="/users/{{id}}">
     <label for="firstName">
       First Name
