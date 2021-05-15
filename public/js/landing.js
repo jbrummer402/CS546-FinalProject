@@ -8,6 +8,7 @@ jQuery(document).ready(function($){
     let noResults = $('#no-result');
     let allJobs = $('#all-jobs');
     let allUsers = $('#all-users');
+    let wentWrong = $('#went-wrong');
 
     // just in case
     blankSearch.hide();
@@ -16,6 +17,7 @@ jQuery(document).ready(function($){
     userHeader.hide();
     landingUserList.hide();
     noResults.hide();
+    wentWrong.hide();
 
     // clear list
     landingJobList.empty();
@@ -114,7 +116,7 @@ jQuery(document).ready(function($){
         let searchText = $('#search-bar', searchForm).val();
 
         // check all input is accounted for
-        if (!searchType || !searchText || searchText.trim().length === 0){
+        if (!searchType || !searchText || searchText.trim().length === 0 || typeof searchText !== 'string'){
             blankSearch.show();
             return;
         }
@@ -134,6 +136,7 @@ jQuery(document).ready(function($){
                     jobHeader.hide();
 
                     noResults.show();
+                    return;
                 }
             }
             $.ajax(requestConfig).then(function(res){
@@ -158,6 +161,7 @@ jQuery(document).ready(function($){
                     jobHeader.hide();
                     
                     noResults.show();
+                    return;
                 }
             }
             $.ajax(requestConfig).then(function(res){
@@ -202,7 +206,18 @@ jQuery(document).ready(function($){
         landingUserList.empty();
         let requestConfig = {
             method: 'GET',
-            url: '/jobs'
+            url: '/jobs',
+            error: function(){
+                blankSearch.hide();
+                jobHeader.hide();
+                landingJobList.hide();
+                userHeader.hide();
+                landingUserList.hide();
+                noResults.hide();
+                
+                wentWrong.show();
+                return;
+            }
         }
         $.ajax(requestConfig).then(function(res){
             $.each(res, function(curJob) {
@@ -229,7 +244,18 @@ jQuery(document).ready(function($){
         landingUserList.empty();
         let requestConfig = {
             method: 'GET',
-            url: '/users'
+            url: '/users',
+            error: function(){
+                blankSearch.hide();
+                jobHeader.hide();
+                landingJobList.hide();
+                userHeader.hide();
+                landingUserList.hide();
+                noResults.hide();
+                
+                wentWrong.show();
+                return;
+            }
         }
         $.ajax(requestConfig).then(function(res){
             $.each(res, function(curUser){
