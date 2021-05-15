@@ -1,17 +1,19 @@
 const data = require("../data");
 const reviews = data.reviews;
 const users = data.users;
+const jobs = data.jobs;
 const connection = require("../config/mongoConnection");
 const mongoCollections = require("./../config/mongoCollections");
 const reviewsConnection = mongoCollections.reviews;
 
-async function seedReviews() {
+async function seedReviews(completeJobs) {
     try {
         await reviews.createReview(
-            reviewer = (await users.readByUsername('pauliew'))._id,
-            reviewee = (await users.readByUsername('toneee'))._id,
+            reviewer = completeJobs[0][1],
+            reviewee = completeJobs[0][0],
             rating = 1,
-            reviewDescription = "Ohhh! Not hiring this guy evah again!"
+            reviewDescription = "My room may be brighter, but this guy still hasn't shed any light on the Laura Palmer murder case... guy evah again!",
+            job = completeJobs[0][2]._id
         );
     } catch (e) {
         console.error(e);
@@ -19,10 +21,23 @@ async function seedReviews() {
 
     try {
         await reviews.createReview(
-            reviewer = (await users.readByUsername('ronaldxxx'))._id,
-            reviewee = (await users.readByUsername('toneee'))._id,
+            reviewer = completeJobs[0][0],
+            reviewee = completeJobs[0][1],
+            rating = 3,
+            reviewDescription = "Really weird dude. Paid ok but kept talking about a murder instead of the actual job",
+            job = completeJobs[0][2]._id
+        );
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        await reviews.createReview(
+            reviewer = completeJobs[1][0],
+            reviewee = completeJobs[1][1],
             rating = 5,
-            reviewDescription = "God the job done! The BK King is out of the picture."
+            reviewDescription = "I actually understand math now! this man is a miracle worker",
+            job = completeJobs[1][2]._id
         );
     } catch (e) {
         console.error(e);
@@ -30,43 +45,35 @@ async function seedReviews() {
 
     try {
         await reviews.createReview(
-            reviewer = (await users.readByUsername('toneee'))._id,
-            reviewee = (await users.readByUsername('agentcoop'))._id,
-            rating = 2,
-            reviewDescription = "Still hasn't solved the Laura Palmer murder case..."
-        );
-    } catch (e) {
-        console.error(e);
-    }
-
-    try {
-        await reviews.createReview(
-            reviewer = (await users.readByUsername('ronaldxxx'))._id,
-            reviewee = (await users.readByUsername('agentcoop'))._id,
-            rating = 5,
-            reviewDescription = "This dude helped me paint my MickeyDee's sign!"
-        );
-    } catch (e) {
-        console.error(e);
-    }
-
-    try {
-        await reviews.createReview(
-            reviewer = (await users.readByUsername('madman'))._id,
-            reviewee = (await users.readByUsername('agentcoop'))._id,
-            rating = 5,
-            reviewDescription = "Helped me moved some boxes around for a dollar fitty!"
-        );
-    } catch (e) {
-        console.error(e);
-    }
-
-    try {
-        await reviews.createReview(
-            reviewer = (await users.readByUsername('agentcoop'))._id,
-            reviewee = (await users.readByUsername('madman'))._id,
+            reviewer = completeJobs[1][1],
+            reviewee = completeJobs[1][0],
             rating = 4,
-            reviewDescription = "Good work on the Coke ad!"
+            reviewDescription = "Really cool guy to work with",
+            job = completeJobs[1][2]._id
+        );
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        await reviews.createReview(
+            reviewer = completeJobs[2][1],
+            reviewee = completeJobs[2][0],
+            rating = 5,
+            reviewDescription = "He's not very good at ukelele but he's got the spirit",
+            job = completeJobs[2][2]._id
+        );
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        await reviews.createReview(
+            reviewer = completeJobs[2][0],
+            reviewee = completeJobs[2][1],
+            rating = 4,
+            reviewDescription = "I can definitely play ukelele better than I could 2 days ago",
+            job = completeJobs[2][2]._id
         );
     } catch (e) {
         console.error(e);

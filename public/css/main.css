@@ -53,6 +53,12 @@ header .to-prof a:visited, .web-title a:visited {
   grid-template-rows: auto;
 }
 
+#job-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
 .web-title a:link {
   text-decoration: none;
   font-size: 32px;
