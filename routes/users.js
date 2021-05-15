@@ -316,12 +316,12 @@ router.get("/search/:searchterm", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
-  if(!req.session.AuthCookie || (req.session.AuthCookie.id != req.params.id)){
+router.delete("/", async (req, res) => {
+  if(!req.session.AuthCookie){
     res.status(401).json({ error: "You can only delete account you are signed into" });
   } 
   // check if id is valid
-  const userID = xss(req.params.id);
+  const userID = xss(req.session.AuthCookie.id);
   if (!ObjectId.isValid(userID)) {
     res.status(400).json({ error: "Input id must be a valid ObjectID" });
     return;
@@ -345,7 +345,7 @@ router.delete("/:id", async (req, res) => {
   // remove user
   try {
     await usersData.remove(userID);
-    res.json({ userId: req.params.id, deleted: true });
+    res.json({ userId: userID, deleted: true });
   } catch (e) {
     res.sendStatus(500);
   }
