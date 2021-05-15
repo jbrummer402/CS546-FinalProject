@@ -61,27 +61,41 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const jobID = req.params.id;
   let job = await jobsData.readByID(jobID);
-  const userID = req.session.AuthCookie.id;
-  const user = await userData.readByID(userID);
+  const employerID = req.session.AuthCookie.id;
+  const employeeID = job.employeeId.toString();
+  const employer = await userData.readByID(employerID);
+  const employee = await userData.readByID(employeeID);
 
   job.status = 'completed';
-
-  console.log(job)
 
   // update job
   try {
     await jobsData.updateJob(jobID, job);
 
     // move job to correct array
-    user.jobsInProgressAsEmployer = user.jobsInProgressAsEmployer.filter(function(item) {
+    employer.jobsInProgressAsEmployer = employer.jobsInProgressAsEmployer.filter(function(item) {
+      return item !== jobID;
+
+    })
+    employee.jobsInProgressAsEmployee = employee.jobsInProgressAsEmployee.filter(function(item) {
       return item !== jobID;
     })
-    user.jobsProvided.push(jobID);
+    employer.jobsProvided.push(jobID);
+    employee.jobsWorked.push(jobID);
     try {
       userData.update({
-        id: userID,
-        jobsInProgressAsEmployer: user.jobsInProgressAsEmployer,
-        jobsProvided: user.jobsProvided});
+        id: employerID,
+        jobsInProgressAsEmployer: employer.jobsInProgressAsEmployer,
+        jobsProvided: employer.jobsProvided});
+    } catch (e) {
+      console.error(e);
+    }
+
+    try {
+      userData.update({
+        id: employeeID,
+        jobsInProgressAsEmployee: employee.jobsInProgressAsEmployee,
+        jobsWorked: employee.jobsWorked});
     } catch (e) {
       console.error(e);
     }
@@ -92,7 +106,7 @@ router.put("/:id", async (req, res) => {
     res.sendStatus(500);
   }
 
-})
+});
 
 //get every job
 router.get("/", async (req, res) => {
@@ -177,21 +191,23 @@ router.get('/:id', async(req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const jobBody = req.body;
-  let updatedJob = {};
+  //let updatedJob = {};
   try {
     const currentJob = await jobsData.readByID(req.params.id);
 
-    for (let [key, value] in Object.entries(jobBody)) {
-      if (currentJob[key] !== value) {
-        updatedJob[key] = value;
-      }
+    for (let key in jobBody) {
+      currentJob[key] = jobBody[key];
     }
 
-    return updatedJob;
+    let update = await jobsData.updateJob(req.params.id, currentJob);
+
+    res.json(update);
   } catch (e) {
-    res.status(400).json({error : e});
+    res.status(400).json({error: e});
   }
 })
+
+
 router.delete("/:id", async (req, res) => {
   let jobID = req.params.id;
   const userID = req.session.AuthCookie.id;

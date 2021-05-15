@@ -124,7 +124,13 @@ router.get("/inprogressjobs", async (req, res) => {
 router.get("/completedjobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
   const jobsWorked = await getJobs(user, 'jobsWorked');
+  for (let i = 0; i < jobsWorked.length; i++){
+    jobsWorked[i].reviewLink = '/users/' + jobsWorked[i].posterId;
+  }
   const jobsProvided = await getJobs(user, 'jobsProvided');
+  for (let i = 0; i < jobsProvided.length; i++){
+    jobsProvided[i].reviewLink = '/users/' + jobsProvided[i].employeeId;
+  }
 
   res.render("partials/profile/completedjobs", {
     title: "My Completed Jobs",
@@ -139,12 +145,18 @@ async function getJobs(userObj, jobType) {
   let jobs = [];
   for (const jobID of userObj[jobType]) {
     const job = await jobsData.readByID(jobID);
+    const employer = await usersData.readByID(job.creatorId.toString());
+    const employee = job.employeeId !== '' ? await usersData.readByID(job.employeeId.toString()) : undefined;
     const jobObj = {
       jobTitle: job.title,
       compensation: job.compensation,
       perHour: job.perHour,
       datePosted: job.datePosted.toISOString().split('T')[0],
-      jobID: job._id.toString()
+      jobID: job._id.toString(),
+      employerName: employer.username,
+      employerId: employer._id,
+      employeeName: employee !== undefined ? employee.username : undefined,
+      employeeId: employee !== undefined ? employee._id : undefined,
     }
     jobs.push(jobObj);
   }

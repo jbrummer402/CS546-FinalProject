@@ -12,6 +12,9 @@ jQuery(document).ready(function ($) {
     let country = $("#country");
     let error = $("#error");
 
+    let value = jobperHour.prop('checked')
+    console.log(value)
+
     updateNewJobForm.submit(function (event) {
         event.preventDefault();
         // guys remember to error check the input data
@@ -23,7 +26,7 @@ jQuery(document).ready(function ($) {
                 title: jobTitle.val(),
                 description: jobDescription.val(),
                 compensation: jobCompensation.val(),
-                perHour: false,
+                perHour: jobperHour.prop('checked'),
                 datePosted: new Date(),
                 address: {
                     street: street.val(),
