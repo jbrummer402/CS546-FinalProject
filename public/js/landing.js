@@ -46,7 +46,7 @@ jQuery(document).ready(function($){
             .attr("href", `/jobs/${jobItem._id}`)
             .appendTo(title);
         // datePosted
-        let date = $('<h4/>')
+        let date = $('<h3/>')
             .text(new Date(jobItem.datePosted).toDateString())
             .appendTo(LI);
         // compensation + type
@@ -253,6 +253,7 @@ jQuery(document).ready(function($){
                 bindJobListLink(res[curJob]);
             });
         });
+        jobHeader.show();
         landingJobList.show();
     });
 
@@ -288,6 +289,7 @@ jQuery(document).ready(function($){
                 bindUserLink(res[curUser]);
             });
         });
+        userHeader.show();
         landingUserList.show();
     });
 
