@@ -206,6 +206,7 @@ router.get("/:id", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   const jobBody = req.body;
+  //console.log(jobBody);
   try {
     const currentJob = await jobsData.readByID(xss(req.params.id));
 
