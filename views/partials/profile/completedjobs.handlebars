@@ -4,13 +4,18 @@
     {{#each jobsWorked}}
         <div class="block">
             <div style="width:40%; height:100px; float:left; padding: 10px">
-                <div>{{jobTitle}}</div>
-                <div>{{datePosted}}</div>
+                <div>Job title:
+                    <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
+                </div>
+                <div>Date posted: {{datePosted}}</div>
                 {{#if perHour}}
-                    <div>${{compensation}}/hour</div>
+                    <div>Compensation: ${{compensation}}/hour</div>
                 {{else}}
-                    <div>${{compensation}}</div>
+                    <div>Compensation: ${{compensation}}</div>
                 {{/if}}
+                <div>Employer:
+                    <a href="/users/{{employerId}}">{{employerName}}</a>
+                </div>
                 <br>
             </div>
             <div style="width:30%; height:100px; float:left; padding: 10px">
@@ -22,13 +27,18 @@
     {{#each jobsProvided}}
         <div class="block">
             <div style="width:40%; height:100px; float:left; padding: 10px">
-                <div>{{jobTitle}}</div>
-                <div>{{datePosted}}</div>
+                <div>Job title:
+                    <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
+                </div>
+                <div>Date posted: {{datePosted}}</div>
                 {{#if perHour}}
-                    <div>${{compensation}}/hour</div>
+                    <div>Compensation: ${{compensation}}/hour</div>
                 {{else}}
-                    <div>${{compensation}}</div>
+                    <div>Compensation: ${{compensation}}</div>
                 {{/if}}
+                <div>Employee:
+                    <a href="/users/{{employeeId}}">{{employeeName}}</a>
+                </div>
                 <br>
             </div>
             <div style="width:30%; height:100px; float:left; padding: 10px">

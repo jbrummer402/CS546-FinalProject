@@ -145,14 +145,18 @@ async function getJobs(userObj, jobType) {
   let jobs = [];
   for (const jobID of userObj[jobType]) {
     const job = await jobsData.readByID(jobID);
+    const employer = await usersData.readByID(job.creatorId.toString());
+    const employee = job.employeeId !== '' ? await usersData.readByID(job.employeeId.toString()) : undefined;
     const jobObj = {
       jobTitle: job.title,
       compensation: job.compensation,
       perHour: job.perHour,
       datePosted: job.datePosted.toISOString().split('T')[0],
       jobID: job._id.toString(),
-      posterId: job.creatorId.toString(),
-      employeeId: job.employeeId.toString()
+      employerName: employer.username,
+      employerId: employer._id,
+      employeeName: employee !== undefined ? employee.username : undefined,
+      employeeId: employee !== undefined ? employee._id : undefined,
     }
     jobs.push(jobObj);
   }
