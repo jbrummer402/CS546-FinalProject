@@ -18,6 +18,8 @@ jQuery(document).ready(function ($) {
 
     updateNewJobForm.submit(function (event) {
         event.preventDefault();
+        successDiv.empty();
+        successDiv.hide();
         let errList = [];
         errorDiv.hide();
         errorDivList.empty();
