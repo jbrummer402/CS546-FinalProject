@@ -137,7 +137,7 @@ jQuery(document).ready(function($) {
                 ownError.hide();
                 noAuth.hide();
 
-                let revieweeJobType = $('#job-select option:selected').attr('name');
+                let revieweeJobType = $('#job-select option:selected').attr('title');
 
                 if (revieweeJobType === 'Employee'){
                     if (!res.jobsProvided.includes(jobSelection)){

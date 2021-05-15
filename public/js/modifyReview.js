@@ -1,13 +1,13 @@
 jQuery(document).ready(function($) {
     // check if logged in
-    const currentUserID = $('#currentUser').attr('user');
+    const currentUserID = $('#currentUser').attr('title');
     if(currentUserID.trim() != "" && currentUserID.trim() != 'none'){
         // logged in, check which reviews posted are made by this user
         // then append edit and delete buttons
         const reviewsList = $('#reviews-of-list');
 
         for(let review of reviewsList.children()){
-            const reviewer = $(review).attr('reviewer');
+            const reviewer = $(review).attr('title');
             const reviewid = $(review).attr('id');
             if(reviewer == currentUserID){
                 $(review).append(`<button class="reviewEditButton" reviewid=${reviewid}>Edit Review</button>`);
