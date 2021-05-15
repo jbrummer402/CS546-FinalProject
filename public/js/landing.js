@@ -6,6 +6,8 @@ jQuery(document).ready(function($){
     let searchForm = $('#search-form');
     let blankSearch = $('#blank-search');
     let noResults = $('#no-result');
+    let allJobs = $('#all-jobs');
+    let allUsers = $('#all-users');
 
     // just in case
     blankSearch.hide();
@@ -184,6 +186,57 @@ jQuery(document).ready(function($){
         }
 
 
+    });
+
+    allJobs.on('click', function(event){
+        // make ajax request and show all jobs
+        blankSearch.hide();
+        jobHeader.hide();
+        landingJobList.hide();
+        userHeader.hide();
+        landingUserList.hide();
+        noResults.hide();
+
+        // clear list
+        landingJobList.empty();
+        landingUserList.empty();
+        let requestConfig = {
+            method: 'GET',
+            url: '/jobs'
+        }
+        $.ajax(requestConfig).then(function(res){
+            $.each(res, function(curJob) {
+                if (res[curJob].status === 'completed' || res[curJob].status === 'in-progress'){
+                    return;
+                }
+                bindJobListLink(res[curJob]);
+            });
+        });
+        landingJobList.show();
+    });
+
+    allUsers.on('click', function(event){
+        // make ajax request and show all users
+        blankSearch.hide();
+        jobHeader.hide();
+        landingJobList.hide();
+        userHeader.hide();
+        landingUserList.hide();
+        noResults.hide();
+
+        // clear list
+        landingJobList.empty();
+        landingUserList.empty();
+        let requestConfig = {
+            method: 'GET',
+            url: '/users'
+        }
+        $.ajax(requestConfig).then(function(res){
+            $.each(res, function(curUser){
+                bindUserLink(res[curUser]);
+            });
+        });
+        landingUserList.show();
     });
 
 });
