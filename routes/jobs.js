@@ -202,14 +202,15 @@ router.get('/:id', async(req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const jobBody = req.body;
-  //let updatedJob = {};
+
   try {
     const currentJob = await jobsData.readByID(req.params.id);
 
     for (let key in jobBody) {
       currentJob[key] = jobBody[key];
     }
-
+    currentJob["creatorId"] = req.session.AuthCookie.id;
+    
     let update = await jobsData.updateJob(req.params.id, currentJob);
 
     res.json(update);

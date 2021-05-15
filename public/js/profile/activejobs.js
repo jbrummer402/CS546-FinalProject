@@ -30,10 +30,15 @@ jQuery(document).ready(function ($) {
         let hiddenInfo = parent.querySelector('.jobID');
 
         button.addEventListener('click', function() {
+            
+            console.log("test");
             let requestConfig = {
                 method: "PATCH",
                 url: `/jobs/${hiddenInfo.value}`,
-                contentType: "application/json",
+                contentType: "application/json"
+                // data : JSON.stringify({
+                //     jobToUpdate : AuthCookie.id;
+                // })
             };
             $.ajax(requestConfig).then(function (responseMessage) {
                 console.log(responseMessage)
