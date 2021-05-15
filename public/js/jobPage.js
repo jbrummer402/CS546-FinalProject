@@ -1,7 +1,11 @@
 jQuery(document).ready(function($){
     let claimButton = $('#claim-button');
     let claimed = $('#job-claimed-alt');
+    let posterError = $('#posterErr');
+    let loggedError = $('#logErr');
+
     claimed.hide();
+
 
     // returns array without given jobid
     function removeByMatch(id, array){
@@ -27,12 +31,16 @@ jQuery(document).ready(function($){
 
         if (workerUname.length === 0){
             // error saying you must be logged in to claim
+            posterError.hide();
+            loggedError.show();
             return;
         }
 
         // usernames are unique, so this is ok
         if (workerUname.trim() === posterUname.trim()){
             // error saying you may not claim a job that you posted
+            loggedError.hide();
+            posterError.show();
             return;
         }
         

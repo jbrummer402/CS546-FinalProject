@@ -125,7 +125,7 @@ router.get("/completedjobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
   const jobsWorked = await getJobs(user, 'jobsWorked');
   for (let i = 0; i < jobsWorked.length; i++){
-    jobsWorked[i].reviewLink = '/users/' + jobsWorked[i].posterId;
+    jobsWorked[i].reviewLink = '/users/' + jobsWorked[i].employerId;
   }
   const jobsProvided = await getJobs(user, 'jobsProvided');
   for (let i = 0; i < jobsProvided.length; i++){

@@ -69,6 +69,7 @@
   <div id="reviews-of-user">
     {{#if data.isReviews}}
     <h2>Reviews for this User</h2>
+    <p id="no-rev" hidden>No reviews available at this time</p>
     <ul id="reviews-of-list">
       {{#each data.reviews}}
         <li reviewer="{{this.reviewerId}}" id="{{this._id}}">
