@@ -81,7 +81,7 @@ jQuery(document).ready(function ($) {
         } else {
           loginErrorDivList.empty();
           loginErrorDiv.show();
-          loginErrorDivList.append(`<li class='loginError'>Invalid login credentials</li>`);
+          loginErrorDivList.append(`<li class='loginError'>Incorrect username or password</li>`);
           signinForm.trigger("reset");
         }
       });
@@ -107,27 +107,16 @@ jQuery(document).ready(function ($) {
     if(town.val().trim()==='') errList.push('Town can not be blank');
     if(country.val().trim()==='') errList.push('Country can not be blank');
 
+    const fd = new FormData($("#signupForm").get(0));   
+
     var requestConfig = {
       method: "POST",
       url: "/users",
-      contentType: "application/json",
-      data: JSON.stringify({
-        firstName: firstName.val(),
-        lastName: lastName.val(),
-        dateOfBirth: dateOfBirth.val(),
-        username: username2.val(),
-        password: password2.val(),
-        email: email.val(),
-        address: {
-          street: street.val(),
-          aptNo: aptNo.val(),
-          zipCode: zipCode.val(),
-          state: state.val(),
-          town: town.val(),
-          country: country.val(),
-        },
-      }),
+      processData: false,
+      contentType: false,
+      data: fd
     };
+
     if(errList.length > 0){
       for(let err of errList){
         signUpErrorDivList.append(`<li class='accountCreationError'>${err}</li>`);
@@ -135,10 +124,13 @@ jQuery(document).ready(function ($) {
       signUpErrorDiv.show();
     }
     else{
+      // past our client side checking
       $.ajax(requestConfig).then(function (responseMessage) {
         if (responseMessage.error) {
-          error.innerHTML = responseMessage.error;
-          error.hidden = false;
+          // error server side with user input
+          signUpErrorDivList.empty();
+          signUpErrorDivList.append(`<li class='accountCreationError'>${responseMessage.error}</li>`);
+          signUpErrorDiv.show();
         } else {
           window.location.href = "/profile/account";
         }
