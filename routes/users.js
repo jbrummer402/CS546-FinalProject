@@ -393,7 +393,7 @@ router.delete("/", async (req, res) => {
 
 router.patch("/pic/:id", upload.single('profile_picture'), async (req, res) =>{
   if(xss(req.params.id) != req.session.AuthCookie.id) res.status(401).json({"error" : "Can only modify picture if you are logged into that account"});
-  if(!req.file) res.json(400).json({"error" : "No file found"});
+  if(!req.file) res.status(400).json({"error" : "No file found"});
   const user = await usersData.update({id:req.params.id, photoLink: `/public/profile_pics/user_uploads/${req.file.filename}`});
   res.status(200).json({message:`Profile picture updated for user ${user.username}`});
 });
