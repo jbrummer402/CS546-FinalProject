@@ -124,7 +124,13 @@ router.get("/inprogressjobs", async (req, res) => {
 router.get("/completedjobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
   const jobsWorked = await getJobs(user, 'jobsWorked');
+  for (let i = 0; i < jobsWorked.length; i++){
+    jobsWorked[i].reviewLink = '/users/' + jobsWorked[i].posterId;
+  }
   const jobsProvided = await getJobs(user, 'jobsProvided');
+  for (let i = 0; i < jobsProvided.length; i++){
+    jobsProvided[i].reviewLink = '/users/' + jobsProvided[i].employeeId;
+  }
 
   res.render("partials/profile/completedjobs", {
     title: "My Completed Jobs",

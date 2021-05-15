@@ -90,6 +90,11 @@ async function updateJob(id, jobToUpdate) {
     if (!ObjectId.isValid(id)) {
       throw "Update job: Object id is not valid"
     }
+    if (!ObjectId.isValid(jobToUpdate.employeeId)){
+      throw "Update job: EmployeeId is not valid";
+    }
+
+    jobToUpdate.employeeId = ObjectId(jobToUpdate.employeeId);
 
     const jobsCollection = await jobs();
 
