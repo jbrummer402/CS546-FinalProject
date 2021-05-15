@@ -90,7 +90,6 @@ router.post("/", upload.single('profile_picture'), async (req, res) => {
   if (errorCode !== 0) {
     console.error(message);
     res.status(errorCode).json({ error: message });
-    return;
   }
 
   try {
@@ -113,7 +112,7 @@ router.post("/", upload.single('profile_picture'), async (req, res) => {
       address: address,
       id: newUser._id,
     };
-    res.render("partials/profile/account");
+    res.status(200).json({"accountCreated": "true"});
   } catch (e) {
     console.error(e);
     res.sendStatus(500);

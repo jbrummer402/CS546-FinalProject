@@ -89,7 +89,7 @@ jQuery(document).ready(function ($) {
     
   });
 
-  signupForm.submit(function (event) {
+  signupForm.submit(async function (event) {
     event.preventDefault();
     signUpErrorDiv.hide();
     signUpErrorDivList.empty();
@@ -125,16 +125,30 @@ jQuery(document).ready(function ($) {
     }
     else{
       // past our client side checking
-      $.ajax(requestConfig).then(function (responseMessage) {
-        if (responseMessage.error) {
-          // error server side with user input
-          signUpErrorDivList.empty();
-          signUpErrorDivList.append(`<li class='accountCreationError'>${responseMessage.error}</li>`);
-          signUpErrorDiv.show();
-        } else {
-          window.location.href = "/profile/account";
+      let result;
+      try{
+        result = await $.ajax(requestConfig);
+        if(result.accountCreated){
+            window.location.href = "/profile/account";
         }
-      });
+      }
+      catch(e){
+        if(e.status == 400){
+          signUpErrorDivList.empty();
+          signUpErrorDivList.append(`<li class='accountCreationError'>Error with input: ${e.responseJSON.error}</li>`);
+          signUpErrorDiv.show();
+        }
+        else if(e.status >= 500){
+          signUpErrorDivList.empty();
+          signUpErrorDivList.append(`<li class='accountCreationError'>Error with server.</li>`);
+          signUpErrorDiv.show();
+        }
+        else{
+          signUpErrorDivList.empty();
+          signUpErrorDivList.append(`<li class='accountCreationError'>Error: ${e.responseJSON.error}</li>`);
+          signUpErrorDiv.show();
+        }
+      }
     }
     
   });
