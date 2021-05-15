@@ -1,5 +1,7 @@
 jQuery(document).ready(function($){
     let claimButton = $('#claim-button');
+    let claimed = $('#job-claimed-alt');
+    claimed.hide();
 
     // returns array without given jobid
     function removeByMatch(id, array){
@@ -62,50 +64,57 @@ jQuery(document).ready(function($){
             }
 
             $.ajax(posterUpdate).then(function(res){
-                // nothing atm
+                
+                // get worker 
+                let workerRequest = {
+                    method: 'GET',
+                    url: '/users/username/' + workerUname.trim()
+                }
+                $.ajax(workerRequest).then(function(res){
+                    let workerId = res._id;
+                    let workerInProgress = res.jobsInProgressAsEmployee;
+
+                    workerInProgress.push(jobId);
+
+                    // update jobsInProgressAsEmployee, need to have error functionality
+                    let workerUpdate = {
+                        method: 'POST',
+                        url: '/users/' + workerId,
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            jobsInProgressAsEmployee: workerInProgress
+                        })
+                    }
+                    
+                    $.ajax(workerUpdate).then(function(res){
+                        // use jobUrl to update job status
+                        // once job status is updated, hide claim job button and show in progress, or just reload page
+
+                        //then need to post so that can update job, need an update route tho
+                        var requestConfig = {
+                            method: "PATCH",
+                            url: claimButton.attr("formaction"),
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                status: 'in-progress',
+                                employeeId: workerId
+                            }),
+                            error: function(a, b, c){
+                                // parser error syntax error unexpected end of json inpu
+                                console.log(a + " " + b + " " + c);
+                            }
+                        }
+
+                        $.ajax(requestConfig).then(function(res){
+                            console.log("in here");
+                            location.reload();
+                        });
+                    });
+
+                });
             });
 
         })
-
-
-        // get worker 
-        let workerRequest = {
-            method: 'GET',
-            url: '/users/username/' + workerUname.trim()
-        }
-        $.ajax(workerRequest).then(function(res){
-            let workerId = res._id;
-            let workerInProgress = res.jobsInProgressAsEmployee;
-
-            workerInProgress.push(jobId);
-
-            // update jobsInProgressAsEmployee, need to have error functionality
-            let workerUpdate = {
-                method: 'POST',
-                url: '/users/' + workerId,
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    jobsInProgressAsEmployee: workerInProgress
-                })
-            }
-            $.ajax(workerUpdate).then(function(res){
-
-            });
-
-        });
-
-        // use jobUrl to update job status
-        // once job status is updated, hide claim job button and show in progress, or just reload page
-
-        // then need to post so that can update job, need an update route tho
-        // var requestConfig = {
-        //     method: "POST",
-        //     url: claimButton.attr("formaction"),
-        //     contentType: "application/json",
-        //     data: JSON.stringify({
-            
-        //     }),
-        // };
         
     });
 });

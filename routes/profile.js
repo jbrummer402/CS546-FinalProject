@@ -124,7 +124,13 @@ router.get("/inprogressjobs", async (req, res) => {
 router.get("/completedjobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
   const jobsWorked = await getJobs(user, 'jobsWorked');
+  for (let i = 0; i < jobsWorked.length; i++){
+    jobsWorked[i].reviewLink = '/users/' + jobsWorked[i].posterId;
+  }
   const jobsProvided = await getJobs(user, 'jobsProvided');
+  for (let i = 0; i < jobsProvided.length; i++){
+    jobsProvided[i].reviewLink = '/users/' + jobsProvided[i].employeeId;
+  }
 
   res.render("partials/profile/completedjobs", {
     title: "My Completed Jobs",
@@ -144,7 +150,9 @@ async function getJobs(userObj, jobType) {
       compensation: job.compensation,
       perHour: job.perHour,
       datePosted: job.datePosted.toISOString().split('T')[0],
-      jobID: job._id.toString()
+      jobID: job._id.toString(),
+      posterId: job.creatorId.toString(),
+      employeeId: job.employeeId.toString()
     }
     jobs.push(jobObj);
   }

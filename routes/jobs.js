@@ -75,7 +75,7 @@ router.put("/:id", async (req, res) => {
     // move job to correct array
     user.jobsInProgressAsEmployer = user.jobsInProgressAsEmployer.filter(function(item) {
       return item !== jobID;
-    })
+    });
     user.jobsProvided.push(jobID);
     try {
       userData.update({
@@ -92,7 +92,7 @@ router.put("/:id", async (req, res) => {
     res.sendStatus(500);
   }
 
-})
+});
 
 //get every job
 router.get("/", async (req, res) => {
@@ -175,22 +175,24 @@ router.get('/:id', async(req, res) => {
   }
 })
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const jobBody = req.body;
-  let updatedJob = {};
+  //let updatedJob = {};
   try {
     const currentJob = await jobsData.readByID(req.params.id);
 
-    for (let [key, value] in Object.entries(jobBody)) {
-      if (currentJob[key] !== value) {
-        updatedJob[key] = value;
-      }
+    for (let key in jobBody) {
+      currentJob[key] = jobBody[key];
     }
 
-    return updatedJob;
+    let update = await jobsData.updateJob(req.params.id, currentJob);
+
+    res.json(update);
   } catch (e) {
     res.status(400).json({error : e});
   }
+});
+
 router.delete("/:id", async (req, res) => {
   let jobID = req.params.id;
   const userID = req.session.AuthCookie.id;
