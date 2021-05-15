@@ -79,6 +79,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/", async (req,res) => {
+  // call db function that just returns all 
+  try{
+    const users = await usersData.getAllUsers();
+    res.json(users);
+  } catch(e){
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 router.get("/signin", async (req, res) => {
   res.render("partials/sign-in", { title: "Sign-In" });
 });
@@ -205,13 +216,39 @@ router.get("/:id", async (req, res) => {
     try {
       for (let i = 0; i < reviewsOf.length; i++) {
         let reviewer = await usersData.readByID(reviewsOf[i].reviewerId);
+        let jobReviewed = await jobsData.readByID(reviewsOf[i].jobId.toString());
         reviewsOf[i].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
         reviewsOf[i].dateOfReview = reviewsOf[i].dateOfReview.toDateString();
+        reviewsOf[i].jobTitle = jobReviewed.title;
         rateAvg += reviewsOf[i].rating;
       }
     } catch {
       // do nothing, just dont show reviews ig
     }
+
+    let jobs = [];
+    try {
+      // put jobs worked into jobs array
+      for (let j = 0; j < user.jobsWorked.length; j++){
+        let job = await jobsData.readByID(user.jobsWorked[j]);
+        job.typeas = 'Employee';
+        jobs.push(job);
+      }
+      // put jobs provided into jobs array
+      for (let k = 0; k < user.jobsProvided.length; k++){
+        let job = await jobsData.readByID(user.jobsProvided[k]);
+        job.typeas = 'Employer';
+        jobs.push(job);
+      }
+    } catch {
+      // just dont show any jobs in select on error
+    }
+
+    let isJobs = true;
+    if (jobs.length === 0){
+      isJobs = false;
+    }
+
     let isReviews = true;
     if (reviewsOf.length === 0){
       isReviews = false;
@@ -222,10 +259,13 @@ router.get("/:id", async (req, res) => {
       rateAvg = Math.round((rateAvg / reviewsOf.length) * 100) / 100;
     }
     let username;
+    let userID;
     if (!loggedIn) {
       username = false;
+      userID = false;
     } else {
       username = loggedIn.username;
+      userID = loggedIn.id;
     }
 
     // need jobs offered by poster
@@ -240,10 +280,12 @@ router.get("/:id", async (req, res) => {
       {data: {
         title: user.username, 
         user: user, 
-        logged: {uname: username}, 
+        logged: {uname: username, userID: userID}, 
         reviews: reviewsOf, 
         average: rateAvg,
-        isReviews : isReviews
+        isReviews : isReviews,
+        jobs: jobs,
+        isJobs: isJobs
        }
      });
     
@@ -275,7 +317,7 @@ router.get("/search/:searchterm", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  if(!req.AuthCookie || (req.AuthCookie.id != req.params.id)){
+  if(!req.session.AuthCookie || (req.session.AuthCookie.id != req.params.id)){
     res.status(401).json({ error: "You can only delete account you are signed into" });
   } 
   // check if id is valid

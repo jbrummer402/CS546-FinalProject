@@ -66,9 +66,11 @@ app.use('/reviews', async (req, res, next) => {
   // Any user can see review
   // User can only update(patch) review they created
   const method = req.method;
-  let auth = req.session.AuthCookie;
   if(method == 'DELETE' || method == 'POST' || method == 'PATCH'){
-    if(!auth) res.status(401).json({'message':'Unauthorized request'});
+    if(!req.session.AuthCookie){
+      res.status(401).json({'message':'Unauthorized request'});
+      return;
+    } 
   }
   next();
 });

@@ -1,64 +1,83 @@
 <main id="user-page">
-  <div id="user-info">
-    <img
-      id="profile-pic"
-      src={{data.user.photoLink}}
-      alt={{data.user.username}}
-    />
-    <h2>{{data.user.firstName}} {{data.user.lastName}}</h2>
-    <h3 id="user-to-review">{{data.user.username}}</h3>
-    <p>Rating: {{data.average}}</p>
-  </div>
-  <div id="new-review">
-    <h2>Review this User</h2>
-    <p id="blank-error" class="error" hidden>Please make sure both fields are
-      filled out</p>
-    <p id="invalid-rating" class="error" hidden>Please enter a valid rating from
-      1 to 5</p>
-    <p id="add-error" class="error" hidden>There was an issue adding your
-      review, please try again</p>
-    <p id="own-error" class="error" hidden>You may not review your own profile</p>
-    <p id="no-auth" class="error" hidden>You must be signed in to leave a review</p>
-    <form id="review-form">
-      {{!
-            <label><input type="radio" class="typeBtn" name="reviewing-as" value="Freelancer">Freelancer</label>
-            <label><input type="radio" class="typeBtn" name="reviewing-as" value="JobPoster">Job Poster</label>
-            <br/>
-            <br/>
-            }}
-        <label for="job-select">Job Worked:</label>
-        <select id="job-select">
-            {{!--in here going to loop through the complete! jobs posted by this user--}}
-        </select>
-      <div id="review-rating">
-        <label for="rate1">1</label>
-        <input type="radio" name="rateBtn" id="rate1" value="1" />
-        <label for="rate2">2</label>
-        <input type="radio" name="rateBtn" id="rate2" value="2" />
-        <label for="rate3">3</label>
-        <input type="radio" name="rateBtn" id="rate3" value="3" />
-        <label for="rate4">4</label>
-        <input type="radio" name="rateBtn" id="rate4" value="4" />
-        <label for="rate5">5</label>
-        <input type="radio" name="rateBtn" id="rate5" value="5" />
-      </div>
-      <br />
-      <label for="review-text">Review</label>
-      <input type="text" id="review-text" name="review-text" maxlength="500" />
-      <button type="submit">Post Review</button>
-    </form>
-  </div>
+    <div class="left-side">
+        <div id="user-info">
+            <img
+            id="profile-pic"
+            src={{data.user.photoLink}}
+            alt={{data.user.username}}
+            />
+            <h2>{{data.user.firstName}} {{data.user.lastName}}</h2>
+            <h3 id="user-to-review">{{data.user.username}}</h3>
+            <p>Rating: {{data.average}}</p>
+        </div>
+        <div id="new-review">
+            <h2>Review this User</h2>
+            <p id="blank-error" class="error" hidden>Please make sure all fields are
+            filled out</p>
+            <p id="invalid-rating" class="error" hidden>Please enter a valid rating from
+            1 to 5</p>
+            <p id="add-error" class="error" hidden>There was an issue adding your
+            review, please try again</p>
+            <p id="own-error" class="error" hidden>You may not review your own profile</p>
+            <p id="no-auth" class="error" hidden>You must be signed in to leave a review</p>
+            <p id="notworked" class="error" hidden>You must have worked this job to review it</p>
+            <p id="notprovided" class="error" hidden>You must have provided this job to review it</p>
+            <form id="review-form">
+            {{!
+                    <label><input type="radio" class="typeBtn" name="reviewing-as" value="Freelancer">Freelancer</label>
+                    <label><input type="radio" class="typeBtn" name="reviewing-as" value="JobPoster">Job Poster</label>
+                    <br/>
+                    <br/>
+                    }}
+                <label for="job-select">Job:</label>
+                <select id="job-select">
+                            <option value="" selected>Choose Job to Review</option>
+                    {{!--in here going to loop through the complete! jobs posted by this user--}}
+                    {{#if data.isJobs}}
+                        {{#each data.jobs}}
+                            <option value="{{this._id}}" name="{{this.typeas}}">{{this.title}} ({{this.typeas}})</option>
+                        {{/each}}
+                    {{/if}}
+                </select>
+            <div id="review-rating">
+                <label for="rate1">1</label>
+                <input type="radio" name="rateBtn" id="rate1" value="1" />
+                <label for="rate2">2</label>
+                <input type="radio" name="rateBtn" id="rate2" value="2" />
+                <label for="rate3">3</label>
+                <input type="radio" name="rateBtn" id="rate3" value="3" />
+                <label for="rate4">4</label>
+                <input type="radio" name="rateBtn" id="rate4" value="4" />
+                <label for="rate5">5</label>
+                <input type="radio" name="rateBtn" id="rate5" value="5" />
+            </div>
+            <br />
+            <label for="review-text">Review</label>
+            <input type="text" id="review-text" name="review-text" maxlength="500" />
+            <button type="submit">Post Review</button>
+            </form>
+        </div>
+    </div>
+
+  {{#unless data.logged.userID}}
+  <div id="currentUser" user="none"></div>
+  {{/unless}}
+  {{#if data.logged.userID}}
+  <div id="currentUser" user="{{data.logged.userID}}"></div>
+  {{/if}}
+
   <div id="reviews-of-user">
     {{#if data.isReviews}}
     <h2>Reviews for this User</h2>
     <ul id="reviews-of-list">
       {{#each data.reviews}}
-        <li>
-          <h3 class="review-header">Review By {{this.reviewerName}}</h3>
+        <li reviewer="{{this.reviewerId}}" id="{{this._id}}">
+          <h3 class="review-header">{{this.jobTitle}}</h3>
+          <h4>{{this.reviewerName}}</h4>
           <h4>{{this.dateOfReview}}</h4>
-          <h4>Rating: {{this.rating}}</h4>
+          <h4 class='reviewRating'>Rating: {{this.rating}}</h4>
           <h4>Review:</h4>
-          <p>{{this.reviewDescription}}</p>
+          <p class='reviewDescription'>{{this.reviewDescription}}</p>
         </li>
       {{/each}}
     </ul>
@@ -71,3 +90,4 @@
   crossorigin="anonymous"
 ></script>
 <script src="/public/js/postReview.js"></script>
+<script src="/public/js/modifyReview.js"></script>
