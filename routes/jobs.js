@@ -191,6 +191,7 @@ router.patch('/:id', async (req, res) => {
   } catch (e) {
     res.status(400).json({error : e});
   }
+})
 router.delete("/:id", async (req, res) => {
   let jobID = req.params.id;
   const userID = req.session.AuthCookie.id;
