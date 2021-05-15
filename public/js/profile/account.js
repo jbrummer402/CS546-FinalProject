@@ -21,6 +21,8 @@ jQuery(document).ready(function ($) {
     let photoUpdateSuccessDiv = $('#photoUpdateSuccess');
     photoUpdateErrorDiv.hide();
     photoUpdateSuccessDiv.hide();
+    let updateSuccessDiv = $('#updateSuccess');
+    updateSuccessDiv.hide();
 
     $(document).on('submit', '#picUpdateForm', async (e) => {
         e.preventDefault();
@@ -55,6 +57,8 @@ jQuery(document).ready(function ($) {
         //error checking
         errorDiv.hide();
         errorDivList.empty();
+        updateSuccessDiv.hide();
+
         let errList = [];
         if(firstName.val().trim()==='') errList.push('First Name can not be blank');
         if(lastName.val().trim()==='') errList.push('Last Name can not be blank');
@@ -92,7 +96,19 @@ jQuery(document).ready(function ($) {
             errorDiv.show();
         }
         else{
-            let result = await $.ajax(requestConfig);
+            let result;
+            try{
+                result = await $.ajax(requestConfig);
+                errorDiv.hide();
+                updateSuccessDiv.empty();
+                updateSuccessDiv.append(`<p>Account successfully updated.</p>`);
+                updateSuccessDiv.show();
+            } 
+            catch (e){
+                errorDivList.empty();
+                errorDivList.append(`<li class='updateError'>Error updating account: ${e.responseJSON.error}</li>`);
+                errorDiv.show();
+            }
         }
         
 
