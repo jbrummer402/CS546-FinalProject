@@ -45,7 +45,7 @@ jQuery(document).ready(function ($) {
         numErrors++;
         error.innerHTML = "Compensation must be a number";
       }
-      if (typeof values.compensation !== "boolean") {
+      if (typeof values.perHour !== "boolean") {
         numErrors++;
         error.innerHTML = "Per Hour Must be a true or false value";
       }
