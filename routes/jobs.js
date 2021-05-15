@@ -206,6 +206,7 @@ router.get("/:id", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   const jobBody = req.body;
+  //console.log(jobBody);
   try {
     const currentJob = await jobsData.readByID(xss(req.params.id));
 
@@ -222,7 +223,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  let jobId= xss(req.params.id);
+  let jobId = xss(req.params.id);
   const userId = xss(req.session.AuthCookie.id);
   let user;
   try {
