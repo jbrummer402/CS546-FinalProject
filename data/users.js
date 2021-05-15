@@ -181,7 +181,7 @@ async function update(updateObj) {
     );
   }
 
-  if (email !== undefined) {
+  if (email !== undefined && email !== user.email) {
     const errorObj = await checkEmail(email);
     if (errorObj.error) {
       throw errorObj.message;
@@ -290,6 +290,22 @@ async function emailExists(email) {
 
   const user = await usersCollection.findOne({ email: email.toLowerCase() });
   return user !== null;
+}
+
+async function getAllUsers(){
+  // no input
+  const userCollection = await users();
+  const results = await userCollection.find({}).toArray();
+
+  for (let i = 0; i < results.length; i++) {
+    let user = results[i];
+    user._id = user._id.toString();
+    user.dateOfBirth = `${
+      user.dateOfBirth.getMonth() + 1
+    }/${user.dateOfBirth.getDate()}/${user.dateOfBirth.getFullYear()}`;
+  }
+  
+  return results;
 }
 
 async function searchByUsername(keyword) {
@@ -627,4 +643,5 @@ module.exports = {
   usernameExists,
   emailExists,
   searchByUsername,
+  getAllUsers
 };

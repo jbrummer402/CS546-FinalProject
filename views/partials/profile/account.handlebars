@@ -37,13 +37,13 @@
     <label for="username">
       Username
       <br />
-      <input type="text" value={{{username}}} id="username" name="username" />
+      <input type="text" value={{{username}}} id="username" name="username" disabled/>
     </label>
     <br />
     <label for="email">
       Email
       <br />
-      <input type="text" placeholder="{{email}}" id="email" name="email" />
+      <input type="text" value="{{email}}" id="email" name="email" />
     </label>
     <br />
     <h3>Address</h3>
@@ -90,11 +90,12 @@
         value="{{address.country}}"
         id="country"
         name="country"
+        disabled
       />
     </label>
     <br />
     <br />
-    <button type="submit">Submit</button>
+    <button type="submit">Update Account</button>
   </form>
   <a href="/users/signout">Sign Out</a>
 </div>

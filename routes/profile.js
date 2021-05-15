@@ -22,13 +22,20 @@ router.get("/account", async (req, res) => {
   res.render("partials/profile/account", {
     title: req.session.AuthCookie.username,
     layout: "profile",
-    firstName: req.session.AuthCookie.firstName,
-    lastName: req.session.AuthCookie.lastName,
-    dateOfBirth: req.session.AuthCookie.dateOfBirth,
-    username: req.session.AuthCookie.username,
-    address: req.session.AuthCookie.address,
-    email: req.session.AuthCookie.email,
-    id: req.session.AuthCookie.id,
+    // firstName: req.session.AuthCookie.firstName,
+    // lastName: req.session.AuthCookie.lastName,
+    // dateOfBirth: req.session.AuthCookie.dateOfBirth,
+    // username: req.session.AuthCookie.username,
+    // address: req.session.AuthCookie.address,
+    // email: req.session.AuthCookie.email,
+    // id: req.session.AuthCookie.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    dateOfBirth: user.dateOfBirth,
+    username: user.username,
+    address: user.address,
+    email: user.email,
+    id: user._id,
   });
 });
 
@@ -61,17 +68,8 @@ router.get("/reviews", async (req, res) => {
 
 router.get("/activejobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
-  let activeJobs = [];
-  for (const jobID of user.jobsActive) {
-    const job = await jobsData.readByID(jobID);
-    const jobObj = {
-      jobTitle: job.title,
-      compensation: job.compensation,
-      perHour: job.perHour,
-      datePosted: job.datePosted.toString()
-    }
-    activeJobs.push(jobObj);
-  }
+  const activeJobs = await getJobs(user, 'jobsActive');
+
   res.render("partials/profile/activejobs", {
     title: "My Active Jobs",
     layout: "profile",
@@ -82,28 +80,9 @@ router.get("/activejobs", async (req, res) => {
 
 router.get("/inprogressjobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
-  let jobsInProgressAsEmployee = [];
-  let jobsInProgressAsEmployer = [];
-  for (const jobID of user.jobsInProgressAsEmployee) {
-    const job = await jobsData.readByID(jobID);
-    const jobObj = {
-      jobTitle: job.title,
-      compensation: job.compensation,
-      perHour: job.perHour,
-      datePosted: job.datePosted.toString()
-    }
-    jobsInProgressAsEmployee.push(jobObj);
-  }
-  for (const jobID of user.jobsInProgressAsEmployer) {
-    const job = await jobsData.readByID(jobID);
-    const jobObj = {
-      jobTitle: job.title,
-      compensation: job.compensation,
-      perHour: job.perHour,
-      datePosted: job.datePosted.toString()
-    }
-    jobsInProgressAsEmployer.push(jobObj);
-  }
+  const jobsInProgressAsEmployee = await getJobs(user, 'jobsInProgressAsEmployee');
+  const jobsInProgressAsEmployer = await getJobs(user, 'jobsInProgressAsEmployer');
+
   res.render("partials/profile/inprogressjobs", {
     title: "My In-Progress Jobs",
     layout: "profile",
@@ -114,33 +93,32 @@ router.get("/inprogressjobs", async (req, res) => {
 });
 
 router.get("/completedjobs", async (req, res) => {
+  let user = await usersData.readByID(req.session.AuthCookie.id);
+  const jobsWorked = await getJobs(user, 'jobsWorked');
+  const jobsProvided = await getJobs(user, 'jobsProvided');
+
   res.render("partials/profile/completedjobs", {
     title: "My Completed Jobs",
     layout: "profile",
     username: req.session.AuthCookie.username,
-    jobsWorked: [
-      {
-        jobTitle: "For the love of god, come help me change a light bulb",
-        compensation: 2000,
-        perHour: false,
-        datePosted: "5/5/21",
-      },
-    ],
-    jobsProvided: [
-      {
-        jobTitle: "NEED MATH TUTORING",
-        compensation: 5,
-        perHour: true,
-        datePosted: "3/23/21",
-      },
-      {
-        jobTitle: "anyone know giving ukelele lessons???",
-        compensation: 30,
-        perHour: true,
-        datePosted: "2/7/21",
-      },
-    ],
+    jobsWorked: jobsWorked,
+    jobsProvided: jobsProvided
   });
 });
+
+async function getJobs(userObj, jobType) {
+  let jobs = [];
+  for (const jobID of userObj[jobType]) {
+    const job = await jobsData.readByID(jobID);
+    const jobObj = {
+      jobTitle: job.title,
+      compensation: job.compensation,
+      perHour: job.perHour,
+      datePosted: job.datePosted.toISOString().split('T')[0]
+    }
+    jobs.push(jobObj);
+  }
+  return jobs;
+}
 
 module.exports = router;
