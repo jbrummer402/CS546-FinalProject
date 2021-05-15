@@ -114,7 +114,8 @@ async function getJobs(userObj, jobType) {
       jobTitle: job.title,
       compensation: job.compensation,
       perHour: job.perHour,
-      datePosted: job.datePosted.toISOString().split('T')[0]
+      datePosted: job.datePosted.toISOString().split('T')[0],
+      jobID: job._id.toString()
     }
     jobs.push(jobObj);
   }
