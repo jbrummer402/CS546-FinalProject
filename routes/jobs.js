@@ -440,13 +440,9 @@ async function checkAddress(address) {
     return { error: error, message: message };
   }
 
-  if (
-    typeof address.town !== "string" ||
-    !address.town ||
-    !address.town.trim()
-  ) {
-    error = true;
-    message = "Address town must be a string";
+  if (typeof address.town !== 'string' || !address.town || !(address.town.trim())) {
+    error = true; 
+    message = "Address town must be a string"; 
   }
 
   return { error: error, message: message };
