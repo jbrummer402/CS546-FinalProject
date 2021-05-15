@@ -47,26 +47,53 @@ router.get("/postjob", async (req, res) => {
   });
 });
 
-router.get("/reviews", async (req, res) => {
-  const reviewsReceived = await reviewData.getReviewsReceivedForUser(
-    req.session.AuthCookie.id
-  );
-  for (let i = 0; i < reviewsReceived.length; i++) {
-    let review = reviewsReceived[i];
-    review.reviewerActualId = review.reviewerId;
-    review.reviewerId = (await usersData.readByID(review.reviewerId)).username;
-    review.revieweeId = (await usersData.readByID(review.revieweeId)).username;
-    review.dateOfReview = review.dateOfReview.toDateString();
-    review.jobTitle = (await jobsData.readByID(review.jobId.toString())).title;
+router.get("/reviewsreceived", async (req, res) => {
+  try {
+    const reviewsReceived = await reviewData.getReviewsReceivedForUser(
+      req.session.AuthCookie.id
+    );
+    for (let i = 0; i < reviewsReceived.length; i++) {
+      let review = reviewsReceived[i];
+      review.reviewerActualId = review.reviewerId;
+      review.reviewerId = (await usersData.readByID(review.reviewerId)).username;
+      review.revieweeId = (await usersData.readByID(review.revieweeId)).username;
+      review.dateOfReview = review.dateOfReview.toDateString();
+      review.jobTitle = (await jobsData.readByID(review.jobId.toString())).title;
+    }
+    res.render("partials/profile/reviews", {
+      title: "Reviews Received",
+      layout: "profile",
+      username: req.session.AuthCookie.username,
+      //TODO: get reviews from reviews data base
+      reviews: reviewsReceived,
+    });
+  } catch(e){
+    res.sendStatus(500);
   }
-  res.render("partials/profile/reviews", {
-    title: "My Reviews",
-    layout: "profile",
-    username: req.session.AuthCookie.username,
-    //TODO: get reviews from reviews data base
-    reviews: reviewsReceived,
-  });
 });
+
+router.get("/reviewsmade", async (req, res) => {
+  try {
+    const reviewsGiven = await reviewData.getReviewsGivenByUser(
+      req.session.AuthCookie.id
+    );
+    for (let i = 0; i < reviewsGiven.length; i++) {
+      let review = reviewsGiven[i];
+      review.reviewerName = (await usersData.readByID(review.reviewerId)).username;
+      review.revieweeName = (await usersData.readByID(review.revieweeId)).username;
+      review.dateOfReview = review.dateOfReview.toDateString();
+      review.jobTitle = (await jobsData.readByID(review.jobId.toString())).title;
+    }
+    res.render("partials/profile/reviewsGiven", {
+      title: "Reviews Given",
+      layout: "profile",
+      username: req.session.AuthCookie.username,
+      reviews: reviewsGiven,
+    });
+  } catch(e){
+    res.sendStatus(500);
+  }
+})
 
 router.get("/activejobs", async (req, res) => {
   let user = await usersData.readByID(req.session.AuthCookie.id);
