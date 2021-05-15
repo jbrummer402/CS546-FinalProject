@@ -222,10 +222,13 @@ router.get("/:id", async (req, res) => {
       rateAvg = Math.round((rateAvg / reviewsOf.length) * 100) / 100;
     }
     let username;
+    let userID;
     if (!loggedIn) {
       username = false;
+      userID = false;
     } else {
       username = loggedIn.username;
+      userID = loggedIn.id;
     }
 
     // need jobs offered by poster
@@ -240,7 +243,7 @@ router.get("/:id", async (req, res) => {
       {data: {
         title: user.username, 
         user: user, 
-        logged: {uname: username}, 
+        logged: {uname: username, userID: userID}, 
         reviews: reviewsOf, 
         average: rateAvg,
         isReviews : isReviews
@@ -275,7 +278,7 @@ router.get("/search/:searchterm", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  if(!req.AuthCookie || (req.AuthCookie.id != req.params.id)){
+  if(!req.session.AuthCookie || (req.session.AuthCookie.id != req.params.id)){
     res.status(401).json({ error: "You can only delete account you are signed into" });
   } 
   // check if id is valid
@@ -388,7 +391,7 @@ router.post("/:id", async (req, res) => {
     return;
   }
 
-  if (email !== undefined) {
+  if (email !== undefined && email !== user.email) {
     const errorObj = await checkEmail(email);
     if (errorObj.errorCode !== 0) {
       res.status(400).json({

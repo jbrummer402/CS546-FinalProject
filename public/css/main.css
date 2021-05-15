@@ -116,3 +116,23 @@ label {
 .revieweeName{
   font-weight: bold;
 }
+
+.reviewDeleteButton {
+  color: red;
+}
+
+.reviewEditSuccess{
+  color: #0000FF
+}
+
+.reviewEditErrorMsg{
+  color: red;
+}
+
+.reviewDeleteErrorMsg{
+  color: red;
+}
+
+.reviewDeleteConfirmation{
+  color: #0000FF
+}
