@@ -205,13 +205,39 @@ router.get("/:id", async (req, res) => {
     try {
       for (let i = 0; i < reviewsOf.length; i++) {
         let reviewer = await usersData.readByID(reviewsOf[i].reviewerId);
+        let jobReviewed = await jobsData.readByID(reviewsOf[i].jobId.toString());
         reviewsOf[i].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
         reviewsOf[i].dateOfReview = reviewsOf[i].dateOfReview.toDateString();
+        reviewsOf[i].jobTitle = jobReviewed.title;
         rateAvg += reviewsOf[i].rating;
       }
     } catch {
       // do nothing, just dont show reviews ig
     }
+
+    let jobs = [];
+    try {
+      // put jobs worked into jobs array
+      for (let j = 0; j < user.jobsWorked.length; j++){
+        let job = await jobsData.readByID(user.jobsWorked[j]);
+        job.typeas = 'Employee';
+        jobs.push(job);
+      }
+      // put jobs provided into jobs array
+      for (let k = 0; k < user.jobsProvided.length; k++){
+        let job = await jobsData.readByID(user.jobsProvided[k]);
+        job.typeas = 'Employer';
+        jobs.push(job);
+      }
+    } catch {
+      // just dont show any jobs in select on error
+    }
+
+    let isJobs = true;
+    if (jobs.length === 0){
+      isJobs = false;
+    }
+
     let isReviews = true;
     if (reviewsOf.length === 0){
       isReviews = false;
@@ -246,7 +272,9 @@ router.get("/:id", async (req, res) => {
         logged: {uname: username, userID: userID}, 
         reviews: reviewsOf, 
         average: rateAvg,
-        isReviews : isReviews
+        isReviews : isReviews,
+        jobs: jobs,
+        isJobs: isJobs
        }
      });
     

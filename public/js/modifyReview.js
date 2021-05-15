@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
 
             $(reviewHtmlToEdit).append(`<form id='reviewEditArea' class='reviewEditForm' reviewid=${reviewIdToEdit}>
                 <label for="newReviewDescription">New Review Text:</label><br>
-                <input type="text" id="newReviewDescription" name="newReviewDescription">
+                <input type="text" id="newReviewDescription" name="newReviewDescription" maxlength="500">
                 <div id="newRating">
                 <label for="newrate1">1</label>
                 <input type="radio" name="newrateBtn" id="newrate1" value="1" />
