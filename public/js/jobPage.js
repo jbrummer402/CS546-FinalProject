@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
         let workerUname = $('#to-profile').text();
         let posterUname = $('#to-poster-prof').text();
         let jobId = $('.job-page-title').attr("id");
-        let jobUrl = claimButton.attr("formaction");
+        let jobUrl = claimButton.attr("name");
 
         if (workerUname.length === 0){
             // error saying you must be logged in to claim
@@ -35,7 +35,7 @@ jQuery(document).ready(function($){
             loggedError.show();
             return;
         }
-
+        console.log("claim clicked");
         // usernames are unique, so this is ok
         if (workerUname.trim() === posterUname.trim()){
             // error saying you may not claim a job that you posted
@@ -62,13 +62,16 @@ jQuery(document).ready(function($){
             
             // make post request to update user, need to put what happens on an error
             let posterUpdate = {
-                method: 'POST',
+                method: 'PATCH',
                 url: '/users/' + posterId,
                 contentType: 'application/json',
                 data: JSON.stringify({
                     jobsActive: posterActiveNew,
                     jobsInProgressAsEmployer: posterInProgress
-                })
+                }),
+                error: function(){
+                    // do something
+                }
             }
 
             $.ajax(posterUpdate).then(function(res){
@@ -86,12 +89,15 @@ jQuery(document).ready(function($){
 
                     // update jobsInProgressAsEmployee, need to have error functionality
                     let workerUpdate = {
-                        method: 'POST',
+                        method: 'PATCH',
                         url: '/users/' + workerId,
                         contentType: 'application/json',
                         data: JSON.stringify({
                             jobsInProgressAsEmployee: workerInProgress
-                        })
+                        }),
+                        error: function(){
+                            // do something
+                        }
                     }
                     
                     $.ajax(workerUpdate).then(function(res){
@@ -101,7 +107,7 @@ jQuery(document).ready(function($){
                         //then need to post so that can update job, need an update route tho
                         var requestConfig = {
                             method: "PATCH",
-                            url: claimButton.attr("formaction"),
+                            url: claimButton.attr("name"),
                             contentType: "application/json",
                             data: JSON.stringify({
                                 status: 'in-progress',

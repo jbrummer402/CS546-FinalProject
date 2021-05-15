@@ -6,7 +6,6 @@ async function getJobs() {
   let jobsCollection = await jobs();
   const jobsList = await jobsCollection.find({}).toArray();
 
-  console.log(jobsList)
   return jobsList;
 }
 
@@ -101,9 +100,11 @@ async function updateJob(id, jobToUpdate) {
 
     await jobsCollection.updateOne({ _id: ObjectId(id)}, {$set : jobToUpdate})
 
+    return true;
+
   } catch (e) {
     console.log(e);
-    return;
+    return false;
   }
 }
 
@@ -197,9 +198,75 @@ async function checkAddress(address) {
     message = "Address state must be a string"; 
   }
 
+  if (!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(address.zipCode)) {
+    error = true;
+    message = "'zipCode' parameter must a valid US zip code";
+    return { error: error, message: message };
+  }
+
+  const states = [
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+    "DC",
+  ];
+  if (!states.includes(address.state.toUpperCase())) {
+    error = 400;
+    message =
+      "'state' parameter must a valid US state abbreviation of the format 'XX'";
+    return { error: error, message: message };
+  }
+
   if (typeof address.town !== 'string' || !address.town || !(address.town.trim())) {
     error = true; 
-    message = "Address town must be a number"; 
+    message = "Address town must be a string"; 
   }
 
   return {error : error, message : message };

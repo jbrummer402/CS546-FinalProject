@@ -1,9 +1,15 @@
 jQuery(document).ready(function($){
     let landingJobList = $('#landing-job-list');
     let landingUserList = $('#landing-user-list');
+
+    let landingSearchList = $('#landing-search-list');
+
     let jobHeader = $('#job-header');
     let userHeader = $('#user-header');
     let searchForm = $('#search-form');
+
+    let saveSearch = $('#save-search')
+
     let blankSearch = $('#blank-search');
     let noResults = $('#no-result');
     let allJobs = $('#all-jobs');
@@ -23,6 +29,11 @@ jQuery(document).ready(function($){
     landingJobList.empty();
     landingUserList.empty();
 
+    function bindSavedSearchLink(searchItem) {
+        let LI = $('<li/>').appendTo(landingSearchList);
+
+        $('<p/>').text(searchItem).appendTo(LI);
+    }
 
     function bindJobListLink(jobItem){
         let LI = $('<li/>')
@@ -35,7 +46,7 @@ jQuery(document).ready(function($){
             .attr("href", `/jobs/${jobItem._id}`)
             .appendTo(title);
         // datePosted
-        let date = $('<h4/>')
+        let date = $('<h3/>')
             .text(new Date(jobItem.datePosted).toDateString())
             .appendTo(LI);
         // compensation + type
@@ -98,10 +109,11 @@ jQuery(document).ready(function($){
                 return;
             }
             bindJobListLink(res[curJob]);
+            
         });
         userHeader.hide();
         landingUserList.hide();
-
+        landingSearchList.show();
         jobHeader.show();
         landingJobList.show();
     });
@@ -110,7 +122,7 @@ jQuery(document).ready(function($){
     // when search is entered, make ajax call?
     searchForm.submit(function(event){
         event.preventDefault();
-
+        
 
         let searchType = $('input[name="search-type"]:checked', searchForm).val();
         let searchText = $('#search-bar', searchForm).val();
@@ -123,7 +135,7 @@ jQuery(document).ready(function($){
 
         landingJobList.empty();
         landingUserList.empty();
-
+        bindSavedSearchLink(searchText);
         // make calls to appropriate routes for searches
         // need routes or smth
         // if its a search of users, make call to user search
@@ -145,6 +157,8 @@ jQuery(document).ready(function($){
                 });
                 jobHeader.hide();
                 landingJobList.hide();
+
+
                 noResults.hide();
                 blankSearch.hide();
 
@@ -186,17 +200,29 @@ jQuery(document).ready(function($){
 
                 jobHeader.show();
                 landingJobList.show();
+                landingSearchList.show();
             });
         }
 
 
     });
 
+    saveSearch.on('click', function(event) {
+        $.ajax(requestConfig).then(function(res){
+            $.each(res, function(curSave) {
+                curSave.appendTo(landingSearchList);
+            });
+        });
+        
+        landingSearchList.show();
+    })
+
     allJobs.on('click', function(event){
         // make ajax request and show all jobs
         blankSearch.hide();
         jobHeader.hide();
         landingJobList.hide();
+        
         userHeader.hide();
         landingUserList.hide();
         noResults.hide();
@@ -227,6 +253,7 @@ jQuery(document).ready(function($){
                 bindJobListLink(res[curJob]);
             });
         });
+        jobHeader.show();
         landingJobList.show();
     });
 
@@ -262,6 +289,7 @@ jQuery(document).ready(function($){
                 bindUserLink(res[curUser]);
             });
         });
+        userHeader.show();
         landingUserList.show();
     });
 
