@@ -7,9 +7,44 @@ const reviewData = data.reviews;
 const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 const xss = require("xss");
+const path = require('path');
+const multer = require("multer");
+//const upload = multer({ dest: 'public/profile_pics/user_uploads' })
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'public/profile_pics/user_uploads')
+  },
+  filename: function (req, file, cb) {
+      let datetimestamp = Date.now();
+      cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+  }
+});
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, callback) {
+      let ext = path.extname(file.originalname);
+      if(ext !== '.tif' && ext !== '.tiff' && ext !== '.bmp' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.png' && ext !== '.gif') {
+          return callback(new Error('Only images are allowed'))
+      }
+      callback(null, true)
+  },
+  limits:{
+      fileSize: 1024 * 1024
+  }
+})
 
-//FIX DEFAULT PROFILE ICON
-router.post("/", async (req, res) => {
+router.post("/", upload.single('profile_picture'), async (req, res) => {
+  let photoLink;
+  req.body = JSON.parse(JSON.stringify(req.body));
+
+  if(!req.file){
+    photoLink = '/public/profile_pics/default.jpg';
+  }
+  else{
+    // file uploaded for profile picture
+    photoLink = `/public/profile_pics/user_uploads/${req.file.filename}`;
+  }
+
   let firstName = req.body.firstName ? xss(req.body.firstName) : undefined;
   let lastName = req.body.lastName ? xss(req.body.lastName) : undefined;
   let dateOfBirth = req.body.dateOfBirth
@@ -17,24 +52,28 @@ router.post("/", async (req, res) => {
     : undefined;
   let username = req.body.username ? xss(req.body.username) : undefined;
   let password = req.body.password ? xss(req.body.password) : undefined;
-  let address = req.body.address
-    ? {
-        street: req.body.address.street
-          ? xss(req.body.address.street)
-          : undefined,
-        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
-        zipCode: req.body.address.zipCode
-          ? xss(req.body.address.zipCode)
-          : undefined,
-        state: req.body.address.state ? xss(req.body.address.state) : undefined,
-        town: req.body.address.town ? xss(req.body.address.town) : undefined,
-        country: req.body.address.country
-          ? xss(req.body.address.country)
-          : undefined,
-      }
-    : undefined;
-  let photoLink = "/public/profile_pics/agentcoop.jpeg";
   let email = req.body.email ? xss(req.body.email) : undefined;
+
+  req.body.address = {};
+  if(req.body.street){
+    req.body.address.street = xss(req.body.street);
+  } 
+  if(req.body.aptNo){
+    req.body.address.aptNo = xss(req.body.aptNo);
+  } 
+  if(req.body.zipCode){
+    req.body.address.zipCode = xss(req.body.zipCode);
+  }
+  if(req.body.state){
+    req.body.address.state = xss(req.body.state);
+  } 
+  if(req.body.town){
+    req.body.address.town = xss(req.body.town);
+  }
+  if(req.body.country){
+    req.body.address.country = xss(req.body.country);
+  } 
+  let address = req.body.address;
 
   // handle inputs
   const { errorCode, message } = await checkInputs(
@@ -49,8 +88,8 @@ router.post("/", async (req, res) => {
     "POST"
   );
   if (errorCode !== 0) {
+    console.error(message);
     res.status(errorCode).json({ error: message });
-    return;
   }
 
   try {
@@ -73,8 +112,9 @@ router.post("/", async (req, res) => {
       address: address,
       id: newUser._id,
     };
-    res.render("partials/profile/account");
+    res.status(200).json({"accountCreated": "true"});
   } catch (e) {
+    console.error(e);
     res.sendStatus(500);
   }
 });
@@ -91,7 +131,7 @@ router.get("/", async (req,res) => {
 });
 
 router.get("/signin", async (req, res) => {
-  res.render("partials/sign-in", { title: "Sign-In" });
+  res.render("partials/sign-in", { data: {title: "Sign-In" }});
 });
 
 //TODO: Better error checking
@@ -364,7 +404,7 @@ router.patch("/:id", async (req, res) => {
         street: req.body.address.street
           ? xss(req.body.address.street)
           : undefined,
-        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : undefined,
+        aptNo: req.body.address.aptNo ? xss(req.body.address.aptNo) : "",
         zipCode: req.body.address.zipCode
           ? xss(req.body.address.zipCode)
           : undefined,
