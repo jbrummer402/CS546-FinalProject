@@ -16,8 +16,14 @@ router.post("/", async (req, res) => {
     datePosted,
     address,
   } = req.body;
-  const creatorId = req.session.AuthCookie.id;
-  const user = await userData.readByID(creatorId);
+    const creatorId = req.session.AuthCookie.id;
+  let user;
+  try {
+    user = await userData.readByID(creatorId);
+  } catch(e){
+    console.error(e)
+    res.sendStatus(500);
+  }
 
   // // handle inputs
   const { errorCode, message } = await checkInputs(
@@ -60,6 +66,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const jobID = req.params.id;
+  try {
   let job = await jobsData.readByID(jobID);
   const employerID = req.session.AuthCookie.id;
   const employeeID = job.employeeId.toString();
@@ -71,6 +78,11 @@ router.put("/:id", async (req, res) => {
   // update job
   try {
     await jobsData.updateJob(jobID, job);
+  } catch (e){
+    console.error(e)
+    res.sendStatus(500);
+    return;
+  }
 
     // move job to correct array
     employer.jobsInProgressAsEmployer = employer.jobsInProgressAsEmployer.filter(function(item) {
@@ -126,14 +138,13 @@ router.get("/", async (req, res) => {
 
 router.get('/search/:searchTerm', async (req, res) => {
   try {
-    let searchData = await jobsData.searchByTerms(xss(req.params.searchTerm));
-    
     if (typeof xss(req.params.searchTerm) !== 'string'){
       throw "Search term must be a string"
     }
     if (!xss(req.params.searchTerm) || xss(req.params.searchTerm).trim() === '') {
       throw "No terms provided";
     }
+    let searchData = await jobsData.searchByTerms(xss(req.params.searchTerm));
       res.json(searchData);
     } catch (e) {
       console.log(e);
@@ -211,7 +222,13 @@ router.patch('/:id', async (req, res) => {
 router.delete("/:id", async (req, res) => {
   let jobID = req.params.id;
   const userID = req.session.AuthCookie.id;
-  const user = await userData.readByID(userID);
+  let user;
+  try {
+    user = await userData.readByID(userID);
+  } catch(e){
+    console.log(e);
+    res.status(500).send({error: e});
+  }
 
   // TODO: check if jobID is valid
 

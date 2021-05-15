@@ -9,11 +9,21 @@ jQuery(document).ready(function($) {
     let noAuth = $('#no-auth');
     let workedError = $('#notworked');
     let providedError = $('#notprovided');
+    let noRevs = $('#no-rev');
 
     // on submit event
     reviewForm.submit(function(event) {
         
         event.preventDefault();
+
+        blankError.hide();
+        addError.hide();
+        ownError.hide();
+        noAuth.hide();
+        workedError.hide();
+        providedError.hide();
+        noRevs.hide();
+        invalidRating.hide();
         
         // ignore freelancer vs poster atm, only seems to be reference like one place
         //let reviewOf = $('input.typeBtn:checked', reviewForm).val();
@@ -30,6 +40,7 @@ jQuery(document).ready(function($) {
             noAuth.hide();
             workedError.hide();
             providedError.hide();
+            noRevs.hide();
 
             blankError.show();
             return;
@@ -47,6 +58,7 @@ jQuery(document).ready(function($) {
             noAuth.hide();
             workedError.hide();
             providedError.hide();
+            noRevs.hide();
 
             invalidRating.show();
             return;
@@ -71,7 +83,19 @@ jQuery(document).ready(function($) {
         // get revieweeId
         let requestConfig1 = {
             method: 'GET',
-            url: '/users/username/' + revieweeName
+            url: '/users/username/' + revieweeName,
+            error: function() {
+                blankError.hide();
+                addError.hide();
+                ownError.hide();
+                noAuth.hide();
+                workedError.hide();
+                providedError.hide();
+                invalidRating.hide();
+
+                noRevs.show();
+                return;
+            }
         }
         
         // for later: check for ajax req success
@@ -82,7 +106,19 @@ jQuery(document).ready(function($) {
             // get reviewer id
             let requestConfig2 = {
                 method: 'GET',
-                url: '/users/username/' + reviewerName
+                url: '/users/username/' + reviewerName,
+                error: function(){
+                    blankError.hide();
+                    addError.hide();
+                    ownError.hide();
+                    noAuth.hide();
+                    workedError.hide();
+                    providedError.hide();
+                    invalidRating.hide();
+
+                    noRevs.show();
+                    return;
+                }
             }
 
             $.ajax(requestConfig2).then(function(res) {
@@ -91,6 +127,8 @@ jQuery(document).ready(function($) {
                 // check here whether reviewer and reviewee have same id
                 // if so do not continue
                 if (revieweeId === reviewerId){
+                    noRevs.hide();
+                    addError.hide();
                     // show error message
                     ownError.show();
                     return;
@@ -106,6 +144,7 @@ jQuery(document).ready(function($) {
                         // error must have provided job
                         workedError.hide();
                         addError.hide();
+                        noRevs.hide();
 
                         providedError.show();
                         return;
@@ -115,6 +154,7 @@ jQuery(document).ready(function($) {
                         // error must have worked job
                         providedError.hide();
                         addError.hide();
+                        noRevs.hide();
 
                         workedError.show();
                         return;
@@ -136,7 +176,19 @@ jQuery(document).ready(function($) {
                         reviewDescription: reviewTxt,
                         rating: ratingNum,
                         job: jobSelection
-					})
+					}),
+                    error: function(){
+                        blankError.hide();
+                        ownError.hide();
+                        noAuth.hide();
+                        workedError.hide();
+                        providedError.hide();
+                        invalidRating.hide();
+                        noRevs.hide();
+
+                        addError.show();
+                        return;
+                    }
 				};
 
 
@@ -146,6 +198,8 @@ jQuery(document).ready(function($) {
                    
                     if (res.reviewCreated){
                         addError.hide();
+                        noRevs.hide();
+
                         location.reload();
                         // was try to add element dynamically as stopgap but 
                         // i think thats unnecessary, leaving this for now tho
