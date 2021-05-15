@@ -9,8 +9,8 @@ async function seedAll(){
 
     console.log("Seeding database...");
     await us.seedUsers();
-    await rs.seedReviews();
-    await js.seedJobs();
+    let jobs = await js.seedJobs();
+    await rs.seedReviews(jobs);
 
     console.log("Done seeding database");
     await db.serverConfig.close();

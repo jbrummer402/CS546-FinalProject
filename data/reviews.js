@@ -3,11 +3,11 @@ const reviewsDb = mongoCollections.reviews;
 const { ObjectId } = require('mongodb');
 
 
-async function createReview(reviewer, reviewee, rating, reviewDescription){
+async function createReview(reviewer, reviewee, rating, reviewDescription, job){
     // reviewer and reviewee must be ObjectId or valid string that can convert to ObjectId
     // rating must be number or string of an integer between 1 and 5
     // review description must be non empty/whitespace string
-    if(!reviewer || !reviewee || !rating || !reviewDescription ) throw 'Missing arguments to create review';
+    if(!reviewer || !reviewee || !rating || !reviewDescription || !job) throw 'Missing arguments to create review';
     if( !Number.isInteger(rating) || rating < 1 || rating > 5 ) throw 'Rating must be integer between 1 and 5';
     if(typeof reviewDescription != 'string' || reviewDescription.trim() == '') throw 'Review text must be a non empty string';
 
@@ -19,6 +19,7 @@ async function createReview(reviewer, reviewee, rating, reviewDescription){
     rating = parseInt(rating);
     let reviewerId;
     let revieweeId;
+    let jobId;
     try{
         reviewerId = ObjectId(reviewer);
     }
@@ -31,6 +32,12 @@ async function createReview(reviewer, reviewee, rating, reviewDescription){
     catch(e){
         throw 'RevieweeID is not a valid ObjectID';
     }
+    try{
+        jobId = ObjectId(job);
+    }
+    catch(e){
+        throw 'JobID is not a valid ObjectID';
+    }
 
     if(reviewerId.toString() == revieweeId.toString()) throw 'User can not give review to themself';
 
@@ -40,7 +47,8 @@ async function createReview(reviewer, reviewee, rating, reviewDescription){
         "revieweeId": revieweeId,
         "rating": rating,
         "reviewDescription": reviewDescription,
-        "dateOfReview": date
+        "dateOfReview": date,
+        "jobId": jobId
     };
 
     const db = await reviewsDb();

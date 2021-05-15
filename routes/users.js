@@ -205,8 +205,10 @@ router.get("/:id", async (req, res) => {
     try {
       for (let i = 0; i < reviewsOf.length; i++) {
         let reviewer = await usersData.readByID(reviewsOf[i].reviewerId);
+        let jobReviewed = await jobsData.readByID(reviewsOf[i].jobId.toString());
         reviewsOf[i].reviewerName = `${reviewer.firstName} ${reviewer.lastName}`;
         reviewsOf[i].dateOfReview = reviewsOf[i].dateOfReview.toDateString();
+        reviewsOf[i].jobTitle = jobReviewed.title;
         rateAvg += reviewsOf[i].rating;
       }
     } catch {

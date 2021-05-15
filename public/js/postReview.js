@@ -7,6 +7,8 @@ jQuery(document).ready(function($) {
     let addError = $('#add-error');
     let ownError = $('#own-error');
     let noAuth = $('#no-auth');
+    let workedError = $('#notworked');
+    let providedError = $('#notprovided');
 
     // on submit event
     reviewForm.submit(function(event) {
@@ -19,12 +21,16 @@ jQuery(document).ready(function($) {
 
         let ratingVal = $('input[name="rateBtn"]:checked', reviewForm).val();
         let reviewTxt = $('#review-text').val();
+        let jobSelection = $('#job-select').val();
 
-        if (!ratingVal || !reviewTxt || reviewTxt.trim().length === 0){
+        if (!ratingVal || !jobSelection || !reviewTxt || reviewTxt.trim().length === 0 || jobSelection.trim() == ""){
             invalidRating.hide();
             addError.hide();
             ownError.hide();
             noAuth.hide();
+            workedError.hide();
+            providedError.hide();
+
             blankError.show();
             return;
         }
@@ -39,6 +45,9 @@ jQuery(document).ready(function($) {
             addError.hide();
             ownError.hide();
             noAuth.hide();
+            workedError.hide();
+            providedError.hide();
+
             invalidRating.show();
             return;
         }
@@ -86,8 +95,33 @@ jQuery(document).ready(function($) {
                     ownError.show();
                     return;
                 }
+
                 ownError.hide();
                 noAuth.hide();
+
+                let revieweeJobType = $(jobSelection).attr("jobtype");
+
+                if (revieweeJobType === 'Employee'){
+                    if (!res.jobsProvided.includes(jobSelection)){
+                        // error must have provided job
+                        workedError.hide();
+                        addError.hide();
+
+                        providedError.show();
+                    }
+                } else if (revieweeJobType === 'Employer'){
+                    if (!res.jobsWorked.includes(jobSelection)){
+                        // error must have worked job
+                        providedError.hide();
+                        addError.show();
+
+                        workedError.show();
+                    }
+                }
+
+                workedError.hide();
+                providedError.hide();
+
                 //now post to reviews/new with relevant info
                 let requestConfig3 = {
 					method: 'POST',
@@ -98,7 +132,8 @@ jQuery(document).ready(function($) {
 						reviewee: revieweeId,
 						reviewer: reviewerId,
                         reviewDescription: reviewTxt,
-                        rating: ratingNum
+                        rating: ratingNum,
+                        job: jobSelection
 					})
 				};
 

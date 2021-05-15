@@ -542,6 +542,7 @@ async function seedJobs() {
 
     // SLIGHTLY DIFFERENT SEEDING FORMAT. ALSO UPDATES USERS' JOB ARRAYS.
     let jobsCreated = [];
+    let completeJobs = [];
 
     try {
         let user = await users.readByUsername("agentcoop");
@@ -589,8 +590,8 @@ async function seedJobs() {
         let job = await jobs.createJob(
             (compensation = 500),
             (perHour = false),
-            (title = "Need kitchen sink fixed ASAP"),
-            (description = "Didn't know you weren't supposed to put glass bottles in the garbage disposal."),
+            (title = "Destroy the Burger King"),
+            (description = "I want him gone. I mean it."),
             (datePosted = new Date('5/1/2021')),
             (address = employer.address),
             (creator_id = ObjectID(employer._id)),
@@ -659,6 +660,7 @@ async function seedJobs() {
         let employerID = employer._id;
         let employeeID = (await users.readByUsername("agentcoop"))._id;
         jobsCreated.push([employerID, employeeID, job]);
+        completeJobs.push([employerID, employeeID, job]);
     } catch (e) {
         console.error(e);
     }
@@ -679,6 +681,7 @@ async function seedJobs() {
         let employerID = employer._id;
         let employeeID = (await users.readByUsername("toneee"))._id;
         jobsCreated.push([employerID, employeeID, job]);
+        completeJobs.push([employerID,employeeID,job]);
     } catch (e) {
         console.error(e);
     }
@@ -699,6 +702,7 @@ async function seedJobs() {
         let employerID = employer._id;
         let employeeID = (await users.readByUsername("xx_madman_xx"))._id;
         jobsCreated.push([employerID, employeeID, job]);
+        completeJobs.push([employerID, employeeID, job]);
     } catch (e) {
         console.error(e);
     }
@@ -752,6 +756,8 @@ async function seedJobs() {
         }
 
     }
+    
+    return completeJobs;
     
 }
 
