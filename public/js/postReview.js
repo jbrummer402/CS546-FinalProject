@@ -100,8 +100,6 @@ jQuery(document).ready(function($) {
                 noAuth.hide();
 
                 let revieweeJobType = $('#job-select option:selected').attr('name');
-                
-                console.log(revieweeJobType);
 
                 if (revieweeJobType === 'Employee'){
                     if (!res.jobsProvided.includes(jobSelection)){
