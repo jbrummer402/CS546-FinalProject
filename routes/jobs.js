@@ -207,7 +207,6 @@ router.patch('/:id', async (req, res) => {
     }
     
     let update = await jobsData.updateJob(xss(req.params.id), currentJob);
-    console.log(update);
 
     res.json(update);
   } catch (e) {
