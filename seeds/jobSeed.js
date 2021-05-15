@@ -600,6 +600,11 @@ async function seedJobs() {
         let employerID = employer._id;
         let employeeID = (await users.readByUsername("agentcoop"))._id;
         jobsCreated.push([employerID, employeeID, job]);
+
+        // update job's employee
+        job.employeeId = new ObjectId(employeeID);
+        await jobs.updateJob(job._id.toString(), job);
+
     } catch (e) {
         console.error(e);
     }
@@ -620,6 +625,10 @@ async function seedJobs() {
         let employerID = employer._id;
         let employeeID = (await users.readByUsername("agentcoop"))._id;
         jobsCreated.push([employerID, employeeID, job]);
+
+        // update job's employee
+        job.employeeId = new ObjectId(employeeID);
+        await jobs.updateJob(job._id.toString(), job);
     } catch (e) {
         console.error(e);
     }
@@ -640,6 +649,10 @@ async function seedJobs() {
         let employerID = employer._id;
         let employeeID = (await users.readByUsername("madman"))._id;
         jobsCreated.push([employerID, employeeID, job]);
+
+        // update job's employee
+        job.employeeId = new ObjectId(employeeID);
+        await jobs.updateJob(job._id.toString(), job);
     } catch (e) {
         console.error(e);
     }
@@ -661,6 +674,10 @@ async function seedJobs() {
         let employeeID = (await users.readByUsername("agentcoop"))._id;
         jobsCreated.push([employerID, employeeID, job]);
         completeJobs.push([employerID, employeeID, job]);
+
+        // update job's employee
+        job.employeeId = new ObjectId(employeeID);
+        await jobs.updateJob(job._id.toString(), job);
     } catch (e) {
         console.error(e);
     }
@@ -682,6 +699,10 @@ async function seedJobs() {
         let employeeID = (await users.readByUsername("toneee"))._id;
         jobsCreated.push([employerID, employeeID, job]);
         completeJobs.push([employerID,employeeID,job]);
+
+        // update job's employee
+        job.employeeId = new ObjectId(employeeID);
+        await jobs.updateJob(job._id.toString(), job);
     } catch (e) {
         console.error(e);
     }
@@ -703,6 +724,10 @@ async function seedJobs() {
         let employeeID = (await users.readByUsername("xx_madman_xx"))._id;
         jobsCreated.push([employerID, employeeID, job]);
         completeJobs.push([employerID, employeeID, job]);
+
+        // update job's employee
+        job.employeeId = new ObjectId(employeeID);
+        await jobs.updateJob(job._id.toString(), job);
     } catch (e) {
         console.error(e);
     }
@@ -717,6 +742,7 @@ async function seedJobs() {
 
         let updateObjEmployer = {id: employerID};
         let updateObjEmployee = {id: employeeID};
+        let updateJob = job;
 
         if (job.status === 'active') {
             let jobsActive = employer.jobsActive;
@@ -729,6 +755,8 @@ async function seedJobs() {
             jobsInProgressAsEmployer.push(jobID);
             jobsInProgressAsEmployee.push(jobID);
 
+            updateJob.employeeId = employee._id;
+
             updateObjEmployer.jobsInProgressAsEmployer = jobsInProgressAsEmployer;
             updateObjEmployee.jobsInProgressAsEmployee = jobsInProgressAsEmployee;
         } else if (job.status === 'completed') {
@@ -737,6 +765,8 @@ async function seedJobs() {
 
             jobsProvided.push(jobID);
             jobsWorked.push(jobID);
+
+            updateJob.employeeId = employee._id;
 
             updateObjEmployer.jobsProvided = jobsProvided;
             updateObjEmployee.jobsWorked = jobsWorked;
@@ -748,6 +778,11 @@ async function seedJobs() {
             console.error(e)
         }
         if (job.status === 'in-progress' || job.status === 'completed'){
+            try {
+                await jobs.updateJob(updateJob._id, updateJob);
+            } catch(e){
+                console.error(e);
+            }
             try {
                 await users.update(updateObjEmployee);
             } catch (e) {

@@ -12,7 +12,7 @@ async function seedReviews(completeJobs) {
             reviewer = completeJobs[0][1],
             reviewee = completeJobs[0][0],
             rating = 1,
-            reviewDescription = "My room may be brighter, but this guy still hasn't shed any light on the Laura Palmer murder case... guy evah again!",
+            reviewDescription = "My room may be brighter, but this guy still hasn't shed any light on the Laura Palmer murder case...",
             job = completeJobs[0][2]._id
         );
     } catch (e) {

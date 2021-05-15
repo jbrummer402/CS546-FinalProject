@@ -1,12 +1,14 @@
 <form action="/login" method="POST" id="signinForm">
   <h1>Sign-In</h1>
-  <div id="error" hidden>Not a valid username password combination</div>
+  <div id='loginError'>
+    <ul id='loginErrorList'></ul>
+  </div>
   <label for="username">
     Enter Username:
     <input id="username" name="username" type="text" placeholder="username" />
   </label>
   <label for="password">
-    Enter Password
+    Enter Password:
     <input
       id="password"
       name="password"
@@ -18,9 +20,15 @@
 </form>
 <br />
 <button type="button" id="createAcc">Create an Account</button>
-<form action="/users" method="POST" id="signupForm" hidden>
+<form action="/users" enctype="multipart/form-data" method="POST" id="signupForm" hidden>
   <h1>Sign-Up</h1>
+  <label for="profilePic">
+    Upload a profile picture(optional)
+    <br />
+  </label>
+  <input id="profilePic" name="profile_picture" type="file" />
   <label for="username2">
+    <br />
     Enter Username:
     <br />
     <input id="username2" name="username" type="text" />
@@ -56,7 +64,6 @@
     <input id="email" name="email" type="email" />
   </label>
   <br />
-  {{! add photo link }}
   <h3>Address</h3>
   <label for="street">
     Street
@@ -95,6 +102,9 @@
   </label>
   <br />
   <button type="submit">Sign-Up</button>
+  <div id='signUpError'>
+    <ul id='signUpErrorList'></ul>
+  </div>
 </form>
 <br />
 <br />

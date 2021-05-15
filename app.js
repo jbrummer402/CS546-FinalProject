@@ -20,39 +20,40 @@ app.use(
 
 // helper for handlebars
 let hbs = exphbs.create({});
-hbs.handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
-  return (arg1 === arg2) ? options.fn(this) : options.inverse(this);
+hbs.handlebars.registerHelper("ifEquals", function (arg1, arg2, options) {
+  return arg1 === arg2 ? options.fn(this) : options.inverse(this);
 });
 
 // do not let already logged in user go to sign in page
-app.use('/users/signin', (req, res, next) => {
-  if (req.session.AuthCookie){
-    return res.redirect('/users/profile');
+app.use("/users/signin", (req, res, next) => {
+  if (req.session.AuthCookie) {
+    return res.redirect("/users/profile");
   } else {
     next();
   }
-})
+});
 
 // do not let not logged in user sign out
-app.use('/users/signout', (req, res, next) => {
-  if (!req.session.AuthCookie){
-    return res.redirect('/');
+app.use("/users/signout", (req, res, next) => {
+  if (!req.session.AuthCookie) {
+    return res.redirect("/");
   } else {
     next();
   }
-})
+});
 
 // do not let not logged in user access profile page
-app.use('/profile/', (req, res, next) => {
-  if (!req.session.AuthCookie){
-    return res.redirect('/');
+app.use("/profile/", (req, res, next) => {
+  if (!req.session.AuthCookie) {
+    return res.redirect("/");
   } else {
     next();
   }
-})
+});
 
 app.use(async (req, res, next) => {
   console.log(req.method);
+  console.log(req.url);
   if (req.session.AuthCookie) {
     console.log(req.session.AuthCookie.username);
   } else {
@@ -61,27 +62,27 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use('/reviews', async (req, res, next) => {
+app.use("/reviews", async (req, res, next) => {
   // Users can only delete reviews they created
   // Any user can see review
   // User can only update(patch) review they created
   const method = req.method;
-  if(method == 'DELETE' || method == 'POST' || method == 'PATCH'){
-    if(!req.session.AuthCookie){
-      res.status(401).json({'message':'Unauthorized request'});
+  if (method == "DELETE" || method == "POST" || method == "PATCH") {
+    if (!req.session.AuthCookie) {
+      res.status(401).json({ message: "Unauthorized request" });
       return;
-    } 
+    }
   }
   next();
 });
 
-app.use('/users', async (req, res, next) => {
+app.use("/users", async (req, res, next) => {
   // Users can see(GET) any profile
   // Users can only delete their own account
   const method = req.method;
   let auth = req.session.AuthCookie;
-  if(method == 'DELETE'){
-    if(!auth) res.status(401).json({'message':'Unauthorized request'});
+  if (method == "DELETE") {
+    if (!auth) res.status(401).json({ message: "Unauthorized request" });
   }
   next();
 });
@@ -92,24 +93,24 @@ app.use('/users', async (req, res, next) => {
 //   const userSeed = require("./seeds/userSeed");
 //   await userSeed.seedUsers();
 
-  // DELETE REVIEWS
-  // keep this here so reviews don't get added multiple times
-  // try {
-  //   await reviewSeed.deleteReviews();
-  // } catch (e) {
-  //   console.error("No reviews to delete");
-  // }
+// DELETE REVIEWS
+// keep this here so reviews don't get added multiple times
+// try {
+//   await reviewSeed.deleteReviews();
+// } catch (e) {
+//   console.error("No reviews to delete");
+// }
 
-  // REVIEW SEED
-  // const reviewSeed = require("./seeds/reviewSeed");
-  // await reviewSeed.seedReviews();
+// REVIEW SEED
+// const reviewSeed = require("./seeds/reviewSeed");
+// await reviewSeed.seedReviews();
 
-  // DELETE USERS
-  // try {
-  //   await userSeed.deleteUsers();
-  // } catch (e) {
-  //   console.error("Nothing to delete");
-  // }
+// DELETE USERS
+// try {
+//   await userSeed.deleteUsers();
+// } catch (e) {
+//   console.error("Nothing to delete");
+// }
 // }
 
 async function main() {
@@ -127,6 +128,5 @@ async function main() {
 
 main();
 
-
-// handlebars equal helpher from 
+// handlebars equal helpher from
 // https://stackoverflow.com/questions/34252817/handlebarsjs-check-if-a-string-is-equal-to-a-value

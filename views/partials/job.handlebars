@@ -11,7 +11,7 @@
         {{/else }}
         <p>Location: {{data.job.address.town}}, {{jobInfo.job.address.state}}</p>
         {{#ifEquals "active" data.job.status }}
-            <button id="claim-button" type="button" formaction="/jobs/{{data.job._id}}">Claim Job</button>
+            <button id="claim-button" type="button" name="/jobs/{{data.job._id}}">Claim Job</button>
         {{/ifEquals }}
         {{#ifEquals "in-progress" data.job.status }}
             <p id="job-claimed">Job has been claimed</p>
@@ -19,6 +19,9 @@
         {{#ifEquals "completed" data.job.status }}
             <p id="job-completed">Job has been completed</p>
         {{/ifEquals }}
+            <p id="job-claimed-alt" hidden>Job has been claimed</p>
+            <p id="logErr" class="error" hidden>You must be logged in to claim a job</p>
+            <p id="posterErr" class="error" hidden>You may not claim a job that you have posted</p>
     </div>
     <div id=poster-info>
         <h2>Posted By</h2>

@@ -4,8 +4,20 @@
 <!--</div>-->
 <div class="centered main">
   <h1>Account</h1>
-  <div id="error"></div>
-  <form id="updateAccountForm" action="/users/{{id}}" method="POST">
+  <div id='currentUser' title='{{id}}'></div>
+  <div id='profile_pic'>
+    <img src='{{photo}}' alt='Profile picture not found' width="200" height="200">
+    <form id='picUpdateForm' enctype="multipart/form-data">
+      <label for='profilePic'>Upload a new profile picture</label>
+      <br>
+      <input id="profilePic" name="profile_picture" type="file" />
+      <button id='profilePicUpdateSubmitBtn' class='profilePicUpdateSubmit' type='submit'>Submit</button>
+    </form>
+  </div>
+  <div id='photoUpdateError'></div>
+  <div id='photoUpdateSuccess'></div>
+
+  <form id="updateAccountForm" action="/users/{{id}}">
     <label for="firstName">
       First Name
       <br />
@@ -46,7 +58,7 @@
       <input type="text" value="{{email}}" id="email" name="email" />
     </label>
     <br />
-    <h3>Address</h3>
+    <h2>Address</h2>
     <label for="street">
       Street
       <br />
@@ -95,8 +107,14 @@
     </label>
     <br />
     <br />
-    <button type="submit">Update Account</button>
   </form>
+  <div id="updateFormError">
+    <ul id='errorList'></ul>
+  </div>
+  <div id='updateSuccess'></div>
+  <button type="submit" class='updateAccountBtn'>Update Account</button>
+      <br />
+      <button type="button" id="deleteBtn">Delete Account</button>
   <a href="/users/signout">Sign Out</a>
 </div>
 <script
@@ -109,4 +127,4 @@
   integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
   crossorigin="anonymous"
 ></script>
-<script src="/public/js/account.js"></script>
+<script src="/public/js/profile/account.js"></script>
