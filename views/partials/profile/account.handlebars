@@ -4,8 +4,8 @@
 <!--</div>-->
 <div class="centered main">
   <h1>Account</h1>
-  <div id="error"></div>
-  <form id="updateAccountForm" action="/users/{{id}}" method="POST">
+  <div id='currentUser' user='{{id}}'></div>
+  <form id="updateAccountForm" action="/users/{{id}}">
     <label for="firstName">
       First Name
       <br />
@@ -95,10 +95,13 @@
     </label>
     <br />
     <br />
-    <button type="submit">Update Account</button>
+  </form>
+  <div id="updateFormError">
+    <ul id='errorList'></ul>
+  </div>
+  <button type="submit" class='updateAccountBtn'>Update Account</button>
       <br />
       <button type="button" id="deleteBtn">Delete Account</button>
-  </form>
   <a href="/users/signout">Sign Out</a>
 </div>
 <script

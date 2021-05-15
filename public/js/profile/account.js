@@ -11,15 +11,29 @@ jQuery(document).ready(function ($) {
     let state = $("#state");
     let town = $("#town");
     let country = $("#country");
-    let error = document.getElementById("error");
+    let errorDiv = $('#updateFormError');
+    errorDiv.hide();
+    let errorDivList = $('#errorList');
     let deleteButton = document.getElementById('deleteBtn');
+    let userid = $('#currentUser').attr('user');
 
-    updateAccountForm.submit(function (event) {
-        event.preventDefault();
-        // guys remember to error check the input data
+    $(document).on('click', '.updateAccountBtn', async (e) => {
+        //error checking
+        errorDiv.hide();
+        errorDivList.empty();
+        let errList = [];
+        if(firstName.val().trim()==='') errList.push('First Name can not be blank');
+        if(lastName.val().trim()==='') errList.push('Last Name can not be blank');
+        if(!( /\d{1,2}\/\d{1,2}\/\d{4}$/).test(dateOfBirth.val().trim())) errList.push('Please enter date of birth in format ("MM/DD/YYYY)');
+        if(!( /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.val().trim()))) errList.push('Invalid Email format');
+        if(street.val().trim()==='') errList.push('Street can not be blank');
+        if(!(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zipCode.val().trim())))  errList.push('Zipcode not in valid format');
+        if(state.val().trim()==='') errList.push('State can not be blank');
+        if(town.val().trim()==='') errList.push('Town can not be blank');
+
         let requestConfig = {
-            method: "POST",
-            url: updateAccountForm.attr("action"),
+            method: "PATCH",
+            url: `/users/${userid}`,
             contentType: "application/json",
             data: JSON.stringify({
                 firstName: firstName.val(),
@@ -37,20 +51,25 @@ jQuery(document).ready(function ($) {
                 },
             }),
         };
-        $.ajax(requestConfig).then(function (responseMessage) {
-            if (responseMessage.error) {
-                error.innerHTML = responseMessage.error;
-                error.hidden = false;
-            } else {
-                window.location.href = "/profile/account";
+        if(errList.length > 0){
+            for(let err of errList){
+                errorDivList.append(`<li class='updateError'>${err}</li>`);
             }
-        });
+            errorDiv.show();
+        }
+        else{
+            let result = await $.ajax(requestConfig);
+        }
+        
+
+        return;
     });
 
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function(e) {
+        e.preventDefault();
         let requestConfig = {
             method: "DELETE",
-            url: `/../users/`,
+            url: `/users`,
             contentType: "application/json",
         };
         $.ajax(requestConfig).then(function (responseMessage) {
