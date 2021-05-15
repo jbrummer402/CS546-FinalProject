@@ -1,5 +1,5 @@
 <main>
-  <p id="blank-search" class="error" hidden>Please make sure all search fields are filled out</p>
+  <p id="blank-search" class="error" hidden>Please make sure all search fields are filled out correctly</p>
   <form id="search-form">
     <label for="search-bar">Search</label> 
     <input id="search-bar" type="text" placeholder="Enter search here" />
@@ -9,7 +9,8 @@
   </form>
   <br>
   <button type="button" id="all-jobs">See All Jobs</button> <button type="button" id="all-users">See All Users</button>
-  <p id="no-result">No Results</p>
+  <p id="no-result" hidden>No Results</p>
+  <p id="went-wrong" hidden>Something Went Wrong</p>
   <h2 id="jobs-header" hidden>Jobs</h2>
   <h2 id="users-header" hidden>Users</h2>
   <ul id="landing-job-list" hidden></ul>
