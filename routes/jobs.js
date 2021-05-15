@@ -15,18 +15,12 @@ router.post("/", async (req, res) => {
     description,
     datePosted,
     address,
-    creatorId,
   } = req.body;
+  const creatorId = req.session.AuthCookie.id;
+  const user = await userData.readByID(creatorId);
 
   // // handle inputs
-  const { errorCode, message } = await checkInputs();
-  if (errorCode !== 0) {
-    res.status(errorCode).json({ error: message });
-    return;
-  }
-
-  try {
-    const newJob = await jobsData.create(
+  const { errorCode, message } = await checkInputs(
       compensation,
       perHour,
       title,
@@ -34,12 +28,71 @@ router.post("/", async (req, res) => {
       datePosted,
       address,
       creatorId
+  );
+  if (errorCode !== 0) {
+    res.json({ error: message });
+    return;
+  }
+
+  try {
+    const newJob = await jobsData.createJob(
+      compensation,
+      perHour,
+      title,
+      description,
+      datePosted,
+      address,
+      creatorId,
+        'active'
     );
+    user.jobsActive.push(newJob._id.toString())
+    try {
+      userData.update({id: creatorId, jobsActive: user.jobsActive});
+    } catch (e) {
+      console.error(e);
+    }
     res.json(newJob);
   } catch (e) {
+    console.error(e);
     res.sendStatus(500);
   }
 });
+
+router.put("/:id", async (req, res) => {
+  const jobID = req.params.id;
+  let job = await jobsData.readByID(jobID);
+  const userID = req.session.AuthCookie.id;
+  const user = await userData.readByID(userID);
+
+  job.status = 'completed';
+
+  console.log(job)
+
+  // update job
+  try {
+    await jobsData.updateJob(jobID, job);
+
+    // move job to correct array
+    user.jobsInProgressAsEmployer = user.jobsInProgressAsEmployer.filter(function(item) {
+      return item !== jobID;
+    })
+    user.jobsProvided.push(jobID);
+    try {
+      userData.update({
+        id: userID,
+        jobsInProgressAsEmployer: user.jobsInProgressAsEmployer,
+        jobsProvided: user.jobsProvided});
+    } catch (e) {
+      console.error(e);
+    }
+
+    res.json({ userId: req.params.id, updated: true });
+  } catch (e) {
+    console.error(e)
+    res.sendStatus(500);
+  }
+
+})
 
 //get every job
 router.get("/", async (req, res) => {
@@ -138,14 +191,44 @@ router.patch('/:id', (req, res) => {
   } catch (e) {
     res.status(400).json({error : e});
   }
+router.delete("/:id", async (req, res) => {
+  let jobID = req.params.id;
+  const userID = req.session.AuthCookie.id;
+  const user = await userData.readByID(userID);
+
+  // TODO: check if jobID is valid
+
+  // TODO: check if jobID exists
+
+  // TODO: make sure only a signed in user can delete
+
+  // remove job
+  try {
+    await jobsData.removeJob(jobID);
+
+    // remove job from user's job array
+    user.jobsActive = user.jobsActive.filter(function(item) {
+      return item !== jobID;
+    })
+    try {
+      userData.update({id: userID, jobsActive: user.jobsActive});
+    } catch (e) {
+      console.error(e);
+    }
+
+    res.json({ userId: req.params.id, deleted: true });
+  } catch (e) {
+    console.error(e)
+    res.sendStatus(500);
+  }
 });
 
 async function checkCompensation(compensation) {
   let error = false;
   let message = "";
-  if (isNaN(parseFloat(compensation))) {
+  if (isNaN(compensation) || !Number(compensation) > 0) {
     error = true;
-    message = "Compensation must be of type float"
+    message = "Compensation must be a positive number"
   }
 
   return {error : error, message : message }
@@ -187,11 +270,11 @@ async function checkDescription(description) {
   return { error : error, message : message }
 }
 
-async function checkDatePosted(datePosted) {
+async function checkDatePosted(datePostedObj) {
   let error = false;
   let message = "";
 
-  if (!(datePosted instanceof Date) || isNaN(datePosted.valueOf())) {
+  if (!(datePostedObj instanceof Date) || isNaN(datePostedObj.valueOf())) {
     error = true;
     message = "Date posted must be of type date"
   }
@@ -254,13 +337,16 @@ async function checkCreatorId(creatorId) {
 }
 
 async function checkInputs(compensation, perHour, title, description, datePosted, address, creatorId) {
+  let errorCode = 0;
+  let message = "";
+
   let error = false;
   let errorObj = {
     compensation : compensation,
     perHour      :      perHour,
     title        :        title,
     description  :  description,
-    datePosted   :   datePosted,
+    datePosted   :   new Date(datePosted),
     address      :      address, 
     creatorId    :    creatorId
   }
@@ -274,11 +360,14 @@ async function checkInputs(compensation, perHour, title, description, datePosted
     value = (await errorFunctions[index](value));
     
     if (value && value.error) {
-      throw value.message;
+      return { errorCode: 400, message: value.message }
+      // throw value.message;
     }
 
     index++;
   }
+
+  return { errorCode: 0, message: "" };
 
 }
 
