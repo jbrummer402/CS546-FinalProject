@@ -9,6 +9,10 @@ const bcrypt = require("bcrypt");
 const xss = require("xss");
 const path = require('path');
 const multer = require("multer");
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
+
 //const upload = multer({ dest: 'public/profile_pics/user_uploads' })
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -392,9 +396,28 @@ router.delete("/", async (req, res) => {
 });
 
 router.patch("/pic/:id", upload.single('profile_picture'), async (req, res) =>{
-  if(xss(req.params.id) != req.session.AuthCookie.id) res.status(401).json({"error" : "Can only modify picture if you are logged into that account"});
+  let id = xss(req.params.id);
+  if(id != req.session.AuthCookie.id) res.status(401).json({"error" : "Can only modify picture if you are logged into that account"});
   if(!req.file) res.status(400).json({"error" : "No file found"});
-  const user = await usersData.update({id:req.params.id, photoLink: `/public/profile_pics/user_uploads/${req.file.filename}`});
+  let user;
+  try{
+    user = await usersData.readByID(id);
+  } 
+  catch (e){
+    res.status(404).json({error:'User not found'});
+  }
+  let oldPhotoPath = user.photoLink;
+  const update = await usersData.update({id:id, photoLink: `/public/profile_pics/user_uploads/${req.file.filename}`});
+
+  if(oldPhotoPath != '/public/profile_pics/default.jpg'){
+    try{
+      await unlinkAsync(`./${oldPhotoPath}`); // new picture uploaded, safe to delete old
+    }
+    catch(e){
+      console.error(`Error deleting ${oldPhotoPath} : ${e}`);
+    }
+  }
+
   res.status(200).json({message:`Profile picture updated for user ${user.username}`});
 });
 
