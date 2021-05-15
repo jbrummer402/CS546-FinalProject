@@ -26,9 +26,15 @@
             <br/>
             <br/>
             }}
-        <label for="job-select">Job Worked:</label>
+        <label for="job-select">Job:</label>
         <select id="job-select">
+                    <option value="" selected>Choose Job to Review</option>
             {{!--in here going to loop through the complete! jobs posted by this user--}}
+            {{#if data.isJobs}}
+                {{#each data.jobs}}
+                    <option value="{{this._id}}" jobtype="{{this.typeas}}">{{this.title}} ({{this.typeas}})</option>
+                {{/each}}
+            {{/if}}
         </select>
       <div id="review-rating">
         <label for="rate1">1</label>
