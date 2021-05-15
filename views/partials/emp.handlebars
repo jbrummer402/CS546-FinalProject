@@ -35,7 +35,7 @@
                     {{!--in here going to loop through the complete! jobs posted by this user--}}
                     {{#if data.isJobs}}
                         {{#each data.jobs}}
-                            <option value="{{this._id}}" jobtype="{{this.typeas}}">{{this.title}} ({{this.typeas}})</option>
+                            <option value="{{this._id}}" name="{{this.typeas}}">{{this.title}} ({{this.typeas}})</option>
                         {{/each}}
                     {{/if}}
                 </select>

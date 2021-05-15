@@ -99,7 +99,9 @@ jQuery(document).ready(function($) {
                 ownError.hide();
                 noAuth.hide();
 
-                let revieweeJobType = $(jobSelection).attr("jobtype");
+                let revieweeJobType = $('#job-select option:selected').attr('name');
+                
+                console.log(revieweeJobType);
 
                 if (revieweeJobType === 'Employee'){
                     if (!res.jobsProvided.includes(jobSelection)){
@@ -108,14 +110,16 @@ jQuery(document).ready(function($) {
                         addError.hide();
 
                         providedError.show();
+                        return;
                     }
                 } else if (revieweeJobType === 'Employer'){
                     if (!res.jobsWorked.includes(jobSelection)){
                         // error must have worked job
                         providedError.hide();
-                        addError.show();
+                        addError.hide();
 
                         workedError.show();
+                        return;
                     }
                 }
 
