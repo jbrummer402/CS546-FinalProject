@@ -213,9 +213,13 @@ router.get("/:id", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   
   try {
+    
     const currentJob = await jobsData.readByID(xss(req.params.id));
     req.body = JSON.parse(JSON.stringify(req.body));
+    
+    currentJob.perHour = req.body.perHour;
     for (let key in req.body) {
+
       if (req.body[key]) {
         currentJob[key] = req.body[key];
       }

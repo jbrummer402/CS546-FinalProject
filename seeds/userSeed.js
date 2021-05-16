@@ -166,7 +166,7 @@ async function seedUsers() {
                 state: "MA",
                 town: "Boston",
             }),
-            (photoLink = "/public/profile_pics/narutou.jpeg"),
+            (photoLink = "/public/profile_pics/narutou.png"),
             (email = "narutou@mangaking.com")
         );
     } catch (e) {
@@ -376,7 +376,7 @@ async function seedUsers() {
                 state: "PA",
                 town: "Allentown",
             }),
-            (photoLink = "/public/profile_pics/lunaf.jpeg"),
+            (photoLink = "/public/profile_pics/lunaf.jpg"),
             (email = "lunaf@schnauzergang.com")
         );
     } catch (e) {
@@ -434,13 +434,13 @@ async function seedUsers() {
             (password = "password"),
             (address = {
                 street: "722 Willow Ave",
-                aptNo: "2",
+                aptNo: "3",
                 zipCode: "07030",
                 state: "NJ",
                 town: "Hoboken",
             }),
-            (photoLink = "/public/profile_pics/yaboyjesus.jpeg"),
-            (email = "yaboyjesus@hindumingle.com")
+            (photoLink = "/public/profile_pics/yaboyghandi.jpeg"),
+            (email = "yaboyghandi@hindumingle.com")
         );
     } catch (e) {
         console.error(e);
