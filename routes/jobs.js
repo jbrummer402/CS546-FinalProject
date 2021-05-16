@@ -169,12 +169,6 @@ router.get("/:id", async (req, res) => {
     return;
   }
   try {
-    /*const { errorCode, message } = await checkInputs();
-    if (errorCode !== 0) {
-      res.status(errorCode).json({ error: message });
-      return;
-    } */
-
     const jobById = await jobsData.readByID(xss(req.params.id));
     const posterInfo = await userData.readByID(jobById.creatorId.toString());
 
