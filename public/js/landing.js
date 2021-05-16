@@ -103,14 +103,14 @@ jQuery(document).ready(function($){
         });
         userHeader.hide();
         landingUserList.hide();
-        landingSearchList.show();
+        
         jobHeader.show();
         landingJobList.show();
     });
 
 
-    // when search is entered, make ajax call?
-    searchForm.submit(function(event){
+       // when search is entered, make ajax call
+        searchForm.submit(function(event){
         event.preventDefault();
         
 
@@ -190,7 +190,6 @@ jQuery(document).ready(function($){
 
                 jobHeader.show();
                 landingJobList.show();
-                landingSearchList.show();
             });
         }
 

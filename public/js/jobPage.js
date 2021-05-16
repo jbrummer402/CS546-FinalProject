@@ -3,8 +3,10 @@ jQuery(document).ready(function($){
     let claimed = $('#job-claimed-alt');
     let posterError = $('#posterErr');
     let loggedError = $('#logErr');
+    let claimError = $('#claim-error');
 
     claimed.hide();
+    claimError.hide();
 
 
     // returns array without given jobid
@@ -32,6 +34,8 @@ jQuery(document).ready(function($){
         if (workerUname.length === 0){
             // error saying you must be logged in to claim
             posterError.hide();
+            claimError.hide();
+
             loggedError.show();
             return;
         }
@@ -40,6 +44,8 @@ jQuery(document).ready(function($){
         if (workerUname.trim() === posterUname.trim()){
             // error saying you may not claim a job that you posted
             loggedError.hide();
+            claimError.hide();
+
             posterError.show();
             return;
         }
@@ -47,7 +53,14 @@ jQuery(document).ready(function($){
         // get poster
         let posterRequest = {
             method: 'GET',
-            url: '/users/username/' + posterUname.trim()
+            url: '/users/username/' + posterUname.trim(),
+            error: function(){
+                loggedError.hide();
+                posterError.hide();
+
+                claimError.show();
+                return;
+            }
         }
 
         $.ajax(posterRequest).then(function(res){
@@ -71,6 +84,12 @@ jQuery(document).ready(function($){
                 }),
                 error: function(){
                     // do something
+                    
+                    loggedError.hide();
+                    posterError.hide();
+
+                    claimError.show();
+                    return;
                 }
             }
 
@@ -79,7 +98,15 @@ jQuery(document).ready(function($){
                 // get worker 
                 let workerRequest = {
                     method: 'GET',
-                    url: '/users/username/' + workerUname.trim()
+                    url: '/users/username/' + workerUname.trim(),
+                    error: function(){
+                        
+                        loggedError.hide();
+                        posterError.hide();
+
+                        claimError.show();
+                        return;
+                    }
                 }
                 $.ajax(workerRequest).then(function(res){
                     let workerId = res._id;
@@ -97,6 +124,12 @@ jQuery(document).ready(function($){
                         }),
                         error: function(){
                             // do something
+                           
+                            loggedError.hide();
+                            posterError.hide();
+
+                            claimError.show();
+                            return;
                         }
                     }
                     
@@ -115,7 +148,11 @@ jQuery(document).ready(function($){
                             }),
                             error: function(a, b, c){
                                 // parser error syntax error unexpected end of json inpu
-                                console.log(a + " " + b + " " + c);
+                                loggedError.hide();
+                                posterError.hide();
+
+                                claimError.show();
+                                return;
                             }
                         }
 
