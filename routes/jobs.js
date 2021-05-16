@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const jobID = xss(req.params.id);
   try {
-    if (!Object.isValid(jobID)) {
+    if (!ObjectId.isValid(jobID)) {
       throw "Job id is not valid"
     }
     let job = await jobsData.readByID(jobID);
