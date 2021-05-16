@@ -3,7 +3,7 @@
     <h2>As Employee:</h2>
     {{#each jobsInProgressAsEmployee}}
         <div class="block">
-            <div style="width:40%; height:100px; float:left; padding: 10px">
+            <div class="jobsWorked">
                 <div>Job title:
                     <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
                 </div>
@@ -23,7 +23,7 @@
     <h2>As Employer:</h2>
     {{#each jobsInProgressAsEmployer}}
         <div class="block">
-            <div style="width:40%; height:100px; float:left; padding: 10px">
+            <div class="jobsWorked">
                 <div>Job title:
                     <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
                 </div>
@@ -38,7 +38,7 @@
                 </div>
                 <br>
             </div>
-            <div style="width:30%; height:100px; float:left; padding: 10px">
+            <div class="jobsWorked">
                 <button class="completeBtn" type="button">Mark as Completed</button>
                 <input type="hidden" class="jobID" name="jobID" value={{jobID}}>
             </div>
