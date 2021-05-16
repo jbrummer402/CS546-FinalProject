@@ -64,12 +64,14 @@ jQuery(document).ready(function ($) {
         };
         $.ajax(requestConfig).then(function (responseMessage) {
           console.log(responseMessage);
-          if (responseMessage.error) {
-            error.innerHTML = responseMessage.error;
+          window.location.href = "/profile/activejobs";
+        }).catch((responseMessage) => {
+          if (responseMessage.responseJSON.error) {
+            error.innerHTML = responseMessage.responseJSON.error;
           } else {
-            window.location.href = "/profile/activejobs";
-          }
-        });
+
+            }
+          });
       } else {
         $(`#${i}`).trigger("reset");
       }
