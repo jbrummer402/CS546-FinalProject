@@ -16,7 +16,7 @@ const unlinkAsync = promisify(fs.unlink);
 //const upload = multer({ dest: 'public/profile_pics/user_uploads' })
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = 'public/profile_pics/user_uploads'
+    const dir = 'public/profile_pics/user_uploads';
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, {
         recursive: true
@@ -34,9 +34,9 @@ const upload = multer({
   fileFilter: function (req, file, callback) {
       let ext = path.extname(file.originalname);
       if(ext !== '.tif' && ext !== '.tiff' && ext !== '.bmp' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.png' && ext !== '.gif') {
-          return callback(new Error('Only images are allowed'))
+          return callback(new Error('Only images are allowed'));
       }
-      callback(null, true)
+      callback(null, true);
   },
   limits:{
       fileSize: 1024 * 1024
