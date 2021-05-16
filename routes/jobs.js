@@ -131,7 +131,7 @@ router.put("/:id", async (req, res) => {
 //get every job
 router.get("/", async (req, res) => {
   try {
-    /* I dont know that error checking is necessary for inputs here since its a get */
+    
     let everyJob = await jobsData.getJobs();
 
     res.json(everyJob);
