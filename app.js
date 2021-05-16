@@ -27,7 +27,7 @@ hbs.handlebars.registerHelper("ifEquals", function (arg1, arg2, options) {
 // do not let already logged in user go to sign in page
 app.use("/users/signin", (req, res, next) => {
   if (req.session.AuthCookie) {
-    return res.redirect("/users/profile");
+    return res.redirect("/");
   } else {
     next();
   }
