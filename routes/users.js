@@ -372,8 +372,9 @@ router.delete("/", async (req, res) => {
   }
 
   // check if id exists
+  let user;
   try {
-    await usersData.readByID(userID);
+    user = await usersData.readByID(userID);
   } catch (e) {
     res.status(404).json({ error: "User id could not be found" });
     return;
@@ -386,6 +387,19 @@ router.delete("/", async (req, res) => {
     // ignore
   }
 
+  // remove saved profile picture
+  // only delete if not default, or one of our test files/ only delete user uploaded photos
+  let deleteFile = false;
+  let folder = user.photoLink.split('/');
+  if(folder.length > 1 && (folder[folder.length - 2] == 'user_uploads')) deleteFile = true;
+  if(user.photoLink != '/public/profile_pics/default.jpg' && deleteFile ){
+    try{
+      await unlinkAsync(`./${user.photoLink}`);
+    }
+    catch(e){
+      console.error(`Error deleting photo for ${user.username}: ${user.photoLink} : ${e}`);
+    }
+  }
   // remove user
   try {
     await usersData.remove(userID);
