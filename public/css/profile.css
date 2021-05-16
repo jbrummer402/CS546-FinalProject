@@ -67,3 +67,14 @@ body {
 .updateError {
   color: red;
 }
+
+.jobsWorked {
+  width: 40%;
+  height: 100px;
+  float: left;
+  padding: 10px;
+}
+
+.reviews {
+  padding: 10px;
+}
