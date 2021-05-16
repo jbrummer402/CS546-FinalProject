@@ -11,10 +11,6 @@ async function createReview(reviewer, reviewee, rating, reviewDescription, job){
     if( !Number.isInteger(rating) || rating < 1 || rating > 5 ) throw 'Rating must be integer between 1 and 5';
     if(typeof reviewDescription != 'string' || reviewDescription.trim() == '') throw 'Review text must be a non empty string';
 
-    /*
-    if(!date || !(date instanceof Date && !Number.isNaN(Date.parse(date)) ) ) throw 'No date provided';
-    if(!(date instanceof Date)) date = new Date(date); // date given is not a Date object, but parses to one, so convert to a Date object
-    */
     const date = new Date(); // set review date to current time we are adding it to DB
     rating = parseInt(rating);
     let reviewerId;

@@ -244,17 +244,14 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send({ error: e });
   }
 
-  // TODO: check if jobID exists
   if (!jobId) {
     throw "Job id not given";
   }
 
-  // TODO: check if jobID is valid
   if (!ObjectId.isValid(jobId)) {
     throw "Job id is not a valid object id";
   }
 
-  // TODO: make sure only a signed in user can delete
   if (!userId) {
     throw "Only a signed in user can delete";
   }
