@@ -16,11 +16,17 @@ const unlinkAsync = promisify(fs.unlink);
 //const upload = multer({ dest: 'public/profile_pics/user_uploads' })
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, 'public/profile_pics/user_uploads')
+    const dir = 'public/profile_pics/user_uploads'
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, {
+        recursive: true
+      });
+    }
+      cb(null, dir);
   },
   filename: function (req, file, cb) {
       let datetimestamp = Date.now();
-      cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+      cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
   }
 });
 const upload = multer({
