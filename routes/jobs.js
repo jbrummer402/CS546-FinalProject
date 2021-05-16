@@ -219,8 +219,18 @@ router.patch("/:id", async (req, res) => {
     
     if (req.body.perHour) {
       await checkPerHour(req.body.perHour);
+      currentJob.perHour = true;
     }
-    currentJob.perHour = req.body.perHour;
+
+    else if (!req.body.perHour) {
+      currentJob.perHour = false;
+    }
+
+    else {
+      //https://stackoverflow.com/questions/263965/how-can-i-convert-a-string-to-boolean-in-javascript
+      currentJob.perHour = (req.body.perHour == 'true');
+    }
+    
     if (req.body.compensation) {
       await checkCompensation(req.body.compensation);
     }
