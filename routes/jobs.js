@@ -59,13 +59,25 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const jobID = req.params.id;
+  const jobID = xss(req.params.id);
   try {
+    if (!Object.isValid(jobID)) {
+      throw "Job id is not valid"
+    }
     let job = await jobsData.readByID(jobID);
+
+    if (!job) {
+      throw "No job with that id"
+    }
+
     const employerID = xss(req.session.AuthCookie.id);
     const employeeID = job.employeeId.toString();
     const employer = await userData.readByID(employerID);
     const employee = await userData.readByID(employeeID);
+
+    if (!employer || !employee) {
+      throw "No user with that id"
+    }
 
     job.status = "completed";
 
