@@ -42,6 +42,7 @@ jQuery(document).ready(function ($) {
         try{
             let result;
             result = await $.ajax(requestConfig);
+            window.location.href = "/profile/account";
             photoUpdateSuccessDiv.empty();
             photoUpdateSuccessDiv.append(`<p>Profile picture updated.</p>`);
             photoUpdateSuccessDiv.show();
