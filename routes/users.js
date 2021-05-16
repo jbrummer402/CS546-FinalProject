@@ -182,12 +182,6 @@ router.get("/signout", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  // let jobs;
-  // try {
-  //   jobs = await jobsData.readByID(req.session.AuthCookie.id);
-  // } catch (error) {
-  //   console.log(error);
-  // }
 
   res.render("partials/profile", {
     title: req.session.AuthCookie.username,
@@ -317,14 +311,6 @@ router.get("/:id", async (req, res) => {
       username = loggedIn.username;
       userID = loggedIn.id;
     }
-
-    // need jobs offered by poster
-    // this is where i will loop through jobs posted by the user and they will go in a
-    // a separate spot in data, waiting until i can actually post jobs so that a user has posted jobs
-    // we need to link the seeds more so that we have jobs that are actually linked to users
-    // also post form should have placeholder data and typed data
-    // makes sure to error check that input
-    // should reviews have a title field? does that matter? im very tired
 
     res.render('partials/emp', 
       {data: {

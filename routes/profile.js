@@ -9,12 +9,6 @@ const bcrypt = require("bcrypt");
 const xss = require("xss");
 
 router.get("/account", async (req, res) => {
-  // let jobs;
-  // try {
-  //   jobs = await jobsData.readByID(req.session.AuthCookie.id);
-  // } catch (error) {
-  //   console.log(error);
-  // }
 
   let user = await usersData.readByID(xss(req.session.AuthCookie.id));
 
@@ -22,13 +16,6 @@ router.get("/account", async (req, res) => {
   res.render("partials/profile/account", {
     title: req.session.AuthCookie.username,
     layout: "profile",
-    // firstName: req.session.AuthCookie.firstName,
-    // lastName: req.session.AuthCookie.lastName,
-    // dateOfBirth: req.session.AuthCookie.dateOfBirth,
-    // username: req.session.AuthCookie.username,
-    // address: req.session.AuthCookie.address,
-    // email: req.session.AuthCookie.email,
-    // id: req.session.AuthCookie.id,
     photo: user.photoLink,
     firstName: user.firstName,
     lastName: user.lastName,

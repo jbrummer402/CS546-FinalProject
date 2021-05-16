@@ -265,8 +265,6 @@ router.delete("/:id", async (req, res) => {
   if (!ObjectId.isValid(jobId)) {
     throw "Job id is not a valid object id";
   }
-
-  
   if (!userId) {
     throw "Only a signed in user can delete";
   }
