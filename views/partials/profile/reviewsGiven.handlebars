@@ -1,15 +1,16 @@
 <div class="centered main">
-    <h1>Reviews Given</h1>
-    {{#each reviews}}
-        <div class="block" style="padding: 10px">
-            <div class="jobtitle">{{jobTitle}}</div>
-            <div class="reviewerName">{{reviewerName}}</div>
-            <div class="revieweeName">Review of: <a href="/users/{{revieweeId}}">{{revieweeName}}</a></div>
-            <div>{{dateOfReview}}</div>
-            <div>{{reviewDescription}}</div>
-            <div>{{rating}}/5</div>
-            <br>
-        </div>
-    {{/each}}
-    <br>
+  <h1>Reviews Given</h1>
+  {{#each reviews}}
+    <div class="block reviews">
+      <div class="jobtitle">{{jobTitle}}</div>
+      <div class="reviewerName">{{reviewerName}}</div>
+      <div class="revieweeName">Review of:
+        <a href="/users/{{revieweeId}}">{{revieweeName}}</a></div>
+      <div>{{dateOfReview}}</div>
+      <div>{{reviewDescription}}</div>
+      <div>{{rating}}/5</div>
+      <br />
+    </div>
+  {{/each}}
+  <br />
 </div>

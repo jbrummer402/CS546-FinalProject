@@ -59,13 +59,25 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const jobID = req.params.id;
+  const jobID = xss(req.params.id);
   try {
+    if (!ObjectId.isValid(jobID)) {
+      throw "Job id is not valid"
+    }
     let job = await jobsData.readByID(jobID);
+
+    if (!job) {
+      throw "No job with that id"
+    }
+
     const employerID = xss(req.session.AuthCookie.id);
     const employeeID = job.employeeId.toString();
     const employer = await userData.readByID(employerID);
     const employee = await userData.readByID(employeeID);
+
+    if (!employer || !employee) {
+      throw "No user with that id"
+    }
 
     job.status = "completed";
 
@@ -157,12 +169,6 @@ router.get("/:id", async (req, res) => {
     return;
   }
   try {
-    /*const { errorCode, message } = await checkInputs();
-    if (errorCode !== 0) {
-      res.status(errorCode).json({ error: message });
-      return;
-    } */
-
     const jobById = await jobsData.readByID(xss(req.params.id));
     const posterInfo = await userData.readByID(jobById.creatorId.toString());
 
@@ -205,15 +211,16 @@ router.get("/:id", async (req, res) => {
 });
 
 router.patch("/:id", async (req, res) => {
-  const jobBody = xss(req.body);
-  //console.log(jobBody);
+  
   try {
     const currentJob = await jobsData.readByID(xss(req.params.id));
-
-    for (let key in jobBody) {
-      currentJob[key] = jobBody[key];
+    req.body = JSON.parse(JSON.stringify(req.body));
+    for (let key in req.body) {
+      if (req.body[key]) {
+        currentJob[key] = req.body[key];
+      }
     }
-
+    
     let update = await jobsData.updateJob(xss(req.params.id), currentJob);
 
     res.json(update);

@@ -2,13 +2,9 @@ jQuery(document).ready(function($){
     let landingJobList = $('#landing-job-list');
     let landingUserList = $('#landing-user-list');
 
-    let landingSearchList = $('#landing-search-list');
-
     let jobHeader = $('#job-header');
     let userHeader = $('#user-header');
     let searchForm = $('#search-form');
-
-    let saveSearch = $('#save-search')
 
     let blankSearch = $('#blank-search');
     let noResults = $('#no-result');
@@ -28,12 +24,6 @@ jQuery(document).ready(function($){
     // clear list
     landingJobList.empty();
     landingUserList.empty();
-
-    function bindSavedSearchLink(searchItem) {
-        let LI = $('<li/>').appendTo(landingSearchList);
-
-        $('<p/>').text(searchItem).appendTo(LI);
-    }
 
     function bindJobListLink(jobItem){
         let LI = $('<li/>')
@@ -135,7 +125,7 @@ jQuery(document).ready(function($){
 
         landingJobList.empty();
         landingUserList.empty();
-        bindSavedSearchLink(searchText);
+        
         // make calls to appropriate routes for searches
         // need routes or smth
         // if its a search of users, make call to user search
@@ -206,16 +196,6 @@ jQuery(document).ready(function($){
 
 
     });
-
-    saveSearch.on('click', function(event) {
-        $.ajax(requestConfig).then(function(res){
-            $.each(res, function(curSave) {
-                curSave.appendTo(landingSearchList);
-            });
-        });
-        
-        landingSearchList.show();
-    })
 
     allJobs.on('click', function(event){
         // make ajax request and show all jobs

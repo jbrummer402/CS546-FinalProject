@@ -1,66 +1,80 @@
 body {
-    font-family: "Lato", sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 .sidenav {
-    height: 100%;
-    width: 250px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #307e47;
-    overflow-x: hidden;
-    padding-top: 20px;
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #307e47;
+  overflow-x: hidden;
+  padding-top: 20px;
 }
 
 .sidenav h1 {
-    padding: 6px 6px 6px 32px;
-    text-decoration: none;
-    font-size: 15px;
-    color: white;
-    display: block;
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: white;
+  display: block;
 }
 
 .sidenav a {
-    padding: 6px 6px 6px 32px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: block;
 }
 
 .sidenav a:hover {
-    color: #818181;
+  color: #818181;
 }
 
 .main {
-    margin-left: 250px; /* Same as the width of the sidenav */
+  margin-left: 250px; /* Same as the width of the sidenav */
 }
 
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
 }
 
 .block {
-    height: 120px;
-    border-bottom: solid 1px grey;
+  height: 120px;
+  border-bottom: solid 1px grey;
 }
 
 .logo {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width:150px;
-    height:150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px;
+  height: 150px;
 }
 
 #logolink {
-    padding: 0px;
+  padding: 0px;
 }
 
-
 .updateError {
-    color: red;
-  }
+  color: red;
+}
+
+.jobsWorked {
+  width: 40%;
+  height: 100px;
+  float: left;
+  padding: 10px;
+}
+
+.reviews {
+  padding: 10px;
+}
