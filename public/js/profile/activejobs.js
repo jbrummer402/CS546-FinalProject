@@ -14,8 +14,6 @@ jQuery(document).ready(function ($) {
       // get all the inputs into an array.
       var $inputs = $(`#${i} :input`);
       let error = document.getElementById("error");
-
-      // not sure if you wanted this, but I thought I'd add it.
       // get an associative array of just the values.
       var values = {};
       $inputs.each(function () {
