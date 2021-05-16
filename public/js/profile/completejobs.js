@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
-    let toEmployee = $('#to-employee');
-    let toEmployer = $('#to-employer');
+    let toEmployee = $('.to-employee');
+    let toEmployer = $('.to-employer');
 
     toEmployee.on('click', function(event){
         let toUrl = toEmployee.attr("name");
