@@ -6,69 +6,69 @@
       <a href="/jobs/{{jobID}}">{{jobTitle}}</a>
     </h2>
     <form action="/jobs/{{jobID}}" method="POST" class="editJobForm">
-      <label for="jobTitle">
+      <label for="jobTitlefor{{jobID}}">
         Job Title:
         <br />
-        <input type="text" value="{{jobTitle}}" id="jobTitle" name="jobTitle" />
+        <input type="text" value="jobTitle" id="jobTitlefor{{jobID}}" name="jobTitle" />
       </label>
       <br />
-      <label for="description">
+      <label for="descriptionfor{{jobID}}">
         Description:
         <br />
         <input
           type="text"
           value="{{description}}"
-          id="description"
+          id="descriptionfor{{jobID}}"
           name="description"
         />
       </label>
       <br />
       {{#if perHour}}
-        <label for="compensation">
+        <label for="compensationfor{{jobID}}">
           Compensation:
           <br />
           $
           <input
             type="text"
             value={{compensation}}
-            id="compensation"
+            id="compensationfor{{jobID}}"
             name="compensation"
           />
           /hour
         </label>
         <br />
       {{else}}
-        <label for="compensation">
+        <label for="compensationfor{{jobID}}">
           Compensation:
           <br />
           $
           <input
             type="text"
             value={{compensation}}
-            id="compensation"
+            id="compensationfor{{jobID}}"
             name="compensation"
           />
         </label>
         <br />
       {{/if}}
-      <label for="perHour">
+      <label for="perHourfor{{jobID}}">
         Per Hour:
         {{#if perHour}}
-          <input type="checkbox" checked id="perHour" name="perHour" />
+          <input type="checkbox" checked id="perHourfor{{jobID}}" name="perHour" />
         {{else}}
-          <input type="checkbox" id="perHour" name="perHour" />
+          <input type="checkbox" id="perHourfor{{jobID}}" name="perHour" />
         {{/if}}
 
       </label>
 
       <br />
-      <label for="datePosted">
+      <label for="datePostedfor{{jobID}}">
         Date Posted:
         <br />
         <input
           type="text"
           value="{{datePosted}}"
-          id="datePosted"
+          id="datePostedfor{{jobID}}"
           name="datePosted"
           disabled
         />
