@@ -409,9 +409,11 @@ router.patch("/pic/:id", upload.single('profile_picture'), async (req, res) =>{
   let oldPhotoPath = user.photoLink;
   const update = await usersData.update({id:id, photoLink: `/public/profile_pics/user_uploads/${req.file.filename}`});
 
-  if(oldPhotoPath != '/public/profile_pics/default.jpg' && oldPhotoPath != '/public/profile_pics/dondraper.jpeg' &&  
-  oldPhotoPath != '/public/profile_pics/paulie.jpeg' && oldPhotoPath != '/public/profile_pics/pete.jpeg' && 
-  oldPhotoPath != '/public/profile_pics/ronald.jpeg' &&  oldPhotoPath != '/public/profile_pics/tony.jpeg'&&  oldPhotoPath != '/public/profile_pics/agentcoop.jpeg' ){
+  // if user photo is an uploaded file, allow deletion of previous picture
+  let deleteFile = false;
+  let folder = oldPhotoPath.split('/');
+  if(folder.length > 1 && (folder[folder.length - 2] == 'user_uploads')) deleteFile = true;
+  if(oldPhotoPath != '/public/profile_pics/default.jpg' && deleteFile ){
     try{
       await unlinkAsync(`./${oldPhotoPath}`); // new picture uploaded, safe to delete old
     }
