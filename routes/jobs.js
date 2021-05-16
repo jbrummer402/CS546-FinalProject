@@ -217,7 +217,22 @@ router.patch("/:id", async (req, res) => {
     const currentJob = await jobsData.readByID(xss(req.params.id));
     req.body = JSON.parse(JSON.stringify(req.body));
     
+    if (req.body.perHour) {
+      await checkPerHour(req.body.perHour);
+    }
     currentJob.perHour = req.body.perHour;
+    if (req.body.compensation) {
+      await checkCompensation(req.body.compensation);
+    }
+
+    if (req.body.title) {
+      await checkTitle(req.body.title);
+    }
+
+    if (req.body.description) {
+      await checkDescription(req.body.description);
+    }
+    
     for (let key in req.body) {
 
       if (req.body[key]) {
@@ -244,17 +259,14 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send({ error: e });
   }
 
-  // TODO: check if jobID exists
   if (!jobId) {
     throw "Job id not given";
   }
-
-  // TODO: check if jobID is valid
   if (!ObjectId.isValid(jobId)) {
     throw "Job id is not a valid object id";
   }
 
-  // TODO: make sure only a signed in user can delete
+  
   if (!userId) {
     throw "Only a signed in user can delete";
   }
