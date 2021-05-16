@@ -65,7 +65,7 @@ jQuery(document).ready(function ($) {
         $.ajax(requestConfig).then(function (responseMessage) {
           console.log(responseMessage);
           window.location.href = "/profile/activejobs";
-        }).catch((responseMessage) => {
+        }).fail((responseMessage) => {
           if (responseMessage.responseJSON.error) {
             error.innerHTML = responseMessage.responseJSON.error;
           } else {
